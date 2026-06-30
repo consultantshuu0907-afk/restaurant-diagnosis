@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<script>document.documentElement.className='js';</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ネットで判断する前に｜健康・美容の購入前チェック</title>
+<meta name="description" content="人に相談しづらい健康・美容の悩み。「ネットで買える＝安全」とは限りません。医薬品・健康関連商品や個人輸入を検討する前に確認したいポイントをまとめた情報ページ（広告を含みます）。" />
+<!-- ▼ X等からの流入前提で検索露出を抑えるなら content="noindex, follow" に変更可。 -->
+<meta name="robots" content="index, follow" />
+<meta property="og:title" content="ネットで判断する前に｜購入前チェック" />
+<meta property="og:description" content="「ネットで買える＝安全」とは限りません。購入前に確認しておきたいポイントをまとめました。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@700&display=swap" rel="stylesheet" />
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:'Noto Sans JP',-apple-system,'Hiragino Kaku Gothic ProN','Yu Gothic',Meiryo,sans-serif;
+  color:var(--ink);background:var(--bg);line-height:1.8;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"palt";
+}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+[id]{scroll-margin-top:24px}
+:focus-visible{outline:3px solid var(--accent-dark);outline-offset:3px;border-radius:6px}
+
+:root{
+  --bg:#ffffff;--bg-soft:#f4f7f8;--bg-tint2:#f3f8fa;
+  --ink:#2a343d;--ink-strong:#1c2730;--sub:#54616b;--muted:#6b757d;--line:#e3eaed;
+  --accent:#2c7a7b;--accent-dark:#246163;--accent-soft:#e7f1f1;--accent-tint:#f1f8f7;
+  --care-bg:#fdf7e9;--care-border:#ecdcb4;--care-ink:#6f561c;--care-accent:#a87c25;
+  --shadow-sm:0 1px 2px rgba(28,39,48,.04),0 2px 8px rgba(28,39,48,.05);
+  --shadow-md:0 6px 24px rgba(28,39,48,.07),0 2px 6px rgba(28,39,48,.04);
+  --radius:16px;--radius-sm:12px;--maxw:680px;
+  --dots:radial-gradient(rgba(44,122,123,.05) .6px,transparent .6px);
+}
+
+.wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:20px}
+section{padding-block:clamp(40px,7vw,64px)}
+.section-soft{background:var(--bg-soft);background-image:var(--dots);background-size:22px 22px}
+
+/* PR / アフィリエイト表示バー（ステマ規制：上部に明示） */
+.pr-bar{background:var(--accent-soft);border-bottom:1px solid var(--line);color:var(--accent-dark);
+  font-size:.85rem;font-weight:500;text-align:center;padding:9px 16px;letter-spacing:.02em;line-height:1.6}
+.pr-bar b{color:var(--accent-dark);font-weight:700;margin-right:6px}
+
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:700;
+  letter-spacing:.1em;color:var(--accent-dark);background:var(--accent-soft);
+  padding:6px 14px;border-radius:999px;margin-bottom:16px}
+h2{font-size:clamp(1.35rem,4.6vw,1.7rem);line-height:1.45;color:var(--ink-strong);
+  font-weight:700;letter-spacing:.01em;text-wrap:balance}
+.lead{font-size:1rem;color:var(--sub);margin-top:12px;max-width:34em}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;padding-block:clamp(48px,9vw,84px);
+  background:radial-gradient(120% 90% at 85% -10%,var(--accent-tint) 0%,transparent 55%),
+    radial-gradient(90% 70% at 0% 0%,var(--bg-tint2) 0%,transparent 50%),var(--bg)}
+.hero::after{content:"";position:absolute;inset-inline:0;bottom:0;height:1px;background:var(--line)}
+.hero h1{font-size:clamp(1.55rem,5.6vw,2.3rem);line-height:1.5;color:var(--ink-strong);font-weight:700}
+.hero h1 .em{color:var(--accent-dark);background:linear-gradient(transparent 70%,var(--accent-soft) 70%);padding-inline:.05em}
+.hero .sub{margin-top:20px;font-size:1.02rem;color:var(--sub);max-width:32em}
+.hero .whisper{margin-top:22px;display:grid;gap:6px}
+.hero .whisper span{display:flex;align-items:center;gap:10px;color:var(--sub);font-size:.95rem}
+.hero .whisper span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);flex:none;opacity:.6}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-weight:700;
+  font-size:1rem;letter-spacing:.02em;text-align:center;padding:16px 28px;border-radius:999px;
+  transition:transform .18s ease,box-shadow .25s ease,background .25s ease}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;
+  box-shadow:0 8px 22px rgba(44,122,123,.28)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(44,122,123,.34)}
+.btn-ghost{background:#fff;color:var(--accent-dark);border:1.5px solid var(--accent);box-shadow:var(--shadow-sm)}
+.btn-ghost:hover{transform:translateY(-2px);background:var(--accent-tint)}
+.btn .arrow{transition:transform .2s ease;flex:none}
+.btn:hover .arrow{transform:translateX(3px)}
+.btn-row{margin-top:28px}
+.btn-note{margin-top:11px;font-size:.82rem;color:var(--muted)}
+
+/* 5 checks（コンパクト） */
+.checks{display:grid;gap:10px;margin-top:22px}
+.check{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);
+  border-radius:var(--radius-sm);padding:14px 16px;box-shadow:var(--shadow-sm)}
+.check .num{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
+  background:var(--accent-soft);color:var(--accent-dark);font-family:'Noto Serif JP',serif;font-weight:700;font-size:1.05rem}
+.check p{font-size:.97rem;color:var(--ink-strong);font-weight:500}
+.after-note{margin-top:18px;color:var(--sub);font-size:.95rem;max-width:34em}
+.after-note strong{color:var(--ink-strong);font-weight:700}
+
+/* 注意ブロック（個人輸入＋NG判断を統合） */
+.care{background:var(--care-bg);border:1px solid var(--care-border);border-radius:var(--radius);padding:clamp(20px,5vw,30px)}
+.care .care-head{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+.care .care-head svg{width:24px;height:24px;color:var(--care-accent);flex:none}
+.care .care-head h2{color:var(--care-ink);margin:0;font-size:clamp(1.2rem,4.4vw,1.5rem)}
+.care ul{list-style:none;display:grid;gap:10px}
+.care ul li{display:flex;gap:11px;align-items:flex-start;color:var(--care-ink);font-weight:500;font-size:.96rem}
+.care ul li svg{width:19px;height:19px;flex:none;margin-top:3px;color:var(--care-accent)}
+.care .closing{margin-top:16px;color:var(--care-ink);font-weight:500;font-size:.93rem;border-top:1px dashed var(--care-border);padding-top:14px}
+
+/* 外部CTA */
+.cta-final{text-align:center}
+.cta-final .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow-md);padding:clamp(22px,5vw,32px);text-align:left;max-width:540px;margin:20px auto 0}
+.cta-final .pre{color:var(--sub);font-size:.96rem}
+.cta-final .aff{font-size:.86rem;color:var(--sub);background:var(--bg-soft);border-radius:10px;padding:12px 14px;margin-top:14px}
+.cta-final .btn{margin-top:18px;width:100%;max-width:460px}
+.cta-final .legal-mini{margin-top:14px;font-size:.82rem;color:var(--muted)}
+
+/* Footer */
+footer .disclaimer{background:var(--bg-soft);border-top:1px solid var(--line)}
+.disclaimer .box{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:clamp(20px,4.5vw,26px)}
+.disclaimer .dh{font-size:.95rem;color:var(--ink-strong);font-weight:700;margin-bottom:12px;display:flex;gap:9px;align-items:center}
+.disclaimer .dh svg{width:18px;height:18px;color:var(--muted);flex:none}
+.disclaimer p{font-size:.87rem;color:var(--sub);line-height:1.9}
+.disclaimer p+p{margin-top:.8em}
+.disclaimer .ref{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:.83rem;color:var(--sub)}
+.disclaimer .ref a{color:var(--accent-dark);text-decoration:underline;text-underline-offset:2px;display:inline-block;padding:3px 0}
+.foot{padding-block:22px;text-align:center;font-size:.78rem;color:var(--sub);background:var(--bg-soft)}
+
+/* Reveal（JS有効時のみ隠す） */
+.reveal{transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}
+html.js .reveal{opacity:0;transform:translateY(16px)}
+html.js .reveal.in{opacity:1;transform:none}
+html.js .checks .check:nth-child(2){transition-delay:.05s}
+html.js .checks .check:nth-child(3){transition-delay:.1s}
+html.js .checks .check:nth-child(4){transition-delay:.15s}
+html.js .checks .check:nth-child(5){transition-delay:.2s}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reveal,html.js .reveal{opacity:1!important;transform:none!important;transition:none}
+  .btn,.btn .arrow{transition:none!important}
+  .btn:hover{transform:none!important}
+}
+@media (max-width:480px){.btn{padding:15px 20px;font-size:.96rem}}
+</style>
+</head>
+<body>
+
+<!-- ステマ規制対応：広告である旨を上部に明示 -->
+<div class="pr-bar"><b>広告（PR）</b>本ページはアフィリエイト広告を含み、リンク経由のお申込み等で運営者が報酬を得ます</div>
+
+<main id="top">
+
+<!-- Hero -->
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow reveal">健康・美容の確認ガイド</span>
+    <h1 class="reveal">人に相談しづらい健康・美容の悩みを、<br><span class="em">ネットだけで判断する前に。</span></h1>
+    <p class="sub reveal">「ネットで買える＝安全」とは限りません。<br>購入前に確認しておきたいポイントをまとめました。</p>
+    <div class="whisper reveal">
+      <span>病院に行くほどではない気がする。</span>
+      <span>でも、ずっと気になっている。</span>
+      <span>誰かに相談するのは、少し抵抗がある。</span>
+    </div>
+    <div class="btn-row reveal">
+      <a href="#points" class="btn btn-primary">購入前チェックを見る
+        <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <p class="btn-note">※特定の商品購入をすすめるものではありません。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5チェック -->
+<section id="points" class="section-soft">
+  <div class="wrap">
+    <span class="eyebrow reveal">購入前チェック</span>
+    <h2 class="reveal">買う前に、確認したい5つのこと</h2>
+    <p class="lead reveal">「安いから」「口コミが多いから」だけで決めていませんか？</p>
+    <div class="checks">
+      <div class="check reveal"><div class="num">1</div><p>日本で承認・認証されているか</p></div>
+      <div class="check reveal"><div class="num">2</div><p>自分の体質・いまの状態に合うか</p></div>
+      <div class="check reveal"><div class="num">3</div><p>服用中の薬や持病との関係に問題はないか</p></div>
+      <div class="check reveal"><div class="num">4</div><p>副作用や注意事項を理解しているか</p></div>
+      <div class="check reveal"><div class="num">5</div><p>不安なとき、専門家に相談できるか</p></div>
+    </div>
+    <p class="after-note reveal">海外から取り寄せる商品は、<strong>日本国内の基準で品質・有効性・安全性が確認されていない場合</strong>があります。特に体に入れるもの・続けて使うものほど、慎重に。</p>
+  </div>
+</section>
+
+<!-- 注意（個人輸入＋NG判断を統合） -->
+<section>
+  <div class="wrap">
+    <div class="care reveal">
+      <div class="care-head">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <h2>決める前に、ここだけは</h2>
+      </div>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>「安い」「口コミが多い」「すぐ届く」だけで選ばない</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>個人輸入は原則“自分で使う”目的のみ。販売・譲渡はできない</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>商品によっては、医師の処方や確認が必要になる</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>説明・注意事項を読まずに使い始めない</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>偽造品・成分不明・品質の劣る商品が混ざるリスクがある</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>万一の健康被害でも、国の救済制度（医薬品副作用被害救済制度）の対象外になる</li>
+      </ul>
+      <p class="closing">「買えるか」ではなく<strong>「自分にとって安全に使えるか」</strong>。少しでも不安があれば、医師・薬剤師など専門家へ相談を。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 外部導線（最下部・控えめ） -->
+<section class="section-soft cta-final">
+  <div class="wrap">
+    <span class="eyebrow reveal">さらに調べたい方へ</span>
+    <h2 class="reveal">詳細情報を確認する前に</h2>
+    <div class="card reveal">
+      <p class="pre">ここまでの注意点を確認したうえで、さらに情報を調べたい方は、外部サイトでご確認ください。</p>
+      <p class="aff"><b>本ページはアフィリエイト広告を含みます。</b>リンク先は当ページとは別の事業者が運営する外部サイトで、リンク経由のお申し込み等により運営者が報酬を得る場合があります。リンク先には医薬品等の個人輸入に関する情報が含まれる場合があり、購入・使用の判断はご自身の責任で、必要に応じて医師・薬剤師にご相談ください。当ページは特定商品の購入をすすめるものではありません。</p>
+      <!-- 外部サイト（アフィリエイトリンク） -->
+      <a href="https://mttag.com/s/-ScenH-5t-E" class="btn btn-ghost" rel="nofollow sponsored noopener" target="_blank">注意点を確認のうえ、詳細情報を見る（別タブ）
+        <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+      </a>
+      <p class="legal-mini">※外部サイトの内容について、当ページは責任を負いません。</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- Footer / 免責・アフィリエイト表記 -->
+<footer>
+  <section class="disclaimer">
+    <div class="wrap">
+      <div class="box reveal">
+        <h2 class="dh">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+          広告について・免責事項
+        </h2>
+        <p><strong style="color:var(--ink-strong)">本ページは広告（アフィリエイト・成果報酬型）です。</strong>リンクを経由した購入・お申し込み等により、運営者が報酬を得る場合があります。</p>
+        <p>当ページは、医薬品・健康関連商品の購入や使用を推奨するものではなく、特定の商品について効果・効能・安全性を保証するものでもありません。体調や健康に不安がある場合は、自己判断せず、医師・薬剤師など専門家へご相談ください。</p>
+        <div class="ref">
+          運営者：（運営者名・屋号を記入）／お問い合わせ：（連絡先を記入）<br>
+          参考：厚生労働省「医薬品等の個人輸入について」<br>
+          <a href="https://www.mhlw.go.jp/" target="_blank" rel="noopener">厚生労働省 公式サイト（www.mhlw.go.jp）</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="foot">© 購入前チェック ｜ 健康・美容の確認ガイド（広告を含む）</div>
+</footer>
+
+<script>
+(function(){
+  var els=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver'in window)){els.forEach(function(e){e.classList.add('in')});return;}
+  var io=new IntersectionObserver(function(ents){
+    ents.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});
+  },{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+  els.forEach(function(e){io.observe(e);});
+})();
+</script>
+</body>
+</html>
