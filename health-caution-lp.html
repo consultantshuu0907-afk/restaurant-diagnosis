@@ -62,12 +62,21 @@ h2{font-size:clamp(1.35rem,4.6vw,1.7rem);line-height:1.45;color:var(--ink-strong
   background:radial-gradient(120% 90% at 85% -10%,var(--accent-tint) 0%,transparent 55%),
     radial-gradient(90% 70% at 0% 0%,var(--bg-tint2) 0%,transparent 50%),var(--bg)}
 .hero::after{content:"";position:absolute;inset-inline:0;bottom:0;height:1px;background:var(--line)}
-.hero h1{font-size:clamp(1.55rem,5.6vw,2.3rem);line-height:1.5;color:var(--ink-strong);font-weight:700}
+.hero h1{font-size:clamp(1.5rem,5vw,2.2rem);line-height:1.5;color:var(--ink-strong);font-weight:700;line-break:strict;text-wrap:balance}
 .hero h1 .em{color:var(--accent-dark);background:linear-gradient(transparent 70%,var(--accent-soft) 70%);padding-inline:.05em}
 .hero .sub{margin-top:20px;font-size:1.02rem;color:var(--sub);max-width:32em}
 .hero .whisper{margin-top:22px;display:grid;gap:6px}
 .hero .whisper span{display:flex;align-items:center;gap:10px;color:var(--sub);font-size:.95rem}
 .hero .whisper span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);flex:none;opacity:.6}
+.hero .wrap{display:grid;gap:22px}
+@media(min-width:880px){
+  .hero .wrap{max-width:980px;grid-template-columns:1.1fr .9fr;align-items:center;gap:44px}
+  .hero-copy{grid-column:1;grid-row:1}
+  .hero-visual{grid-column:2;grid-row:1}
+}
+.hero-visual svg{width:100%;height:auto;max-width:400px;margin-inline:auto;display:block;
+  filter:drop-shadow(0 18px 40px rgba(28,39,48,.12))}
+@media(max-width:600px){.hero-visual svg{max-width:240px}}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-weight:700;
@@ -150,19 +159,43 @@ html.js .checks .check:nth-child(5){transition-delay:.2s}
 <!-- Hero -->
 <section class="hero">
   <div class="wrap">
-    <span class="eyebrow reveal">健康・美容の確認ガイド</span>
-    <h1 class="reveal">人に相談しづらい健康・美容の悩みを、<br><span class="em">ネットだけで判断する前に。</span></h1>
-    <p class="sub reveal">「ネットで買える＝安全」とは限りません。<br>購入前に確認しておきたいポイントをまとめました。</p>
-    <div class="whisper reveal">
-      <span>病院に行くほどではない気がする。</span>
-      <span>でも、ずっと気になっている。</span>
-      <span>誰かに相談するのは、少し抵抗がある。</span>
+    <div class="hero-visual reveal">
+      <svg viewBox="0 0 480 470" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="購入前チェックリストのイメージ">
+        <rect x="66" y="60" width="360" height="360" rx="34" fill="var(--accent-tint)" transform="rotate(-4 246 240)"/>
+        <circle cx="408" cy="96" r="30" fill="var(--accent-soft)"/>
+        <circle cx="70" cy="410" r="17" fill="var(--accent-soft)"/>
+        <rect x="96" y="86" width="288" height="312" rx="22" fill="#ffffff" stroke="var(--line)" stroke-width="1.5"/>
+        <path d="M96 108a22 22 0 0 1 22-22h244a22 22 0 0 1 22 22v34H96z" fill="var(--accent)"/>
+        <circle cx="126" cy="120" r="12" fill="#ffffff" opacity="0.22"/>
+        <path d="M120.5 120.5l4 4 7.5-8.5" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="148" y="127" fill="#ffffff" font-family="'Noto Sans JP',sans-serif" font-size="19" font-weight="700">購入前チェック</text>
+        <g stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="128" cy="176" r="13" fill="var(--accent-soft)"/><path d="M122 176l4 5 8-10" stroke="var(--accent-dark)" stroke-width="2.6"/><rect x="152" y="170" width="190" height="12" rx="6" fill="#eef2f4"/>
+          <circle cx="128" cy="220" r="13" fill="var(--accent-soft)"/><path d="M122 220l4 5 8-10" stroke="var(--accent-dark)" stroke-width="2.6"/><rect x="152" y="214" width="150" height="12" rx="6" fill="#eef2f4"/>
+          <circle cx="128" cy="264" r="13" fill="var(--accent-soft)"/><path d="M122 264l4 5 8-10" stroke="var(--accent-dark)" stroke-width="2.6"/><rect x="152" y="258" width="200" height="12" rx="6" fill="#eef2f4"/>
+          <circle cx="128" cy="308" r="13" fill="var(--accent-soft)"/><path d="M122 308l4 5 8-10" stroke="var(--accent-dark)" stroke-width="2.6"/><rect x="152" y="302" width="140" height="12" rx="6" fill="#eef2f4"/>
+          <circle cx="128" cy="352" r="13" fill="var(--accent-soft)"/><path d="M122 352l4 5 8-10" stroke="var(--accent-dark)" stroke-width="2.6"/><rect x="152" y="346" width="176" height="12" rx="6" fill="#eef2f4"/>
+        </g>
+        <circle cx="372" cy="372" r="46" fill="var(--accent)"/>
+        <circle cx="372" cy="372" r="46" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.35"/>
+        <path d="M352 372l12 13 24-28" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </div>
-    <div class="btn-row reveal">
-      <a href="#points" class="btn btn-primary">購入前チェックを見る
-        <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </a>
-      <p class="btn-note">※特定の商品購入をすすめるものではありません。</p>
+    <div class="hero-copy">
+      <span class="eyebrow reveal">健康・美容の確認ガイド</span>
+      <h1 class="reveal">人に相談しづらい<br>健康・美容の悩みを、<br><span class="em">ネットだけで判断する前に。</span></h1>
+      <p class="sub reveal">「ネットで買える＝安全」とは限りません。<br>購入前に確認しておきたいポイントをまとめました。</p>
+      <div class="whisper reveal">
+        <span>病院に行くほどではない気がする。</span>
+        <span>でも、ずっと気になっている。</span>
+        <span>誰かに相談するのは、少し抵抗がある。</span>
+      </div>
+      <div class="btn-row reveal">
+        <a href="#points" class="btn btn-primary">購入前チェックを見る
+          <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <p class="btn-note">※特定の商品購入をすすめるものではありません。</p>
+      </div>
     </div>
   </div>
 </section>
