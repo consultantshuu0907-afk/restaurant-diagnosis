@@ -126,6 +126,10 @@ h2{font-size:clamp(1.35rem,4.6vw,1.72rem);line-height:1.45;color:var(--ink-stron
 .btn .arrow{transition:transform .2s ease;flex:none}
 .btn:hover .arrow{transform:translateX(3px)}
 .btn-note{margin-top:11px;font-size:.82rem;color:var(--muted)}
+.btn-duo{display:flex;flex-wrap:wrap;gap:12px}
+.btn-duo .btn{flex:0 1 auto}
+.pr-mini{font-size:.68rem;font-weight:700;background:var(--accent);color:#fff;padding:1px 6px;border-radius:5px}
+@media(max-width:560px){.btn-duo{flex-direction:column;align-items:stretch}.btn-duo .btn{width:100%}}
 
 /* 5 checks */
 .checks{display:grid;gap:10px;margin-top:22px}
@@ -155,6 +159,30 @@ h2{font-size:clamp(1.35rem,4.6vw,1.72rem);line-height:1.45;color:var(--ink-stron
 .cta-final .aff{font-size:.86rem;color:var(--sub);background:var(--bg-soft);border-radius:10px;padding:12px 14px;margin-top:14px}
 .cta-final .btn{margin-top:18px;width:100%;max-width:460px}
 .cta-final .legal-mini{margin-top:14px;font-size:.82rem;color:var(--muted)}
+.cta-final .recap{list-style:none;display:grid;gap:9px;margin:14px 0 4px}
+.cta-final .recap li{display:flex;gap:10px;align-items:center;font-size:.95rem;font-weight:600;color:var(--ink-strong)}
+.cta-final .recap li svg{flex:none;width:20px;height:20px;color:var(--accent)}
+
+/* ソフト外部リンク（5チェック直後） */
+.inline-cta{margin-top:18px;display:inline-flex;align-items:center;gap:9px;color:var(--accent-dark);
+  font-weight:700;font-size:.95rem;background:var(--accent-tint);border:1px solid var(--accent-soft);
+  padding:11px 17px;border-radius:11px;transition:background .2s,transform .18s,box-shadow .2s;box-shadow:var(--shadow-sm)}
+.inline-cta:hover{background:var(--accent-soft);transform:translateY(-1px)}
+.inline-cta .pr-tag{flex:none;font-size:.68rem;background:var(--accent);color:#fff;padding:1px 6px;border-radius:5px}
+.inline-cta .arrow{flex:none;transition:transform .2s}
+.inline-cta:hover .arrow{transform:translateX(3px)}
+.cta-note{margin-top:8px;font-size:.78rem;color:var(--muted)}
+
+/* スマホ固定CTAバー */
+.sticky-cta{position:fixed;left:0;right:0;bottom:0;z-index:60;display:none;
+  align-items:center;justify-content:center;gap:9px;color:#fff;font-weight:700;font-size:1rem;
+  background:linear-gradient(135deg,var(--accent),var(--accent-dark));padding:14px 16px;
+  box-shadow:0 -6px 20px rgba(22,41,74,.20)}
+.sticky-cta.show{display:flex}
+.sticky-cta .sc-pr{flex:none;font-size:.72rem;font-weight:700;background:#fff;color:var(--accent-dark);padding:2px 8px;border-radius:6px}
+.sticky-cta .arrow{flex:none}
+body.sticky-on{padding-bottom:60px}
+@media(min-width:820px){.sticky-cta,.sticky-cta.show{display:none}body.sticky-on{padding-bottom:0}}
 
 /* Footer */
 footer .disclaimer{background:var(--bg-soft);border-top:1px solid var(--line)}
@@ -212,10 +240,15 @@ html.js .learn-row:nth-child(4){transition-delay:.12s}
         <p>ただし、体に関わる商品は、<b>「買えるか」だけでなく「自分に合うか」「安全に使えるか」</b>を確認することが大切です。</p>
       </div>
       <div class="btn-row reveal">
-        <a href="#points" class="btn btn-primary">購入前チェックを見る
-          <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>
-        <p class="btn-note">※特定の商品購入をすすめるものではありません。</p>
+        <div class="btn-duo">
+          <a href="#points" class="btn btn-primary">購入前チェックを見る
+            <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="https://mttag.com/s/-ScenH-5t-E" class="btn btn-ghost" rel="nofollow sponsored noopener" target="_blank"><span class="pr-mini">広告</span>外部サイトで詳しく見る
+            <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+        <p class="btn-note">※特定の商品購入をすすめるものではありません。「外部サイトで詳しく見る」のリンク先は外部サイト（広告）です。</p>
       </div>
     </div>
 
@@ -265,6 +298,11 @@ html.js .learn-row:nth-child(4){transition-delay:.12s}
       <div class="check reveal"><div class="num">5</div><p>不安なとき、専門家に相談できるか</p></div>
     </div>
     <p class="after-note reveal">海外から取り寄せる商品は、<strong>日本国内の基準で品質・有効性・安全性が確認されていない場合</strong>があります。特に体に入れるもの・続けて使うものほど、慎重に。</p>
+    <a href="https://mttag.com/s/-ScenH-5t-E" class="inline-cta reveal" rel="nofollow sponsored noopener" target="_blank">
+      <span class="pr-tag">広告</span>外部サイトで詳しく確認する
+      <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    </a>
+    <p class="cta-note reveal">※外部のアフィリエイト広告サイトへ移動します（別タブ）。</p>
   </div>
 </section>
 
@@ -293,15 +331,21 @@ html.js .learn-row:nth-child(4){transition-delay:.12s}
 <section class="section-soft cta-final">
   <div class="wrap">
     <span class="eyebrow reveal">外部サイトを見る前に</span>
-    <h2 class="reveal" style="margin-top:14px">詳細情報を確認する前に</h2>
+    <h2 class="reveal" style="margin-top:14px">確認できたら、次のステップへ</h2>
     <div class="card reveal">
-      <p class="pre">ここまでの注意点を確認したうえで、さらに情報を調べたい方は、外部サイトでご確認ください。</p>
+      <p class="pre">ここまでで、次のことを確認できました。</p>
+      <ul class="recap">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>ネット購入前に見るべき注意点</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>自分に合うか考えるための基準</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>外部サイトを見る前の判断材料</li>
+      </ul>
+      <p style="font-size:.95rem;color:var(--sub);margin-top:12px">判断に迷うときは、<strong style="color:var(--ink-strong)">医師・薬剤師など専門家に相談する</strong>のも一つの方法です。ご自身でさらに調べたい方は、下記の外部サイト（広告）もご利用いただけます。</p>
       <p class="aff"><b>本ページはアフィリエイト広告を含みます。</b>リンク先は当ページとは別の事業者が運営する外部サイトで、リンク経由のお申し込み等により運営者が報酬を得る場合があります。リンク先には医薬品等の個人輸入に関する情報が含まれる場合があり、購入・使用の判断はご自身の責任で、必要に応じて医師・薬剤師にご相談ください。当ページは特定商品の購入をすすめるものではありません。</p>
       <!-- 外部サイト（アフィリエイトリンク） -->
-      <a href="https://mttag.com/s/-ScenH-5t-E" class="btn btn-ghost" rel="nofollow sponsored noopener" target="_blank">注意点を確認のうえ、詳細情報を見る（別タブ）
+      <a href="https://mttag.com/s/-ScenH-5t-E" class="btn btn-primary" rel="nofollow sponsored noopener" target="_blank">外部サイトで詳しく見る（別タブ・PR）
         <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
       </a>
-      <p class="legal-mini">※外部サイトの内容について、当ページは責任を負いません。</p>
+      <p class="legal-mini">※リンクは別タブで開きます（このページは残ります）。当ページから無理におすすめはしません。外部サイトの内容について当ページは責任を負わず、購入・使用の判断はご自身で、必要に応じて専門家へ。</p>
     </div>
   </div>
 </section>
@@ -330,14 +374,37 @@ html.js .learn-row:nth-child(4){transition-delay:.12s}
   <div class="foot">© 購入前ガイド ｜ 健康・美容の情報整理ページ（広告を含む）</div>
 </footer>
 
+<!-- スマホ固定CTA（ヒーロー通過後に表示・最終CTA到達で非表示） -->
+<a href="https://mttag.com/s/-ScenH-5t-E" class="sticky-cta" id="stickyCta" rel="nofollow sponsored noopener" target="_blank" aria-label="広告：外部サイトへ移動します">
+  <span class="sc-pr">広告</span>
+  <span>外部サイトで詳しく見る</span>
+  <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+</a>
+
 <script>
 (function(){
   var els=document.querySelectorAll('.reveal');
-  if(!('IntersectionObserver'in window)){els.forEach(function(e){e.classList.add('in')});return;}
-  var io=new IntersectionObserver(function(ents){
-    ents.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});
-  },{threshold:.12,rootMargin:'0px 0px -8% 0px'});
-  els.forEach(function(e){io.observe(e);});
+  if('IntersectionObserver'in window){
+    var io=new IntersectionObserver(function(ents){
+      ents.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});
+    },{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+    els.forEach(function(e){io.observe(e);});
+  }else{els.forEach(function(e){e.classList.add('in')});}
+
+  /* スマホ固定CTA制御：ヒーローを通過したら表示、最終CTAに到達したら以後非表示 */
+  var sc=document.getElementById('stickyCta'),
+      hero=document.querySelector('.hero'),
+      finalCta=document.querySelector('.cta-final');
+  if(sc&&hero&&'IntersectionObserver'in window){
+    var pastHero=false,reachedFinal=false;
+    var apply=function(){
+      var show=pastHero&&!reachedFinal;
+      sc.classList.toggle('show',show);
+      document.body.classList.toggle('sticky-on',show);
+    };
+    new IntersectionObserver(function(e){pastHero=!e[0].isIntersecting;apply();},{threshold:0}).observe(hero);
+    if(finalCta)new IntersectionObserver(function(e){if(e[0].isIntersecting){reachedFinal=true;apply();}},{threshold:0}).observe(finalCta);
+  }
 })();
 </script>
 </body>
