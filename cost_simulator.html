@@ -574,6 +574,36 @@
   .notice-bar i { color: var(--red); font-size: 0.95rem; margin-top: 3px; flex-shrink: 0; }
   .notice-bar strong { color: var(--text); }
 
+  /* ===== RATE NOTE (相場の目安) ===== */
+  .rate-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    background: linear-gradient(135deg, rgba(161,98,7,0.08), rgba(161,98,7,0.02));
+    border: 1px solid rgba(161,98,7,0.28);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    font-size: 0.75rem;
+    line-height: 1.65;
+    color: var(--text3);
+  }
+  .rate-note > i { color: var(--gold); margin-top: 3px; flex-shrink: 0; }
+  .rate-note b { color: var(--gold-ink); font-weight: 700; }
+  .rate-note .rate-label {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    color: #fff;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 20px;
+    margin-right: 7px;
+    vertical-align: middle;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
   /* ===== PRINT ===== */
   @media print {
     header { background: var(--wine) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -645,6 +675,10 @@
           <i class="fas fa-chevron-down sim-arrow"></i>
         </div>
         <div class="sim-body">
+          <div class="rate-note">
+            <i class="fas fa-tag"></i>
+            <div><span class="rate-label">相場の目安</span>契約・料金プランの見直しのみで <b>電気2〜8%／都市ガス3〜10%／LP・プロパン10〜30%</b>。運用改善・設備更新まで含めると光熱費全体で <b>10〜20%程度</b> が現実的な相場です。</div>
+          </div>
           <div class="form-grid">
             <div class="form-group">
               <label>施策レベル</label>
@@ -726,6 +760,10 @@
           <i class="fas fa-chevron-down sim-arrow"></i>
         </div>
         <div class="sim-body">
+          <div class="rate-note">
+            <i class="fas fa-tag"></i>
+            <div><span class="rate-label">相場の目安</span>飲食店のネット回線は<b>1拠点あたり月4,000〜6,000円前後</b>。乗り換え・キャッシュバック適用で<b>実質0〜数千円</b>になるケースもあります。</div>
+          </div>
           <!-- Wi-Fi 実質無料バッジ -->
           <div class="wifi-free-badge">
             <div class="wf-icon"><i class="fas fa-wifi"></i></div>
@@ -789,6 +827,10 @@
           <i class="fas fa-chevron-down sim-arrow"></i>
         </div>
         <div class="sim-body">
+          <div class="rate-note">
+            <i class="fas fa-tag"></i>
+            <div><span class="rate-label">相場の目安</span>飲食店のカード決済手数料は概ね <b>3.0〜3.75%</b>。中小加盟店向けサービスや交渉で <b>1.9〜2.7%台</b> まで下がる例も。QRコード決済は <b>1.5〜3.25%程度</b> です。</div>
+          </div>
           <div class="form-grid">
             <div class="form-group">
               <label>月間カード売上（円）</label>
@@ -829,6 +871,10 @@
           <i class="fas fa-chevron-down sim-arrow"></i>
         </div>
         <div class="sim-body">
+          <div class="rate-note">
+            <i class="fas fa-tag"></i>
+            <div><span class="rate-label">相場の目安</span>業務用揚げ油は一斗缶（約16.5kg・約18L）で <b>5,800〜6,330円前後</b>。専用機材で酸化を抑え使用量を <b>約20〜30%削減</b>。月額機材代は <b>5,000円前後（税込5,500円）</b> が目安です。</div>
+          </div>
           <!-- 損益分岐・営業対象 判定バッジ -->
           <div class="oil-badge" style="justify-content:space-between;">
             <div>
@@ -899,6 +945,10 @@
           <i class="fas fa-chevron-down sim-arrow"></i>
         </div>
         <div class="sim-body">
+          <div class="rate-note">
+            <i class="fas fa-tag"></i>
+            <div><span class="rate-label">相場の目安</span>大手キャリアは1台あたり月 <b>6,000〜9,000円程度</b>。格安SIM・プラン見直しで <b>1,000〜3,000円台</b> に。差額は1台あたり月 <b>3,000〜5,000円</b> が目安です。</div>
+          </div>
           <div class="form-grid">
             <div class="form-group">
               <label>台数</label>
@@ -939,6 +989,10 @@
           <i class="fas fa-chevron-down sim-arrow"></i>
         </div>
         <div class="sim-body">
+          <div class="rate-note">
+            <i class="fas fa-tag"></i>
+            <div><span class="rate-label">相場の目安</span>レンタルおしぼりは1枚あたり <b>8〜12円前後</b> が一般的。純国産・工場直仕入れなら <b>2〜4円程度</b> まで下がる例もあります。</div>
+          </div>
           <!-- 単価ビジュアル比較 -->
           <div class="oil-badge">
             <div>
