@@ -499,6 +499,24 @@
   .plan-chip .pc-price { font-size: 1.1rem; font-weight: 700; color: var(--gold); }
   .plan-chip .pc-tag { font-size: 0.63rem; color: var(--text2); margin-top: 2px; }
 
+  /* ===== NOTICE BAR ===== */
+  .notice-bar {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 20px 0 4px;
+    padding: 12px 16px;
+    background: rgba(231, 76, 60, 0.08);
+    border: 1px solid rgba(231, 76, 60, 0.4);
+    border-left: 4px solid var(--red);
+    border-radius: 8px;
+    font-size: 0.76rem;
+    line-height: 1.6;
+    color: var(--text3);
+  }
+  .notice-bar i { color: var(--red); font-size: 0.95rem; margin-top: 3px; flex-shrink: 0; }
+  .notice-bar strong { color: var(--text); }
+
   /* ===== PRINT ===== */
   @media print {
     header .header-btns { display: none; }
@@ -533,6 +551,12 @@
 </header>
 
 <div class="container">
+
+  <!-- ===== 注意書き（変動の可能性）===== -->
+  <div class="notice-bar">
+    <i class="fas fa-exclamation-triangle"></i>
+    <span>本ツールの<strong>数値・料金・削減率・単価・キャンペーン内容等はすべて概算</strong>です。市場価格・契約条件・時期・地域・使用状況・各社サービスの改定により<strong>変動する可能性があり</strong>、実際の金額・削減効果を保証するものではありません。導入判断は必ず最新の見積り・契約内容をご確認ください。</span>
+  </div>
 
   <!-- ===== SIMULATION SECTION ===== -->
   <div class="section">
@@ -1150,7 +1174,8 @@
 </div><!-- /container -->
 
 <footer>
-  © 2026 飲食店コスト削減シミュレーター｜数値はシミュレーション目的のみ。実際の削減効果は条件により異なります。
+  © 2026 飲食店コスト削減シミュレーター｜数値はシミュレーション目的のみ。<br>
+  料金・削減率・単価・キャンペーン内容等はすべて概算で、市場価格・契約条件・時期・地域・使用状況により変動する可能性があり、実際の金額・効果を保証するものではありません。
 </footer>
 
 <script>
