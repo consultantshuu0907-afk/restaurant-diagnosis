@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>飲食店 コスト削減シミュレーター</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --navy: #0d1b2a;
+    --navy2: #1b2d42;
+    --gold: #c9a84c;
+    --gold2: #e8c97a;
+    --green: #27ae60;
+    --green2: #2ecc71;
+    --red: #e74c3c;
+    --bg: #0a1520;
+    --card: #111e2d;
+    --card2: #162336;
+    --border: #1e3a5a;
+    --text: #e8edf2;
+    --text2: #8faabb;
+    --text3: #c5d4e0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    background: linear-gradient(135deg, var(--navy) 0%, #0d2440 100%);
+    border-bottom: 2px solid var(--gold);
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  header h1 {
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    font-weight: 900;
+    background: linear-gradient(90deg, var(--gold), var(--gold2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header .subtitle { font-size: 0.75rem; color: var(--text2); margin-top: 2px; }
+  .header-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn {
+    padding: 8px 18px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: var(--navy); }
+  .btn-gold:hover { opacity: 0.85; transform: translateY(-1px); }
+  .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text2); }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ===== LAYOUT ===== */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+  .section { padding: 36px 0 24px; }
+  .section-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--gold);
+    border-left: 4px solid var(--gold);
+    padding-left: 14px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* ===== SIMULATION CARDS ===== */
+  .sim-cards { display: flex; flex-direction: column; gap: 12px; }
+  .sim-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .sim-card.active { border-color: var(--gold); }
+  .sim-card-header {
+    padding: 16px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    user-select: none;
+  }
+  .sim-card-header:hover { background: var(--card2); }
+  .sim-num {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; font-weight: 900; color: var(--navy);
+    flex-shrink: 0;
+  }
+  .sim-title-wrap { flex: 1; }
+  .sim-title { font-size: 1rem; font-weight: 700; }
+  .sim-subtitle { font-size: 0.73rem; color: var(--text2); margin-top: 1px; }
+  .sim-preview {
+    margin-left: auto;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .sim-preview .amount {
+    font-size: 1.05rem; font-weight: 700; color: var(--green2);
+  }
+  .sim-preview .label { font-size: 0.68rem; color: var(--text2); }
+  .sim-arrow {
+    color: var(--text2);
+    transition: transform 0.3s;
+    margin-left: 10px;
+    flex-shrink: 0;
+  }
+  .sim-card.active .sim-arrow { transform: rotate(180deg); color: var(--gold); }
+  .sim-body {
+    display: none;
+    padding: 20px 24px 24px;
+    border-top: 1px solid var(--border);
+    background: var(--card2);
+  }
+  .sim-card.active .sim-body { display: block; }
+
+  /* form elements */
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text2);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .form-group input[type="number"],
+  .form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--navy);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+    outline: none;
+    -moz-appearance: textfield;
+  }
+  .form-group input[type="number"]::-webkit-outer-spin-button,
+  .form-group input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
+
+  /* slider */
+  .slider-wrap { padding: 4px 0; }
+  .slider-wrap input[type="range"] {
+    width: 100%;
+    accent-color: var(--gold);
+    cursor: pointer;
+    height: 6px;
+  }
+  .slider-labels { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text2); margin-top: 4px; }
+
+  /* result box */
+  .result-box {
+    background: var(--navy);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+  }
+  .result-item { text-align: center; min-width: 110px; }
+  .result-item .val {
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+  .result-item .val.red { color: var(--red); }
+  .result-item .val.green { color: var(--green2); }
+  .result-item .val.gold { color: var(--gold); }
+  .result-item .lbl { font-size: 0.7rem; color: var(--text2); margin-top: 2px; }
+  .result-arrow { font-size: 1.5rem; color: var(--text2); }
+
+  /* oil badge */
+  .oil-badge {
+    background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .oil-badge .big { font-size: 1.6rem; font-weight: 900; color: var(--gold); }
+  .oil-badge .arrow-txt { font-size: 1.4rem; color: var(--text2); }
+  .oil-badge .after-big { font-size: 1.6rem; font-weight: 900; color: var(--green2); }
+  .oil-badge .info { font-size: 0.78rem; color: var(--text2); line-height: 1.5; }
+  .oil-badge .badge-cut {
+    background: var(--red);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  .recover-note {
+    font-size: 0.78rem;
+    color: var(--gold);
+    margin-top: 10px;
+    display: none;
+  }
+
+  /* ===== SUMMARY SECTION ===== */
+  .summary-section { padding: 36px 0; }
+  .big-numbers {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .big-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 24px;
+    text-align: center;
+  }
+  .big-card.highlight { border-color: var(--gold); background: linear-gradient(135deg, rgba(201,168,76,0.1), var(--card)); }
+  .big-card.green-card { border-color: var(--green); background: linear-gradient(135deg, rgba(39,174,96,0.1), var(--card)); }
+  .big-card .label { font-size: 0.78rem; color: var(--text2); margin-bottom: 8px; font-weight: 500; }
+  .big-card .num { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 900; }
+  .big-card .num.gold { color: var(--gold); }
+  .big-card .num.green { color: var(--green2); }
+  .big-card .num.red { color: var(--red); }
+  .big-card .sub { font-size: 0.75rem; color: var(--text2); margin-top: 4px; }
+
+  /* comparison table */
+  .comp-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+    font-size: 0.88rem;
+  }
+  .comp-table th {
+    padding: 12px 16px;
+    text-align: left;
+    background: var(--navy2);
+    color: var(--gold);
+    font-weight: 600;
+    border-bottom: 2px solid var(--gold);
+  }
+  .comp-table td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .comp-table tr:last-child td { border-bottom: none; }
+  .comp-table tr:hover td { background: var(--card2); }
+  .comp-table .num-cell { text-align: right; font-variant-numeric: tabular-nums; }
+  .comp-table .green-cell { color: var(--green2); font-weight: 600; }
+  .comp-table .red-cell { color: var(--red); }
+  .comp-table tfoot td {
+    background: var(--navy2);
+    font-weight: 700;
+    border-top: 2px solid var(--border);
+  }
+
+  /* ===== IMPACT CARDS ===== */
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .impact-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 18px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .impact-card:hover { border-color: var(--gold); }
+  .impact-icon { font-size: 2rem; margin-bottom: 10px; }
+  .impact-title { font-size: 0.78rem; color: var(--text2); margin-bottom: 4px; }
+  .impact-big { font-size: 2rem; font-weight: 900; color: var(--gold); line-height: 1.1; }
+  .impact-unit { font-size: 0.82rem; color: var(--text3); margin-top: 2px; }
+  .impact-desc { font-size: 0.72rem; color: var(--text2); margin-top: 8px; line-height: 1.4; }
+
+  /* input inside impact card */
+  .impact-input-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .impact-input-row label {
+    font-size: 0.72rem;
+    color: var(--text2);
+    white-space: nowrap;
+  }
+  .impact-input-row input[type="number"] {
+    width: 90px;
+    padding: 5px 8px;
+    background: var(--navy);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.82rem;
+    outline: none;
+    -moz-appearance: textfield;
+    text-align: right;
+    transition: border-color 0.2s;
+  }
+  .impact-input-row input[type="number"]::-webkit-outer-spin-button,
+  .impact-input-row input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .impact-input-row input[type="number"]:focus { border-color: var(--gold); }
+  .impact-input-row .unit-lbl {
+    font-size: 0.72rem;
+    color: var(--text2);
+    white-space: nowrap;
+  }
+
+  /* ===== CHARTS ===== */
+  .chart-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 7px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text2);
+    font-size: 0.8rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn.active { background: var(--gold); color: var(--navy); border-color: var(--gold); font-weight: 700; }
+  .tab-btn:hover:not(.active) { border-color: var(--gold); color: var(--gold); }
+  .chart-container { position: relative; height: 320px; }
+  .chart-wrap { display: none; }
+  .chart-wrap.active { display: block; }
+
+  /* ===== TREND CHART ===== */
+  .trend-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+  }
+  .trend-control-item { }
+  .trend-control-item label { display: block; font-size: 0.75rem; color: var(--text2); margin-bottom: 6px; }
+  .trend-control-item select,
+  .trend-control-item input[type="number"] {
+    padding: 8px 12px;
+    background: var(--navy);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.85rem;
+    outline: none;
+    -moz-appearance: textfield;
+  }
+  .trend-control-item input[type="number"]::-webkit-outer-spin-button,
+  .trend-control-item input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .trend-control-item select:focus,
+  .trend-control-item input[type="number"]:focus { border-color: var(--gold); }
+  .toggle-wrap { display: flex; align-items: center; gap: 10px; }
+  .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+  .toggle-switch input { display: none; }
+  .toggle-slider {
+    position: absolute; cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--border);
+    border-radius: 24px;
+    transition: 0.3s;
+  }
+  .toggle-slider:before {
+    content: '';
+    position: absolute;
+    height: 18px; width: 18px;
+    left: 3px; bottom: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.3s;
+  }
+  .toggle-switch input:checked + .toggle-slider { background: var(--gold); }
+  .toggle-switch input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+  .trend-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .trend-sum-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .trend-sum-card .t-val { font-size: 1.2rem; font-weight: 700; color: var(--gold); }
+  .trend-sum-card .t-val.green { color: var(--green2); }
+  .trend-sum-card .t-lbl { font-size: 0.7rem; color: var(--text2); margin-top: 3px; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    margin-top: 48px;
+    padding: 20px 32px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--text2);
+  }
+
+  /* ===== WIFI FREE BADGE ===== */
+  .wifi-free-badge {
+    background: linear-gradient(135deg, rgba(46,204,113,0.1), rgba(46,204,113,0.03));
+    border: 1px solid var(--green);
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .wifi-free-badge .wf-icon { font-size: 1.6rem; flex-shrink: 0; }
+  .wifi-free-badge .wf-text { flex: 1; font-size: 0.78rem; line-height: 1.5; color: var(--text3); }
+  .wifi-free-badge .wf-loss {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .wifi-free-badge .wf-loss .wl-val { font-size: 1rem; font-weight: 700; color: var(--red); }
+  .wifi-free-badge .wf-loss .wl-lbl { font-size: 0.65rem; color: var(--text2); }
+
+  /* ===== OSHIBORI PLAN BADGE ===== */
+  .plan-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .plan-chip {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .plan-chip:hover, .plan-chip.selected { border-color: var(--gold); background: rgba(201,168,76,0.1); }
+  .plan-chip .pc-name { font-size: 0.72rem; color: var(--text2); }
+  .plan-chip .pc-price { font-size: 1.1rem; font-weight: 700; color: var(--gold); }
+  .plan-chip .pc-tag { font-size: 0.63rem; color: var(--text2); margin-top: 2px; }
+
+  /* ===== PRINT ===== */
+  @media print {
+    header .header-btns { display: none; }
+    .sim-body { display: block !important; }
+    .chart-wrap { display: block !important; }
+    body { background: white; color: black; }
+    .big-card, .comp-table, .impact-card { border: 1px solid #ccc; }
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 16px 16px; }
+    .container { padding: 0 12px; }
+    .form-grid { grid-template-columns: 1fr 1fr; }
+    .big-numbers { grid-template-columns: 1fr 1fr; }
+    .impact-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div>
+    <h1><i class="fas fa-chart-line" style="margin-right:10px;"></i>コスト削減シミュレーター</h1>
+    <div class="subtitle">飲食店向け｜5項目一括シミュレーション &amp; 月次推移分析</div>
+  </div>
+  <div class="header-btns">
+    <button class="btn btn-gold" onclick="loadDemo()"><i class="fas fa-play-circle"></i> デモ入力</button>
+    <button class="btn btn-outline" onclick="resetAll()"><i class="fas fa-undo"></i> リセット</button>
+    <button class="btn btn-outline" onclick="window.print()"><i class="fas fa-print"></i> 印刷</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ===== SIMULATION SECTION ===== -->
+  <div class="section">
+    <div class="section-title"><i class="fas fa-sliders-h"></i> 個別シミュレーション</div>
+    <div class="sim-cards">
+
+      <!-- CARD 01: 電気・ガス -->
+      <div class="sim-card" id="card1">
+        <div class="sim-card-header" onclick="toggleCard(1)">
+          <div class="sim-num">01</div>
+          <div class="sim-title-wrap">
+            <div class="sim-title"><i class="fas fa-bolt" style="color:var(--gold);margin-right:6px;"></i>電気・ガス削減</div>
+            <div class="sim-subtitle">電気／ガスを分けて算定・ガス種別＆施策レベル別の現実的な削減レンジで提案</div>
+          </div>
+          <div class="sim-preview">
+            <div class="amount" id="prev1">¥0</div>
+            <div class="label">月間削減額</div>
+          </div>
+          <i class="fas fa-chevron-down sim-arrow"></i>
+        </div>
+        <div class="sim-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>施策レベル</label>
+              <select id="energy_level" onchange="applyEnergyPreset()">
+                <option value="contract">契約・料金プランの見直しのみ</option>
+                <option value="operation">＋運用改善（空調・照明・厨房）</option>
+                <option value="equipment">＋設備更新・総合改善</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>ガス種別</label>
+              <select id="gas_type" onchange="applyEnergyPreset()">
+                <option value="toshi">都市ガス</option>
+                <option value="lp">LP・プロパンガス</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>電気代（月間・円）</label>
+              <input type="number" id="elec_now" placeholder="例：120000" onchange="calc1()" oninput="calc1()">
+            </div>
+            <div class="form-group">
+              <label>ガス代（月間・円）</label>
+              <input type="number" id="gas_now" placeholder="例：80000" onchange="calc1()" oninput="calc1()">
+            </div>
+          </div>
+
+          <!-- 電気 削減率 -->
+          <div class="form-group" style="margin-bottom:14px;">
+            <label>電気 削減率：<span id="elec_rate_lbl" style="color:var(--gold);font-weight:700;">5%</span>
+              <span id="elec_range_hint" style="margin-left:10px;font-weight:400;color:var(--text2);font-size:0.72rem;">推奨レンジ 2〜8%</span>
+            </label>
+            <div class="slider-wrap">
+              <input type="range" id="elec_rate" min="0" max="50" value="5" oninput="updateSlider1();calc1()">
+              <div class="slider-labels"><span>0%</span><span>25%</span><span>50%</span></div>
+            </div>
+          </div>
+
+          <!-- ガス 削減率 -->
+          <div class="form-group" style="margin-bottom:16px;">
+            <label>ガス 削減率：<span id="gas_rate_lbl" style="color:var(--gold);font-weight:700;">6%</span>
+              <span id="gas_range_hint" style="margin-left:10px;font-weight:400;color:var(--text2);font-size:0.72rem;">推奨レンジ 3〜10%</span>
+            </label>
+            <div class="slider-wrap">
+              <input type="range" id="gas_rate" min="0" max="50" value="6" oninput="updateSlider1();calc1()">
+              <div class="slider-labels"><span>0%</span><span>25%</span><span>50%</span></div>
+            </div>
+          </div>
+
+          <div class="result-box">
+            <div class="result-item"><div class="val red" id="r1_now">¥0</div><div class="lbl">現在（月間）</div></div>
+            <div class="result-arrow">→</div>
+            <div class="result-item"><div class="val green" id="r1_after">¥0</div><div class="lbl">削減後（月間）</div></div>
+            <div class="result-arrow">▼</div>
+            <div class="result-item"><div class="val gold" id="r1_save">¥0</div><div class="lbl">月間削減額</div></div>
+            <div class="result-item"><div class="val gold" id="r1_year">¥0</div><div class="lbl">年間削減額</div></div>
+          </div>
+          <div style="font-size:0.72rem;color:var(--text2);margin-top:10px;">
+            内訳：電気 <span id="r1_elec_save" style="color:var(--gold);">¥0</span>（<span id="r1_elec_pct">5%</span>）／ ガス <span id="r1_gas_save" style="color:var(--gold);">¥0</span>（<span id="r1_gas_pct">6%</span>）
+          </div>
+          <div style="font-size:0.7rem;color:var(--text2);margin-top:8px;line-height:1.5;border-top:1px solid var(--border);padding-top:8px;">
+            <i class="fas fa-info-circle" style="color:var(--gold);"></i> 数値は削減「余地」の目安です。契約内容・使用状況により削減できない場合もあります。<br>
+            前年比だけでなく<strong style="color:var(--text3);">電気原単位（kWh÷売上万円）・ガス原単位（㎥÷提供食数）</strong>での検証を推奨。売上減で額が下がっても省エネとは限りません。
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 02: ネット回線 -->
+      <div class="sim-card" id="card2">
+        <div class="sim-card-header" onclick="toggleCard(2)">
+          <div class="sim-num">02</div>
+          <div class="sim-title-wrap">
+            <div class="sim-title"><i class="fas fa-wifi" style="color:var(--gold);margin-right:6px;"></i>ネット回線の見直し</div>
+            <div class="sim-subtitle">プラン変更・乗り換えによる通信費削減</div>
+          </div>
+          <div class="sim-preview">
+            <div class="amount" id="prev2">¥0</div>
+            <div class="label">月間削減額</div>
+          </div>
+          <i class="fas fa-chevron-down sim-arrow"></i>
+        </div>
+        <div class="sim-body">
+          <!-- Wi-Fi 実質無料バッジ -->
+          <div class="wifi-free-badge">
+            <div class="wf-icon">📡</div>
+            <div class="wf-text">
+              <strong style="color:var(--green2);">全拠点のWi-Fiが実質¥0になるキャンペーンあり！</strong><br>
+              Wi-Fi＝ネット回線は1拠点あたり月¥5,000前後。<span id="wf_multi_note" style="color:var(--text);">3拠点なら月¥15,000</span>払っていても、特定サービスへの乗り換えで<strong style="color:var(--green2);">全拠点まとめて実質¥0</strong>にできます。
+            </div>
+            <div class="wf-loss">
+              <div class="wl-val" id="wf_loss_m">¥15,000</div>
+              <div class="wl-lbl">現在の月額(全拠点)</div>
+            </div>
+            <div class="wf-loss">
+              <div class="wl-val" id="wf_loss_y">¥180,000</div>
+              <div class="wl-lbl">年間損失額</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+              <label class="toggle-switch">
+                <input type="checkbox" id="wifi_free_toggle" onchange="calc2()">
+                <span class="toggle-slider"></span>
+              </label>
+              <span style="font-size:0.75rem;color:var(--text2);white-space:nowrap;">実質¥0適用</span>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>拠点数（店舗・箇所）</label>
+              <input type="number" id="net_count" placeholder="例：3" value="1" min="1" onchange="calc2()" oninput="calc2()">
+            </div>
+            <div class="form-group">
+              <label>現在の月額（1拠点あたり・円）</label>
+              <input type="number" id="net_now" placeholder="例：5000" onchange="calc2()" oninput="calc2()">
+            </div>
+            <div class="form-group" id="net_after_wrap">
+              <label>見直し後の月額（1拠点あたり・円）</label>
+              <input type="number" id="net_after" placeholder="例：0" onchange="calc2()" oninput="calc2()">
+            </div>
+          </div>
+          <div class="result-box">
+            <div class="result-item"><div class="val red" id="r2_now">¥0</div><div class="lbl">現在（月間）</div></div>
+            <div class="result-arrow">→</div>
+            <div class="result-item"><div class="val green" id="r2_after">¥0</div><div class="lbl">削減後（月間）</div></div>
+            <div class="result-arrow">▼</div>
+            <div class="result-item"><div class="val gold" id="r2_save">¥0</div><div class="lbl">月間削減額</div></div>
+            <div class="result-item"><div class="val gold" id="r2_year">¥0</div><div class="lbl">年間削減額</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 03: クレジット手数料 -->
+      <div class="sim-card" id="card3">
+        <div class="sim-card-header" onclick="toggleCard(3)">
+          <div class="sim-num">03</div>
+          <div class="sim-title-wrap">
+            <div class="sim-title"><i class="fas fa-credit-card" style="color:var(--gold);margin-right:6px;"></i>クレジット決済手数料の見直し</div>
+            <div class="sim-subtitle">決済サービス変更・交渉による手数料率削減</div>
+          </div>
+          <div class="sim-preview">
+            <div class="amount" id="prev3">¥0</div>
+            <div class="label">月間削減額</div>
+          </div>
+          <i class="fas fa-chevron-down sim-arrow"></i>
+        </div>
+        <div class="sim-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>月間カード売上（円）</label>
+              <input type="number" id="card_sales" placeholder="例：2000000" onchange="calc3()" oninput="calc3()">
+            </div>
+            <div class="form-group">
+              <label>現在の手数料率（%）</label>
+              <input type="number" id="card_rate_now" placeholder="例：3.5" step="0.01" onchange="calc3()" oninput="calc3()">
+            </div>
+            <div class="form-group">
+              <label>見直し後の手数料率（%）</label>
+              <input type="number" id="card_rate_after" placeholder="例：2.0" step="0.01" onchange="calc3()" oninput="calc3()">
+            </div>
+          </div>
+          <div class="result-box">
+            <div class="result-item"><div class="val red" id="r3_now">¥0</div><div class="lbl">現在（月間）</div></div>
+            <div class="result-arrow">→</div>
+            <div class="result-item"><div class="val green" id="r3_after">¥0</div><div class="lbl">削減後（月間）</div></div>
+            <div class="result-arrow">▼</div>
+            <div class="result-item"><div class="val gold" id="r3_save">¥0</div><div class="lbl">月間削減額</div></div>
+            <div class="result-item"><div class="val gold" id="r3_year">¥0</div><div class="lbl">年間削減額</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 04: 食用油 -->
+      <div class="sim-card" id="card4">
+        <div class="sim-card-header" onclick="toggleCard(4)">
+          <div class="sim-num">04</div>
+          <div class="sim-title-wrap">
+            <div class="sim-title"><i class="fas fa-flask" style="color:var(--gold);margin-right:6px;"></i>食用油の経費削減</div>
+            <div class="sim-subtitle">月額制の専用機材で油の劣化を防止・削減／損益分岐＆営業対象を自動判定</div>
+          </div>
+          <div class="sim-preview">
+            <div class="amount" id="prev4">¥0</div>
+            <div class="label">月間削減額</div>
+          </div>
+          <i class="fas fa-chevron-down sim-arrow"></i>
+        </div>
+        <div class="sim-body">
+          <!-- 損益分岐・営業対象 判定バッジ -->
+          <div class="oil-badge" style="justify-content:space-between;">
+            <div>
+              <div style="font-size:0.72rem;color:var(--text2);margin-bottom:4px;">月間使用量</div>
+              <div class="big"><span id="oil_cans_disp">–</span> <span style="font-size:0.9rem;">缶/月</span></div>
+              <div style="font-size:0.7rem;color:var(--text2);">≈ <span id="oil_liters_disp">–</span> L（一斗缶≈18L）</div>
+            </div>
+            <div>
+              <div style="font-size:0.72rem;color:var(--text2);margin-bottom:4px;">損益分岐点</div>
+              <div style="font-size:1.15rem;font-weight:900;color:var(--gold);">月<span id="oil_be_cans">–</span>缶〜黒字</div>
+              <div style="font-size:0.7rem;color:var(--text2);">≈ <span id="oil_be_liters">–</span> L / 月以上</div>
+            </div>
+            <div style="text-align:center;">
+              <div class="badge-cut" id="oil_verdict" style="font-size:0.9rem;padding:6px 14px;background:var(--border);">–</div>
+              <div class="info" id="oil_verdict_note" style="margin-top:6px;text-align:center;">使用量を入力してください</div>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label>月間使用量（缶）※一斗缶≈18L</label>
+              <input type="number" id="oil_cans" placeholder="例：4" step="0.1" onchange="calc4()" oninput="calc4()">
+            </div>
+            <div class="form-group">
+              <label>缶単価（円/缶）</label>
+              <input type="number" id="oil_can_price" placeholder="例：6000" value="6000" onchange="calc4()" oninput="calc4()">
+            </div>
+            <div class="form-group">
+              <label>月額機材代（円/月）</label>
+              <input type="number" id="oil_fee" placeholder="例：5000" value="5000" onchange="calc4()" oninput="calc4()">
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:16px;">
+            <label>削減率：<span id="oil_rate_lbl" style="color:var(--gold);font-weight:700;">30%</span>
+              <span style="margin-left:14px;font-weight:400;color:var(--text2);font-size:0.75rem;">
+                <input type="checkbox" id="oil_tax" onchange="calc4()" style="vertical-align:middle;"> 機材代を税込(×1.1)で計算
+              </span>
+            </label>
+            <div class="slider-wrap">
+              <input type="range" id="oil_rate" min="0" max="60" value="30" oninput="updateOilSlider();calc4()">
+              <div class="slider-labels"><span>0%</span><span>30%</span><span>60%</span></div>
+            </div>
+          </div>
+          <div class="result-box">
+            <div class="result-item"><div class="val red" id="r4_now">¥0</div><div class="lbl">現在の油代(月間)</div></div>
+            <div class="result-arrow">▼</div>
+            <div class="result-item"><div class="val green" id="r4_gross">¥0</div><div class="lbl">油代削減額(月間)</div></div>
+            <div class="result-item"><div class="val" id="r4_fee" style="color:var(--text2);">−¥0</div><div class="lbl">月額機材代</div></div>
+            <div class="result-arrow">=</div>
+            <div class="result-item"><div class="val gold" id="r4_save">¥0</div><div class="lbl">実質削減額(月間)</div></div>
+            <div class="result-item"><div class="val gold" id="r4_year">¥0</div><div class="lbl">実質削減額(年間)</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 05: スマホ料金 -->
+      <div class="sim-card" id="card5">
+        <div class="sim-card-header" onclick="toggleCard(5)">
+          <div class="sim-num">05</div>
+          <div class="sim-title-wrap">
+            <div class="sim-title"><i class="fas fa-mobile-alt" style="color:var(--gold);margin-right:6px;"></i>スマホ料金の見直し</div>
+            <div class="sim-subtitle">格安SIM・プラン変更による通信費削減</div>
+          </div>
+          <div class="sim-preview">
+            <div class="amount" id="prev5">¥0</div>
+            <div class="label">月間削減額</div>
+          </div>
+          <i class="fas fa-chevron-down sim-arrow"></i>
+        </div>
+        <div class="sim-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>台数</label>
+              <input type="number" id="phone_count" placeholder="例：3" onchange="calc5()" oninput="calc5()">
+            </div>
+            <div class="form-group">
+              <label>現在の1台あたり月額（円）</label>
+              <input type="number" id="phone_now" placeholder="例：8000" onchange="calc5()" oninput="calc5()">
+            </div>
+            <div class="form-group">
+              <label>見直し後の1台あたり月額（円）</label>
+              <input type="number" id="phone_after" placeholder="例：3000" onchange="calc5()" oninput="calc5()">
+            </div>
+          </div>
+          <div class="result-box">
+            <div class="result-item"><div class="val red" id="r5_now">¥0</div><div class="lbl">現在（月間）</div></div>
+            <div class="result-arrow">→</div>
+            <div class="result-item"><div class="val green" id="r5_after">¥0</div><div class="lbl">削減後（月間）</div></div>
+            <div class="result-arrow">▼</div>
+            <div class="result-item"><div class="val gold" id="r5_save">¥0</div><div class="lbl">月間削減額</div></div>
+            <div class="result-item"><div class="val gold" id="r5_year">¥0</div><div class="lbl">年間削減額</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 06: おしぼり -->
+      <div class="sim-card" id="card6">
+        <div class="sim-card-header" onclick="toggleCard(6)">
+          <div class="sim-num">06</div>
+          <div class="sim-title-wrap">
+            <div class="sim-title"><i class="fas fa-hands-wash" style="color:var(--gold);margin-right:6px;"></i>おしぼり調達コスト削減</div>
+            <div class="sim-subtitle">工場直仕入れで中間マージンをカット・使い捨てコストを大幅削減</div>
+          </div>
+          <div class="sim-preview">
+            <div class="amount" id="prev6">¥0</div>
+            <div class="label">月間削減額</div>
+          </div>
+          <i class="fas fa-chevron-down sim-arrow"></i>
+        </div>
+        <div class="sim-body">
+          <!-- 単価ビジュアル比較 -->
+          <div class="oil-badge">
+            <div>
+              <div style="font-size:0.72rem;color:var(--text2);margin-bottom:4px;">現在の仕入れ単価</div>
+              <div class="big"><span id="oshi_now_disp">–</span> 円/枚</div>
+            </div>
+            <div class="arrow-txt">→</div>
+            <div>
+              <div style="font-size:0.72rem;color:var(--text2);margin-bottom:4px;">見直し後の単価</div>
+              <div class="after-big"><span id="oshi_after_disp">–</span> 円/枚</div>
+            </div>
+            <div>
+              <div class="badge-cut" id="oshi_cut_badge">−?% 削減</div>
+              <div class="info" style="margin-top:6px;">純国産・工場直注文<br>中間業者ゼロで<br>半額以下も可能</div>
+            </div>
+          </div>
+
+          <!-- プラン選択チップ -->
+          <div style="font-size:0.78rem;color:var(--text2);margin-bottom:8px;font-weight:500;"><i class="fas fa-tag" style="color:var(--gold);margin-right:4px;"></i>見直し後プランを選択（純国産・工場直）</div>
+          <div class="plan-grid">
+            <div class="plan-chip" id="pc_1" onclick="selectOshiPlan(2.2,'pc_1')">
+              <div class="pc-name">薄手 平版</div>
+              <div class="pc-price">¥2.2<span style="font-size:0.7rem;font-weight:400;">/枚</span></div>
+              <div class="pc-tag">スタンダード</div>
+            </div>
+            <div class="plan-chip" id="pc_2" onclick="selectOshiPlan(2.9,'pc_2')">
+              <div class="pc-name">薄手 ロール</div>
+              <div class="pc-price">¥2.9<span style="font-size:0.7rem;font-weight:400;">/枚</span></div>
+              <div class="pc-tag">スタンダード</div>
+            </div>
+            <div class="plan-chip" id="pc_3" onclick="selectOshiPlan(8.1,'pc_3')">
+              <div class="pc-name">厚手 平版</div>
+              <div class="pc-price">¥8.1<span style="font-size:0.7rem;font-weight:400;">/枚</span></div>
+              <div class="pc-tag">プレミアム</div>
+            </div>
+            <div class="plan-chip" id="pc_4" onclick="selectOshiPlan(10,'pc_4')">
+              <div class="pc-name">厚手 ロール</div>
+              <div class="pc-price">¥10<span style="font-size:0.7rem;font-weight:400;">/枚</span></div>
+              <div class="pc-tag">プレミアム</div>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label>月間使用枚数（枚）</label>
+              <input type="number" id="oshi_count" placeholder="例：1500" onchange="calc6()" oninput="calc6()">
+            </div>
+            <div class="form-group">
+              <label>現在の購入単価（円/枚）</label>
+              <input type="number" id="oshi_price_now" placeholder="例：5.0" step="0.1" onchange="calc6()" oninput="calc6()">
+            </div>
+            <div class="form-group">
+              <label>見直し後の単価（円/枚）</label>
+              <input type="number" id="oshi_price_after" placeholder="プランを選択 or 手入力" step="0.1" onchange="calc6()" oninput="calc6()">
+            </div>
+          </div>
+          <div class="result-box">
+            <div class="result-item"><div class="val red" id="r6_now">¥0</div><div class="lbl">現在（月間）</div></div>
+            <div class="result-arrow">→</div>
+            <div class="result-item"><div class="val green" id="r6_after">¥0</div><div class="lbl">削減後（月間）</div></div>
+            <div class="result-arrow">▼</div>
+            <div class="result-item"><div class="val gold" id="r6_save">¥0</div><div class="lbl">月間削減額</div></div>
+            <div class="result-item"><div class="val gold" id="r6_year">¥0</div><div class="lbl">年間削減額</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /sim-cards -->
+  </div>
+
+  <!-- ===== SUMMARY SECTION ===== -->
+  <div class="summary-section">
+    <div class="section-title"><i class="fas fa-balance-scale"></i> 削減効果 総合比較</div>
+
+    <!-- big numbers -->
+    <div class="big-numbers">
+      <div class="big-card">
+        <div class="label">現状 月間合計コスト</div>
+        <div class="num red" id="total_now">¥0</div>
+        <div class="sub">削減前の5項目合計</div>
+      </div>
+      <div class="big-card green-card">
+        <div class="label">削減後 月間合計コスト</div>
+        <div class="num green" id="total_after">¥0</div>
+        <div class="sub">施策実施後の合計</div>
+      </div>
+      <div class="big-card highlight">
+        <div class="label">月間削減額</div>
+        <div class="num gold" id="total_save_m">¥0</div>
+        <div class="sub">毎月これだけ浮く</div>
+      </div>
+      <div class="big-card highlight">
+        <div class="label">年間削減額</div>
+        <div class="num gold" id="total_save_y">¥0</div>
+        <div class="sub">年換算の削減効果</div>
+      </div>
+    </div>
+
+    <!-- comparison table -->
+    <div style="overflow-x:auto;">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th class="num-cell">現状（月間）</th>
+            <th class="num-cell">削減後（月間）</th>
+            <th class="num-cell">月間削減額</th>
+            <th class="num-cell">年間削減額</th>
+            <th class="num-cell">削減率</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><i class="fas fa-bolt" style="color:var(--gold);margin-right:6px;"></i>電気・ガス</td>
+            <td class="num-cell red-cell" id="t1_now">¥0</td>
+            <td class="num-cell green-cell" id="t1_after">¥0</td>
+            <td class="num-cell" id="t1_save">¥0</td>
+            <td class="num-cell" id="t1_year">¥0</td>
+            <td class="num-cell" id="t1_pct">–</td>
+          </tr>
+          <tr>
+            <td><i class="fas fa-wifi" style="color:var(--gold);margin-right:6px;"></i>ネット回線</td>
+            <td class="num-cell red-cell" id="t2_now">¥0</td>
+            <td class="num-cell green-cell" id="t2_after">¥0</td>
+            <td class="num-cell" id="t2_save">¥0</td>
+            <td class="num-cell" id="t2_year">¥0</td>
+            <td class="num-cell" id="t2_pct">–</td>
+          </tr>
+          <tr>
+            <td><i class="fas fa-credit-card" style="color:var(--gold);margin-right:6px;"></i>クレジット手数料</td>
+            <td class="num-cell red-cell" id="t3_now">¥0</td>
+            <td class="num-cell green-cell" id="t3_after">¥0</td>
+            <td class="num-cell" id="t3_save">¥0</td>
+            <td class="num-cell" id="t3_year">¥0</td>
+            <td class="num-cell" id="t3_pct">–</td>
+          </tr>
+          <tr>
+            <td><i class="fas fa-flask" style="color:var(--gold);margin-right:6px;"></i>食用油</td>
+            <td class="num-cell red-cell" id="t4_now">¥0</td>
+            <td class="num-cell green-cell" id="t4_after">¥0</td>
+            <td class="num-cell" id="t4_save">¥0</td>
+            <td class="num-cell" id="t4_year">¥0</td>
+            <td class="num-cell" id="t4_pct">–</td>
+          </tr>
+          <tr>
+            <td><i class="fas fa-mobile-alt" style="color:var(--gold);margin-right:6px;"></i>スマホ料金</td>
+            <td class="num-cell red-cell" id="t5_now">¥0</td>
+            <td class="num-cell green-cell" id="t5_after">¥0</td>
+            <td class="num-cell" id="t5_save">¥0</td>
+            <td class="num-cell" id="t5_year">¥0</td>
+            <td class="num-cell" id="t5_pct">–</td>
+          </tr>
+          <tr>
+            <td><i class="fas fa-hands-wash" style="color:var(--gold);margin-right:6px;"></i>おしぼり</td>
+            <td class="num-cell red-cell" id="t6_now">¥0</td>
+            <td class="num-cell green-cell" id="t6_after">¥0</td>
+            <td class="num-cell" id="t6_save">¥0</td>
+            <td class="num-cell" id="t6_year">¥0</td>
+            <td class="num-cell" id="t6_pct">–</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td><strong>合計</strong></td>
+            <td class="num-cell" id="tf_now">¥0</td>
+            <td class="num-cell" id="tf_after">¥0</td>
+            <td class="num-cell" id="tf_save">¥0</td>
+            <td class="num-cell" id="tf_year">¥0</td>
+            <td class="num-cell" id="tf_pct">–</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- chart -->
+    <div class="chart-tabs">
+      <button class="tab-btn active" onclick="switchTab(0)">月間比較</button>
+      <button class="tab-btn" onclick="switchTab(1)">年間比較</button>
+      <button class="tab-btn" onclick="switchTab(2)">項目別内訳</button>
+    </div>
+    <div class="chart-wrap active" id="tabWrap0"><div class="chart-container"><canvas id="chartM"></canvas></div></div>
+    <div class="chart-wrap" id="tabWrap1"><div class="chart-container"><canvas id="chartY"></canvas></div></div>
+    <div class="chart-wrap" id="tabWrap2"><div class="chart-container"><canvas id="chartB"></canvas></div></div>
+
+    <!-- ===== IMPACT SECTION ===== -->
+    <div class="section-title" style="margin-top:32px;"><i class="fas fa-star"></i> 削減インパクト換算</div>
+    <div style="font-size:0.8rem;color:var(--text2);margin-bottom:14px;">
+      <i class="fas fa-edit" style="color:var(--gold);margin-right:4px;"></i>
+      各カード下部の入力欄で換算基準値を自由に変更できます
+    </div>
+    <div class="impact-grid">
+
+      <!-- ランチ食数 -->
+      <div class="impact-card">
+        <div class="impact-icon">🍽️</div>
+        <div class="impact-title">年間削減額 ≈ ランチ食数換算</div>
+        <div class="impact-big" id="imp_meals">–</div>
+        <div class="impact-unit">食</div>
+        <div class="impact-desc" id="imp_meals_desc">客単価 ¥1,000 換算</div>
+        <div class="impact-input-row">
+          <label>客単価</label>
+          <input type="number" id="inp_unit_price" value="1000" min="1" oninput="updateImpact()" onchange="updateImpact()">
+          <span class="unit-lbl">円</span>
+        </div>
+      </div>
+
+      <!-- 人件費 -->
+      <div class="impact-card">
+        <div class="impact-icon">👩‍💼</div>
+        <div class="impact-title">年間削減額 ≈ 人件費換算</div>
+        <div class="impact-big" id="imp_hours">–</div>
+        <div class="impact-unit">時間</div>
+        <div class="impact-desc" id="imp_hours_desc">時給 ¥1,100 換算</div>
+        <div class="impact-input-row">
+          <label>時給</label>
+          <input type="number" id="inp_hourly_wage" value="1100" min="1" oninput="updateImpact()" onchange="updateImpact()">
+          <span class="unit-lbl">円</span>
+        </div>
+      </div>
+
+      <!-- 家賃換算 -->
+      <div class="impact-card">
+        <div class="impact-icon">🏠</div>
+        <div class="impact-title">年間削減額 ≈ 家賃換算</div>
+        <div class="impact-big" id="imp_rent">–</div>
+        <div class="impact-unit">ヶ月分</div>
+        <div class="impact-desc" id="imp_rent_desc">月間家賃 ¥100,000 換算</div>
+        <div class="impact-input-row">
+          <label>月間家賃</label>
+          <input type="number" id="inp_rent" value="100000" min="1" oninput="updateImpact()" onchange="updateImpact()">
+          <span class="unit-lbl">円</span>
+        </div>
+      </div>
+
+      <!-- 削減率 -->
+      <div class="impact-card">
+        <div class="impact-icon">📈</div>
+        <div class="impact-title">月間削減率</div>
+        <div class="impact-big" id="imp_pct">–</div>
+        <div class="impact-unit">%</div>
+        <div class="impact-desc">全項目コスト合計に対して</div>
+      </div>
+
+    </div><!-- /impact-grid -->
+
+  </div><!-- /summary-section -->
+
+  <!-- ===== TREND SECTION ===== -->
+  <div class="section">
+    <div class="section-title"><i class="fas fa-chart-area"></i> 削減効果 月次推移シミュレーション</div>
+
+    <div class="trend-controls">
+      <div class="trend-control-item">
+        <label><i class="fas fa-calendar-alt" style="margin-right:4px;color:var(--gold);"></i>施策導入月</label>
+        <select id="start_month" onchange="updateTrend()">
+          <option value="1">1月</option><option value="2">2月</option><option value="3">3月</option>
+          <option value="4" selected>4月</option><option value="5">5月</option><option value="6">6月</option>
+          <option value="7">7月</option><option value="8">8月</option><option value="9">9月</option>
+          <option value="10">10月</option><option value="11">11月</option><option value="12">12月</option>
+        </select>
+      </div>
+      <div class="trend-control-item">
+        <label><i class="fas fa-tools" style="margin-right:4px;color:var(--gold);"></i>初期投資コスト（円）※任意</label>
+        <input type="number" id="init_cost" placeholder="例：200000" oninput="updateTrend()" onchange="updateTrend()">
+      </div>
+      <div class="trend-control-item">
+        <label><i class="fas fa-chart-line" style="margin-right:4px;color:var(--gold);"></i>段階的削減モード</label>
+        <div class="toggle-wrap">
+          <label class="toggle-switch">
+            <input type="checkbox" id="gradual_mode" onchange="updateTrend()">
+            <span class="toggle-slider"></span>
+          </label>
+          <span style="font-size:0.8rem;color:var(--text2);">3フェーズで現実的に推移</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-container" style="height:380px;"><canvas id="chartTrend"></canvas></div>
+
+    <div class="trend-summary" id="trend_summary">
+      <div class="trend-sum-card">
+        <div class="t-val gold" id="ts_annual">¥0</div>
+        <div class="t-lbl">12ヶ月累積削減額</div>
+      </div>
+      <div class="trend-sum-card">
+        <div class="t-val green" id="ts_recover">–</div>
+        <div class="t-lbl">初期投資 回収月</div>
+      </div>
+      <div class="trend-sum-card">
+        <div class="t-val" id="ts_avg">¥0</div>
+        <div class="t-lbl">月平均削減額</div>
+      </div>
+      <div class="trend-sum-card">
+        <div class="t-val" id="ts_pct">–%</div>
+        <div class="t-lbl">コスト削減率</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  © 2026 飲食店コスト削減シミュレーター｜数値はシミュレーション目的のみ。実際の削減効果は条件により異なります。
+</footer>
+
+<script>
+/* ============================================================
+   STATE
+============================================================ */
+const sim = { now: [0,0,0,0,0,0], after: [0,0,0,0,0,0], save: [0,0,0,0,0,0] };
+const LABELS = ['電気・ガス','ネット回線','クレジット手数料','食用油','スマホ料金','おしぼり'];
+
+/* ============================================================
+   UTILITIES
+============================================================ */
+const fmtYen = v => '¥' + Math.round(v).toLocaleString('ja-JP');
+const fmtPct = (save, total) => total > 0 ? (save / total * 100).toFixed(1) + '%' : '–';
+const getVal = id => parseFloat(document.getElementById(id).value) || 0;
+const setText = (id, txt) => { const el = document.getElementById(id); if(el) el.textContent = txt; };
+
+/* ============================================================
+   CARD TOGGLE
+============================================================ */
+function toggleCard(n) {
+  const card = document.getElementById('card' + n);
+  card.classList.toggle('active');
+}
+
+/* ============================================================
+   CALC 1: 電気・ガス（施策レベル別・現実的な削減レンジ）
+   相場基準（削減「余地」の目安）:
+     電気   契約のみ 2〜8% / ＋運用 5〜13% / ＋設備 10〜20%
+     都市ガス 契約のみ 3〜10% / ＋運用 5〜12% / ＋設備 8〜15%
+     LPガス  契約のみ 10〜30% / ＋運用 12〜25% / ＋設備 15〜35%
+============================================================ */
+const ENERGY_RATES = {
+  contract:  { elec:[2,8],   toshi:[3,10], lp:[10,30], elecDef:5,  toshiDef:6,  lpDef:18 },
+  operation: { elec:[5,13],  toshi:[5,12], lp:[12,25], elecDef:9,  toshiDef:8,  lpDef:18 },
+  equipment: { elec:[10,20], toshi:[8,15], lp:[15,35], elecDef:15, toshiDef:12, lpDef:25 },
+};
+function energyHints() {
+  const lvl = ENERGY_RATES[document.getElementById('energy_level').value];
+  const gk  = document.getElementById('gas_type').value; // 'toshi' | 'lp'
+  const er = lvl.elec, gr = lvl[gk];
+  setText('elec_range_hint', '推奨レンジ ' + er[0] + '〜' + er[1] + '%');
+  setText('gas_range_hint',  '推奨レンジ ' + gr[0] + '〜' + gr[1] + '%');
+}
+function applyEnergyPreset() {
+  const lvl = ENERGY_RATES[document.getElementById('energy_level').value];
+  const gk  = document.getElementById('gas_type').value;
+  document.getElementById('elec_rate').value = lvl.elecDef;
+  document.getElementById('gas_rate').value  = gk === 'lp' ? lvl.lpDef : lvl.toshiDef;
+  energyHints();
+  updateSlider1();
+  calc1();
+}
+function updateSlider1() {
+  const lvl = ENERGY_RATES[document.getElementById('energy_level').value];
+  const gk  = document.getElementById('gas_type').value;
+  const ev = getVal('elec_rate'), gv = getVal('gas_rate');
+  const eLbl = document.getElementById('elec_rate_lbl');
+  const gLbl = document.getElementById('gas_rate_lbl');
+  eLbl.textContent = ev + '%';
+  gLbl.textContent = gv + '%';
+  // 推奨レンジ上限を超えたら赤（過大提案の警告）
+  eLbl.style.color = ev > lvl.elec[1] ? 'var(--red)' : 'var(--gold)';
+  gLbl.style.color = gv > lvl[gk][1]  ? 'var(--red)' : 'var(--gold)';
+}
+function calc1() {
+  const elec = getVal('elec_now'), gas = getVal('gas_now');
+  const elecRate = getVal('elec_rate') / 100;
+  const gasRate  = getVal('gas_rate')  / 100;
+  const elecSave = Math.round(elec * elecRate);
+  const gasSave  = Math.round(gas  * gasRate);
+  const now  = elec + gas;
+  const save = elecSave + gasSave;
+  const after = now - save;
+  sim.now[0] = now; sim.after[0] = after; sim.save[0] = save;
+  setText('r1_now', fmtYen(now));
+  setText('r1_after', fmtYen(after));
+  setText('r1_save', fmtYen(save));
+  setText('r1_year', fmtYen(save * 12));
+  setText('prev1', fmtYen(save));
+  // 内訳
+  setText('r1_elec_save', fmtYen(elecSave));
+  setText('r1_gas_save',  fmtYen(gasSave));
+  setText('r1_elec_pct', getVal('elec_rate') + '%');
+  setText('r1_gas_pct',  getVal('gas_rate') + '%');
+  updateSummary();
+}
+
+/* ============================================================
+   CALC 2: ネット回線
+============================================================ */
+function calc2() {
+  const count  = Math.max(1, Math.round(getVal('net_count')) || 1); // 拠点数（最低1）
+  const nowPer = getVal('net_now');                                  // 1拠点あたり月額
+  const isFree = document.getElementById('wifi_free_toggle').checked;
+  const afterPerInput = Math.max(0, getVal('net_after'));
+  const afterPer = isFree ? 0 : afterPerInput;                       // 実質¥0なら0
+
+  const now   = Math.round(count * nowPer);                          // 全拠点 現在
+  const after = Math.round(count * afterPer);                        // 全拠点 削減後
+  const save  = Math.round(Math.max(0, now - after));
+
+  const netAfterWrap = document.getElementById('net_after_wrap');
+  if (netAfterWrap) netAfterWrap.style.opacity = isFree ? '0.4' : '1';
+
+  sim.now[1]   = now;
+  sim.after[1] = isFree ? 0 : (afterPerInput > 0 ? after : now);
+  sim.save[1]  = save;
+
+  // 動的バッジ（1拠点¥5,000 × 拠点数 の損失を表示）
+  const dispPer     = nowPer > 0 ? nowPer : 5000;
+  const dispMonthly = dispPer * count;
+  setText('wf_loss_m', fmtYen(dispMonthly));
+  setText('wf_loss_y', fmtYen(dispMonthly * 12));
+  setText('wf_multi_note', count + '拠点なら月' + fmtYen(dispMonthly));
+
+  setText('r2_now', fmtYen(now));
+  setText('r2_after', fmtYen(sim.after[1]));
+  setText('r2_save', fmtYen(save));
+  setText('r2_year', fmtYen(save * 12));
+  setText('prev2', fmtYen(save));
+  updateSummary();
+}
+
+/* ============================================================
+   CALC 3: クレジット手数料
+============================================================ */
+function calc3() {
+  const sales = getVal('card_sales');
+  const rateNow = getVal('card_rate_now') / 100;
+  const rateAfter = getVal('card_rate_after') / 100;
+  const now = Math.round(sales * rateNow);
+  const after = Math.round(sales * rateAfter);
+  const save = Math.max(0, now - after);
+  sim.now[2] = now; sim.after[2] = after; sim.save[2] = save;
+  setText('r3_now', fmtYen(now));
+  setText('r3_after', fmtYen(after));
+  setText('r3_save', fmtYen(save));
+  setText('r3_year', fmtYen(save * 12));
+  setText('prev3', fmtYen(save));
+  updateSummary();
+}
+
+/* ============================================================
+   CALC 4: 食用油（月額機材代・損益分岐・営業対象判定）
+   ・削減額 = 現在油代 × 削減率
+   ・実質削減額(net) = 削減額 − 月額機材代
+   ・損益分岐缶数 = 月額機材代 ÷ (削減率 × 缶単価)
+   ・営業対象:  <分岐→対象外 / 分岐〜+1缶→テスト / +1〜+2缶→提案 / +2缶〜→優先
+============================================================ */
+const LITERS_PER_CAN = 18; // 一斗缶 ≈ 18L
+function updateOilSlider() {
+  document.getElementById('oil_rate_lbl').textContent = document.getElementById('oil_rate').value + '%';
+}
+function calc4() {
+  const cans     = getVal('oil_cans');
+  const canPrice = getVal('oil_can_price');
+  const rate     = getVal('oil_rate') / 100;
+  const taxMul   = document.getElementById('oil_tax').checked ? 1.1 : 1;
+  const fee      = Math.round(getVal('oil_fee') * taxMul);
+
+  const now       = Math.round(cans * canPrice);   // 現在の油代
+  const grossSave = Math.round(now * rate);        // 油代削減額
+  const net       = grossSave - fee;               // 実質削減額（赤字ならマイナス）
+  const afterCost = now - grossSave + fee;         // 削減後油代 + 月額機材代
+
+  sim.now[3]   = now;
+  sim.after[3] = cans > 0 ? afterCost : now;
+  sim.save[3]  = cans > 0 ? net : 0;
+
+  // 使用量表示
+  setText('oil_cans_disp',   cans > 0 ? cans : '–');
+  setText('oil_liters_disp', cans > 0 ? Math.round(cans * LITERS_PER_CAN) : '–');
+
+  // 損益分岐点
+  const beCans = (rate > 0 && canPrice > 0) ? fee / (rate * canPrice) : 0;
+  if (beCans > 0) {
+    const beCansR = Math.ceil(beCans * 10) / 10;
+    setText('oil_be_cans',   beCansR.toFixed(1));
+    setText('oil_be_liters', Math.ceil(beCans * LITERS_PER_CAN));
+  } else {
+    setText('oil_be_cans', '–');
+    setText('oil_be_liters', '–');
+  }
+
+  // 営業対象 判定
+  const badge = document.getElementById('oil_verdict');
+  const note  = document.getElementById('oil_verdict_note');
+  badge.style.color = '#fff';
+  if (cans <= 0 || beCans <= 0) {
+    badge.textContent = '–';
+    badge.style.background = 'var(--border)';
+    note.innerHTML = '使用量を入力してください';
+  } else if (cans < beCans) {
+    badge.textContent = '対象外（赤字）';
+    badge.style.background = 'var(--red)';
+    note.innerHTML = '損益分岐に届かず<br>月' + fmtYen(-net) + ' の赤字';
+  } else if (cans < beCans + 1) {
+    badge.textContent = '導入テスト推奨';
+    badge.style.background = '#e67e22';
+    note.innerHTML = '損益分岐付近<br>月' + fmtYen(net) + ' のプラス';
+  } else if (cans < beCans + 2) {
+    badge.textContent = '提案対象';
+    badge.style.background = 'var(--green)';
+    note.innerHTML = 'メリットあり<br>月' + fmtYen(net) + ' のプラス';
+  } else {
+    badge.textContent = '優先提案';
+    badge.style.background = 'linear-gradient(135deg,var(--gold),var(--gold2))';
+    badge.style.color = 'var(--navy)';
+    note.innerHTML = '効果大<br>月' + fmtYen(net) + ' のプラス';
+  }
+
+  // 結果表示（netがマイナスなら赤で）
+  const netCls = net < 0 ? 'red' : 'gold';
+  document.getElementById('r4_save').className = 'val ' + netCls;
+  document.getElementById('r4_year').className = 'val ' + netCls;
+
+  setText('r4_now',   fmtYen(now));
+  setText('r4_gross', fmtYen(grossSave));
+  setText('r4_fee',   '−' + fmtYen(fee));
+  setText('r4_save',  fmtYen(net));
+  setText('r4_year',  fmtYen(net * 12));
+  setText('prev4',    fmtYen(net));
+  updateSummary();
+}
+
+/* ============================================================
+   CALC 5: スマホ
+============================================================ */
+function calc5() {
+  const count = getVal('phone_count'), nowPer = getVal('phone_now'), afterPer = getVal('phone_after');
+  const now = Math.round(count * nowPer);
+  const after = Math.round(count * afterPer);
+  const save = Math.max(0, now - after);
+  sim.now[4] = now; sim.after[4] = after; sim.save[4] = save;
+  setText('r5_now', fmtYen(now));
+  setText('r5_after', fmtYen(after));
+  setText('r5_save', fmtYen(save));
+  setText('r5_year', fmtYen(save * 12));
+  setText('prev5', fmtYen(save));
+  updateSummary();
+}
+
+/* ============================================================
+   CALC 6: おしぼり
+============================================================ */
+let selectedOshiPlanId = null;
+function selectOshiPlan(price, chipId) {
+  selectedOshiPlanId = chipId;
+  document.querySelectorAll('.plan-chip').forEach(c => c.classList.remove('selected'));
+  document.getElementById(chipId).classList.add('selected');
+  document.getElementById('oshi_price_after').value = price;
+  calc6();
+}
+function calc6() {
+  const count     = getVal('oshi_count');
+  const priceNow  = getVal('oshi_price_now');
+  const priceAfter = getVal('oshi_price_after');
+  const now   = Math.round(count * priceNow);
+  const aft   = Math.round(count * priceAfter);
+  const save  = Math.max(0, now - aft);
+  sim.now[5] = now; sim.after[5] = priceAfter > 0 ? aft : now; sim.save[5] = save;
+
+  // badge
+  setText('oshi_now_disp',   priceNow  > 0 ? priceNow  : '–');
+  setText('oshi_after_disp', priceAfter > 0 ? priceAfter : '–');
+  const cutPct = priceNow > 0 && priceAfter > 0 ? Math.round((priceNow - priceAfter) / priceNow * 100) : 0;
+  setText('oshi_cut_badge', cutPct > 0 ? '−' + cutPct + '% 削減' : '−?% 削減');
+
+  setText('r6_now',   fmtYen(now));
+  setText('r6_after', fmtYen(sim.after[5]));
+  setText('r6_save',  fmtYen(save));
+  setText('r6_year',  fmtYen(save * 12));
+  setText('prev6',    fmtYen(save));
+  updateSummary();
+}
+
+/* ============================================================
+   UPDATE SUMMARY
+============================================================ */
+function updateSummary() {
+  const totalNow   = sim.now.reduce((a,b)=>a+b,0);
+  const totalAfter = sim.after.reduce((a,b)=>a+b,0);
+  const totalSave  = sim.save.reduce((a,b)=>a+b,0);
+
+  setText('total_now',    fmtYen(totalNow));
+  setText('total_after',  fmtYen(totalAfter));
+  setText('total_save_m', fmtYen(totalSave));
+  setText('total_save_y', fmtYen(totalSave * 12));
+
+  // table
+  for (let i = 0; i < 6; i++) {
+    const n = i+1;
+    setText('t'+n+'_now',   fmtYen(sim.now[i]));
+    setText('t'+n+'_after', fmtYen(sim.after[i]));
+    setText('t'+n+'_save',  fmtYen(sim.save[i]));
+    setText('t'+n+'_year',  fmtYen(sim.save[i]*12));
+    setText('t'+n+'_pct',   fmtPct(sim.save[i], sim.now[i]));
+  }
+  setText('tf_now',   fmtYen(totalNow));
+  setText('tf_after', fmtYen(totalAfter));
+  setText('tf_save',  fmtYen(totalSave));
+  setText('tf_year',  fmtYen(totalSave*12));
+  setText('tf_pct',   fmtPct(totalSave, totalNow));
+
+  updateCharts();
+  updateImpact();
+  updateTrend();
+}
+
+/* ============================================================
+   IMPACT CARDS
+============================================================ */
+function updateImpact() {
+  const totalSaveYear = sim.save.reduce((a,b)=>a+b,0) * 12;
+  const totalNow      = sim.now.reduce((a,b)=>a+b,0);
+  const totalSaveM    = sim.save.reduce((a,b)=>a+b,0);
+
+  // 客単価
+  const unitPrice = Math.max(1, getVal('inp_unit_price'));
+  const meals = totalSaveYear > 0 ? Math.round(totalSaveYear / unitPrice) : 0;
+  setText('imp_meals', meals > 0 ? meals.toLocaleString('ja-JP') : '–');
+  setText('imp_meals_desc', '客単価 ¥' + Math.round(unitPrice).toLocaleString('ja-JP') + ' 換算');
+
+  // 時給
+  const wage = Math.max(1, getVal('inp_hourly_wage'));
+  const hours = totalSaveYear > 0 ? Math.round(totalSaveYear / wage) : 0;
+  setText('imp_hours', hours > 0 ? hours.toLocaleString('ja-JP') : '–');
+  setText('imp_hours_desc', '時給 ¥' + Math.round(wage).toLocaleString('ja-JP') + ' 換算');
+
+  // 家賃
+  const rent = Math.max(1, getVal('inp_rent'));
+  const rentMonths = totalSaveYear > 0 ? (totalSaveYear / rent).toFixed(1) : 0;
+  setText('imp_rent', rentMonths > 0 ? rentMonths : '–');
+  setText('imp_rent_desc', '月間家賃 ¥' + Math.round(rent).toLocaleString('ja-JP') + ' 換算');
+
+  // 削減率
+  const pct = totalNow > 0 ? (totalSaveM / totalNow * 100).toFixed(1) : 0;
+  setText('imp_pct', pct > 0 ? pct : '–');
+}
+
+/* ============================================================
+   CHARTS
+============================================================ */
+const CHART_COLORS = {
+  gold:   'rgba(201,168,76,0.9)',
+  goldFade: 'rgba(201,168,76,0.2)',
+  green:  'rgba(46,204,113,0.85)',
+  greenFade: 'rgba(46,204,113,0.2)',
+  red:    'rgba(231,76,60,0.85)',
+  redFade:'rgba(231,76,60,0.2)',
+  grid:   'rgba(30,58,90,0.6)',
+  text:   '#8faabb',
+};
+const chartOpts = (isY) => ({
+  responsive: true, maintainAspectRatio: false,
+  plugins: {
+    legend: { labels: { color: CHART_COLORS.text, font: { family: 'Noto Sans JP', size: 12 } } },
+    tooltip: {
+      callbacks: {
+        label: ctx => ' ' + ctx.dataset.label + '：¥' + Math.round(ctx.raw).toLocaleString('ja-JP')
+      }
+    }
+  },
+  scales: {
+    x: { ticks: { color: CHART_COLORS.text }, grid: { color: CHART_COLORS.grid } },
+    y: {
+      ticks: {
+        color: CHART_COLORS.text,
+        callback: v => '¥' + Math.round(v).toLocaleString('ja-JP')
+      },
+      grid: { color: CHART_COLORS.grid }
+    }
+  }
+});
+
+let chartM, chartY, chartB;
+function updateCharts() {
+  const totalNow  = sim.now.reduce((a,b)=>a+b,0);
+  const totalSave = sim.save.reduce((a,b)=>a+b,0);
+  const totalAfter= totalNow - totalSave;
+
+  // -- Monthly bar
+  const dataM = {
+    labels: ['現状（月間）', '削減後（月間）'],
+    datasets: [{
+      label: '月間コスト',
+      data: [totalNow, totalAfter],
+      backgroundColor: [CHART_COLORS.red, CHART_COLORS.green],
+      borderRadius: 6,
+    }, {
+      label: '月間削減額',
+      data: [0, totalSave],
+      backgroundColor: [CHART_COLORS.goldFade, CHART_COLORS.gold],
+      borderRadius: 6,
+    }]
+  };
+  if (chartM) chartM.destroy();
+  chartM = new Chart(document.getElementById('chartM').getContext('2d'), { type:'bar', data:dataM, options: chartOpts(false) });
+
+  // -- Yearly bar
+  const dataY = {
+    labels: ['現状（年間）', '削減後（年間）'],
+    datasets: [{
+      label: '年間コスト',
+      data: [totalNow*12, totalAfter*12],
+      backgroundColor: [CHART_COLORS.red, CHART_COLORS.green],
+      borderRadius: 6,
+    }, {
+      label: '年間削減額',
+      data: [0, totalSave*12],
+      backgroundColor: [CHART_COLORS.goldFade, CHART_COLORS.gold],
+      borderRadius: 6,
+    }]
+  };
+  if (chartY) chartY.destroy();
+  chartY = new Chart(document.getElementById('chartY').getContext('2d'), { type:'bar', data:dataY, options: chartOpts(true) });
+
+  // -- Breakdown
+  const dataB = {
+    labels: LABELS,
+    datasets: [{
+      label: '現状（月間）',
+      data: sim.now.map(v => Math.round(v)),
+      backgroundColor: CHART_COLORS.red,
+      borderRadius: 4,
+    }, {
+      label: '削減後（月間）',
+      data: sim.after.map(v => Math.round(v)),
+      backgroundColor: CHART_COLORS.green,
+      borderRadius: 4,
+    }]
+  };
+  if (chartB) chartB.destroy();
+  chartB = new Chart(document.getElementById('chartB').getContext('2d'), { type:'bar', data:dataB, options: chartOpts(false) });
+}
+
+/* ============================================================
+   TAB SWITCH
+============================================================ */
+let activeTab = 0;
+function switchTab(n) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === n));
+  document.querySelectorAll('.chart-wrap').forEach((w, i) => w.classList.toggle('active', i === n));
+  activeTab = n;
+}
+
+/* ============================================================
+   TREND CHART
+============================================================ */
+let chartTrend;
+function updateTrend() {
+  const startMonth = parseInt(document.getElementById('start_month').value) || 4;
+  const initCost   = getVal('init_cost');
+  const gradual    = document.getElementById('gradual_mode').checked;
+  const totalSaveM = sim.save.reduce((a,b)=>a+b,0);
+  const totalNowM  = sim.now.reduce((a,b)=>a+b,0);
+
+  const months = 12;
+  const labels = [], nowData = [], afterData = [], cumSaveData = [];
+  let cumSave = -initCost;
+  let recoverMonth = null;
+
+  for (let i = 0; i < months; i++) {
+    const mNum = ((startMonth - 1 + i) % 12) + 1;
+    labels.push(mNum + '月');
+
+    nowData.push(Math.round(totalNowM));
+
+    // gradual: 3 phases
+    let efficiencyRate = 1.0;
+    if (gradual) {
+      if (i < 3) efficiencyRate = 0.5;
+      else if (i < 6) efficiencyRate = 0.75;
+    }
+    const saveThisMonth = Math.round(totalSaveM * efficiencyRate);
+    afterData.push(Math.round(totalNowM - saveThisMonth));
+    cumSave += saveThisMonth;
+    cumSaveData.push(Math.round(cumSave));
+
+    if (recoverMonth === null && initCost > 0 && cumSave >= 0) {
+      recoverMonth = i + 1;
+    }
+  }
+
+  const trendOpts = {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { labels: { color: CHART_COLORS.text, font: { family: 'Noto Sans JP', size: 12 } } },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            if (ctx.dataset.label === '累積削減額') {
+              return ' 累積削減額：¥' + Math.round(ctx.raw).toLocaleString('ja-JP');
+            }
+            return ' ' + ctx.dataset.label + '：¥' + Math.round(ctx.raw).toLocaleString('ja-JP');
+          }
+        }
+      }
+    },
+    scales: {
+      x: { ticks: { color: CHART_COLORS.text }, grid: { color: CHART_COLORS.grid } },
+      y: {
+        type: 'linear', position: 'left',
+        ticks: { color: CHART_COLORS.text, callback: v => '¥' + Math.round(v).toLocaleString('ja-JP') },
+        grid: { color: CHART_COLORS.grid }
+      },
+      y2: {
+        type: 'linear', position: 'right',
+        ticks: { color: 'rgba(201,168,76,0.8)', callback: v => '¥' + Math.round(v).toLocaleString('ja-JP') },
+        grid: { drawOnChartArea: false }
+      }
+    }
+  };
+
+  const trendData = {
+    labels,
+    datasets: [
+      {
+        label: '現状コスト',
+        data: nowData,
+        borderColor: CHART_COLORS.red,
+        borderDash: [6, 4],
+        borderWidth: 2,
+        pointRadius: 3,
+        fill: false,
+        yAxisID: 'y',
+        tension: 0.1,
+      },
+      {
+        label: '削減後コスト',
+        data: afterData,
+        borderColor: CHART_COLORS.green,
+        borderWidth: 2.5,
+        pointRadius: 4,
+        fill: false,
+        yAxisID: 'y',
+        tension: 0.4,
+      },
+      {
+        label: '累積削減額',
+        data: cumSaveData,
+        borderColor: CHART_COLORS.gold,
+        backgroundColor: CHART_COLORS.goldFade,
+        borderWidth: 2,
+        pointRadius: 3,
+        fill: true,
+        yAxisID: 'y2',
+        tension: 0.4,
+      }
+    ]
+  };
+
+  if (chartTrend) chartTrend.destroy();
+  chartTrend = new Chart(document.getElementById('chartTrend').getContext('2d'), { type:'line', data:trendData, options:trendOpts });
+
+  // summary
+  const cumTotal = cumSaveData[cumSaveData.length - 1];
+  setText('ts_annual', fmtYen(cumTotal + initCost));
+  setText('ts_recover', recoverMonth ? recoverMonth + 'ヶ月目' : (initCost > 0 ? '12ヶ月超' : '–'));
+  setText('ts_avg', fmtYen(totalSaveM));
+  const pct = totalNowM > 0 ? (totalSaveM / totalNowM * 100).toFixed(1) : '0.0';
+  setText('ts_pct', pct + '%');
+}
+
+/* ============================================================
+   RESET / DEMO
+============================================================ */
+function resetAll() {
+  const inputs = document.querySelectorAll('input[type="number"], input[type="range"]');
+  inputs.forEach(el => {
+    if (el.id === 'elec_rate') { el.value = 5; }
+    else if (el.id === 'gas_rate') { el.value = 6; }
+    else if (el.id === 'oil_rate') { el.value = 30; }
+    else if (el.id === 'oil_can_price') { el.value = 6000; }
+    else if (el.id === 'oil_fee') { el.value = 5000; }
+    else if (el.id === 'net_count') { el.value = 1; }
+    else if (el.id === 'inp_unit_price') { el.value = 1000; }
+    else if (el.id === 'inp_hourly_wage') { el.value = 1100; }
+    else if (el.id === 'inp_rent') { el.value = 100000; }
+    else { el.value = ''; }
+  });
+  document.getElementById('energy_level').value = 'contract';
+  document.getElementById('gas_type').value = 'toshi';
+  energyHints();
+  updateSlider1();
+  document.getElementById('oil_rate_lbl').textContent = '30%';
+  document.getElementById('wifi_free_toggle').checked = false;
+  document.getElementById('oil_tax').checked = false;
+  document.querySelectorAll('.plan-chip').forEach(c => c.classList.remove('selected'));
+  selectedOshiPlanId = null;
+  for (let i = 0; i < 6; i++) { sim.now[i]=0; sim.after[i]=0; sim.save[i]=0; }
+  calc1(); calc2(); calc3(); calc4(); calc5(); calc6();
+}
+
+function setVal(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.value = val;
+}
+
+function loadDemo() {
+  // 電気・ガス（施策レベル=＋運用改善・都市ガス）
+  setVal('elec_now', 120000); setVal('gas_now', 80000);
+  document.getElementById('energy_level').value = 'operation';
+  document.getElementById('gas_type').value = 'toshi';
+  applyEnergyPreset();
+
+  // ネット（Wi-Fi）：3拠点 × ¥5,000 を実質¥0に
+  setVal('net_count', 3); setVal('net_now', 5000); setVal('net_after', 0);
+  document.getElementById('wifi_free_toggle').checked = true;
+  calc2();
+
+  // クレジット
+  setVal('card_sales', 2000000); setVal('card_rate_now', 3.5); setVal('card_rate_after', 2.0);
+  calc3();
+
+  // 食用油：4缶/月・缶単価¥6,000・削減30%・月額機材代¥5,000 → 提案対象
+  setVal('oil_cans', 4); setVal('oil_can_price', 6000); setVal('oil_fee', 5000); setVal('oil_rate', 30);
+  document.getElementById('oil_tax').checked = false;
+  document.getElementById('oil_rate_lbl').textContent = '30%';
+  calc4();
+
+  // スマホ
+  setVal('phone_count', 3); setVal('phone_now', 8000); setVal('phone_after', 3000);
+  calc5();
+
+  // おしぼり
+  setVal('oshi_count', 1500); setVal('oshi_price_now', 5.0);
+  selectOshiPlan(2.2, 'pc_1');
+
+  // impact defaults
+  setVal('inp_unit_price', 1000);
+  setVal('inp_hourly_wage', 1100);
+  setVal('inp_rent', 100000);
+
+  // open all cards
+  for (let i = 1; i <= 6; i++) document.getElementById('card'+i).classList.add('active');
+
+  updateImpact();
+}
+
+/* ============================================================
+   INIT
+============================================================ */
+window.addEventListener('DOMContentLoaded', () => {
+  energyHints();
+  updateSlider1();
+  updateCharts();
+  updateTrend();
+});
+</script>
+</body>
+</html>
