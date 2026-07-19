@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>飲食店 ファン定着シミュレーター</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Hiragino Kaku Gothic ProN', 'メイリオ', 'Yu Gothic', sans-serif;
+            background: #F2F7F4;
+            min-height: 100vh;
+            color: #1a1a1a;
+            padding: 16px 16px 48px;
+        }
+        .container { max-width: 880px; margin: 0 auto; }
+
+        /* ── ヘッダー ── */
+        header {
+            text-align: center;
+            padding: 36px 0 28px;
+        }
+        header .tag {
+            display: inline-block;
+            font-size: 11px; font-weight: bold; letter-spacing: 2px;
+            color: #fff; background: #06C755;
+            border-radius: 20px; padding: 4px 14px; margin-bottom: 14px;
+        }
+        header h1 {
+            font-size: 26px; font-weight: 900; color: #06C755;
+            letter-spacing: 0.5px; margin-bottom: 8px;
+        }
+        header p { font-size: 13px; color: #888; line-height: 1.8; }
+
+        /* ── カード共通 ── */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 22px 24px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .card-title {
+            font-size: 11px; font-weight: bold; letter-spacing: 2px;
+            color: #aaa; text-transform: uppercase; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .card-title span {
+            background: #06C755; color: #fff;
+            border-radius: 5px; padding: 2px 8px;
+            font-size: 11px; font-weight: 900; letter-spacing: 0;
+        }
+
+        /* ── 入力 ── */
+        .input-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .input-row label { font-size: 15px; font-weight: bold; color: #333; }
+        .num-input {
+            padding: 8px 12px;
+            font-size: 26px; font-weight: 900; text-align: center;
+            background: #F2F7F4;
+            border: 2px solid #c8e6d2;
+            border-radius: 10px; color: #1a1a1a; outline: none;
+            transition: border-color 0.2s;
+        }
+        .num-input:focus { border-color: #06C755; }
+        .num-input.w-md { width: 130px; }
+        .unit { font-size: 14px; color: #888; }
+
+        /* ── LTVパラメーター ── */
+        .ltv-params { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+        .ltv-param-box {
+            background: #F2F7F4;
+            border: 1.5px solid #c8e6d2;
+            border-radius: 14px; padding: 16px;
+        }
+        .ltv-param-label { font-size: 12px; color: #06C755; margin-bottom: 8px; font-weight: bold; }
+        .ltv-param-val { font-size: 26px; font-weight: 900; color: #1a1a1a; display: flex; align-items: baseline; gap: 4px; }
+        .ltv-param-val .small { font-size: 13px; color: #888; }
+        .ltv-param-hint { font-size: 11px; color: #aaa; margin-top: 6px; }
+
+        /* ── スライダーカード ── */
+        .slider-card {
+            background: #F9FBF9;
+            border: 1.5px solid #e8f3ec;
+            border-radius: 12px; padding: 16px 18px; margin-bottom: 10px;
+        }
+        .slider-top {
+            display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px;
+        }
+        .slider-name {
+            font-size: 14px; font-weight: bold; color: #333;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .badge {
+            width: 24px; height: 24px; border-radius: 50%;
+            background: #06C755; color: #fff;
+            font-size: 12px; font-weight: 900;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .slider-pct { font-size: 32px; font-weight: 900; line-height: 1; transition: color 0.3s; }
+        .color-low  { color: #E53E3E; }
+        .color-mid  { color: #D69E2E; }
+        .color-high { color: #06C755; }
+
+        .slider-hint { font-size: 11px; color: #bbb; margin-bottom: 8px; }
+
+        input[type="range"] {
+            -webkit-appearance: none; appearance: none;
+            width: 100%; height: 7px; border-radius: 4px; outline: none; cursor: pointer;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px; height: 20px; border-radius: 50%;
+            background: #fff; border: 3px solid #06C755;
+            box-shadow: 0 2px 6px rgba(6,199,85,0.3); cursor: pointer;
+        }
+        .tr-low  { background: linear-gradient(to right, #FC8181 var(--p,0%), #e0e0e0 var(--p,0%)); }
+        .tr-mid  { background: linear-gradient(to right, #F6AD55 var(--p,0%), #e0e0e0 var(--p,0%)); }
+        .tr-high { background: linear-gradient(to right, #06C755 var(--p,0%), #e0e0e0 var(--p,0%)); }
+        .tr-line { background: linear-gradient(to right, #06C755 var(--p,0%), #e0e0e0 var(--p,0%)); }
+
+        .slider-scale { display: flex; justify-content: space-between; font-size: 10px; color: #ccc; margin-top: 3px; }
+        .slider-result { font-size: 13px; color: #888; margin-top: 8px; }
+        .slider-result b { color: #1a1a1a; font-size: 15px; }
+
+        /* ── ファネル ── */
+        .funnel-wrap { display: flex; flex-direction: column; }
+        .funnel-row {
+            display: grid; grid-template-columns: 110px 1fr 90px;
+            align-items: center; gap: 10px; min-height: 52px;
+        }
+        .funnel-lbl { font-size: 12px; color: #aaa; text-align: right; }
+        .funnel-bar-cell { display: flex; align-items: center; }
+        .funnel-bar {
+            height: 42px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: bold;
+            transition: width 0.45s cubic-bezier(0.25,0.8,0.25,1);
+            min-width: 4px; white-space: nowrap; overflow: hidden;
+        }
+        .funnel-count { font-size: 15px; font-weight: bold; }
+        .funnel-conn { display: grid; grid-template-columns: 110px 1fr 90px; gap: 10px; padding: 2px 0; }
+
+        /* ── 定着率カード ── */
+        .loyalty-card {
+            background: #fff;
+            border: 2px solid #06C755;
+            border-radius: 18px; padding: 28px 24px;
+            text-align: center; margin-bottom: 14px;
+            box-shadow: 0 4px 20px rgba(6,199,85,0.12);
+        }
+        .sec-label { font-size: 13px; color: #888; margin-bottom: 8px; }
+        .big-pct {
+            font-size: 80px; font-weight: 900; line-height: 1;
+            margin-bottom: 6px; transition: color 0.4s;
+        }
+        .loyalty-sub { font-size: 14px; color: #888; }
+        .loyalty-comment { font-size: 14px; margin-top: 6px; min-height: 22px; color: #555; }
+
+        .mini-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 20px; }
+        .mini-box { background: #F2F7F4; border-radius: 12px; padding: 12px 8px; }
+        .mini-num { font-size: 24px; font-weight: 900; color: #1a1a1a; }
+        .mini-lbl { font-size: 11px; color: #aaa; margin-top: 3px; }
+
+        /* ── LTV カード ── */
+        .ltv-card {
+            background: #fff;
+            border: 2px solid #c8e6d2;
+            border-radius: 18px; padding: 28px 24px; margin-bottom: 14px;
+            box-shadow: 0 2px 12px rgba(6,199,85,0.08);
+        }
+        .ltv-card .sec-label { color: #06C755; font-weight: bold; text-align: center; margin-bottom: 16px; }
+        .ltv-hero { display: flex; align-items: baseline; gap: 4px; justify-content: center; margin-bottom: 6px; }
+        .ltv-hero .yen { font-size: 26px; font-weight: 900; color: #06C755; }
+        .ltv-hero .num { font-size: 62px; font-weight: 900; color: #06C755; line-height: 1; }
+        .ltv-sub { text-align: center; font-size: 13px; color: #888; margin-bottom: 22px; }
+
+        .ltv-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+        .ltv-box { background: #F2F7F4; border-radius: 12px; padding: 14px 10px; text-align: center; }
+        .ltv-box .lbl { font-size: 11px; color: #aaa; margin-bottom: 6px; }
+        .ltv-box .val { font-size: 19px; font-weight: 900; color: #1a1a1a; }
+        .ltv-box .val.accent { color: #06C755; }
+
+        /* ── 安定化チャート ── */
+        .stable-card {
+            background: #fff;
+            border: 2px solid #c8e6d2;
+            border-radius: 18px; padding: 28px 24px; margin-bottom: 14px;
+            box-shadow: 0 2px 12px rgba(6,199,85,0.08);
+        }
+        .stable-card .sec-label { color: #06C755; font-weight: bold; font-size: 13px; margin-bottom: 4px; }
+        .stable-card .sec-sub { font-size: 12px; color: #aaa; margin-bottom: 20px; }
+        .chart-wrap { width: 100%; overflow-x: auto; }
+        .chart-svg { width: 100%; min-width: 300px; }
+
+        .stable-hero {
+            text-align: center; margin-top: 20px;
+            padding: 20px; background: #F2F7F4; border-radius: 14px;
+        }
+        .stable-hero .lbl { font-size: 13px; color: #888; margin-bottom: 6px; }
+        .stable-hero .val { font-size: 46px; font-weight: 900; color: #06C755; line-height: 1; }
+        .stable-hero .sub { font-size: 13px; color: #aaa; margin-top: 6px; }
+
+        /* ── ベンチマーク ── */
+        .bench { background: #F9FBF9; border-radius: 10px; padding: 12px 16px; margin-top: 16px; }
+        .bench-title { font-size: 12px; color: #888; margin-bottom: 8px; }
+        .bench-items { display: flex; flex-wrap: wrap; gap: 14px; }
+        .bench-item { font-size: 12px; color: #666; display: flex; align-items: center; gap: 5px; }
+        .bench-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+        /* ── 損失・比較カード ── */
+        .loss-card {
+            background: #fff; border: 2px solid #FEB2B2;
+            border-radius: 18px; padding: 26px 24px; margin-bottom: 14px;
+            box-shadow: 0 2px 16px rgba(229,62,62,0.1);
+        }
+        .compare-wrap {
+            display: grid; grid-template-columns: 1fr 36px 1fr;
+            align-items: center; gap: 12px; margin-bottom: 20px;
+        }
+        .compare-side { border-radius: 14px; padding: 16px; text-align: center; }
+        .compare-side.current { background: #FFF5F5; border: 1.5px solid #FEB2B2; }
+        .compare-side.ideal   { background: #F2F7F4; border: 1.5px solid #c8e6d2; }
+        .cmp-lbl { font-size: 11px; font-weight: bold; letter-spacing: 1px; margin-bottom: 8px; }
+        .cmp-lbl.c-red   { color: #E53E3E; }
+        .cmp-lbl.c-green { color: #06C755; }
+        .cmp-pct { font-size: 46px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+        .cmp-pct.c-red   { color: #E53E3E; }
+        .cmp-pct.c-green { color: #06C755; }
+        .cmp-sub { font-size: 12px; color: #888; }
+        .cmp-sub b { color: #1a1a1a; }
+        .compare-arrow { text-align: center; font-size: 20px; color: #ddd; }
+        .cmp-slider-area { margin-top: 10px; }
+        .cmp-slider-lbl { font-size: 10px; color: #06C755; font-weight: bold; margin-bottom: 4px; }
+        .loss-box-wrap {
+            background: #FFF5F5; border: 1.5px solid #FEB2B2;
+            border-radius: 14px; padding: 18px;
+        }
+        .loss-box-title {
+            font-size: 13px; color: #E53E3E; font-weight: bold;
+            text-align: center; margin-bottom: 14px;
+        }
+        .loss-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+        .loss-item { background: #fff; border-radius: 10px; padding: 14px 8px; text-align: center; }
+        .loss-item .lbl { font-size: 11px; color: #aaa; margin-bottom: 6px; }
+        .loss-item .val { font-size: 22px; font-weight: 900; color: #E53E3E; }
+
+        /* ── リスクヒーロー ── */
+        .risk-hero { text-align: center; margin-bottom: 22px; }
+        .risk-hero-tag {
+            display: inline-block; background: #E53E3E; color: #fff;
+            font-size: 11px; font-weight: bold; letter-spacing: 2px;
+            border-radius: 20px; padding: 4px 14px; margin-bottom: 12px;
+        }
+        .risk-hero-main { font-size: 20px; font-weight: 900; color: #E53E3E; margin-bottom: 6px; line-height: 1.4; }
+        .risk-hero-sub { font-size: 13px; color: #888; }
+
+        /* ── 月間機会損失 ── */
+        .risk-monthly {
+            background: #FFF5F5; border: 1.5px solid #FEB2B2;
+            border-radius: 14px; padding: 20px; text-align: center; margin-bottom: 20px;
+        }
+        .risk-monthly-lbl { font-size: 12px; color: #E53E3E; font-weight: bold; margin-bottom: 8px; }
+        .risk-monthly-val { font-size: 52px; font-weight: 900; color: #E53E3E; line-height: 1; margin-bottom: 6px; }
+        .risk-monthly-sub { font-size: 13px; color: #888; }
+
+        /* ── 累積タイムライン ── */
+        .timeline-title { font-size: 13px; color: #555; font-weight: bold; margin-bottom: 10px; }
+        .timeline-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 22px; }
+        .timeline-item { border-radius: 12px; padding: 14px 8px; text-align: center; }
+        .timeline-item .t-lbl { font-size: 10px; color: #aaa; margin-bottom: 6px; }
+        .timeline-item .t-val { font-size: 17px; font-weight: 900; }
+        .tl-1 { background: #FFF5F5; } .tl-1 .t-val { color: #E88080; }
+        .tl-2 { background: #FFE8E8; } .tl-2 .t-val { color: #E06060; }
+        .tl-3 { background: #FFD5D5; } .tl-3 .t-val { color: #D84040; }
+        .tl-4 { background: #FFC0C0; } .tl-4 .t-val { color: #C82020; }
+
+        /* ── ポジティブCTA ── */
+        .risk-divider { border: none; border-top: 1.5px solid #fee; margin: 20px 0; }
+        .gain-box {
+            background: linear-gradient(135deg, #F2F7F4, #E8F5EE);
+            border: 2px solid #06C755; border-radius: 14px; padding: 20px; text-align: center;
+        }
+        .gain-lbl { font-size: 13px; color: #06C755; font-weight: bold; margin-bottom: 8px; }
+        .gain-val { font-size: 42px; font-weight: 900; color: #06C755; line-height: 1; margin-bottom: 4px; }
+        .gain-sub { font-size: 12px; color: #888; }
+
+        footer { text-align: center; padding: 20px 0 8px; font-size: 11px; color: #ccc; }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 21px; }
+            .big-pct { font-size: 60px; }
+            .ltv-hero .num { font-size: 46px; }
+            .stable-hero .val { font-size: 34px; }
+            .ltv-row, .mini-grid { grid-template-columns: 1fr 1fr; }
+            .ltv-params { grid-template-columns: 1fr; }
+            .funnel-row, .funnel-conn { grid-template-columns: 80px 1fr 70px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <header>
+        <div class="tag">FAN RETENTION SIMULATOR</div>
+        <h1>飲食店 ファン定着シミュレーター</h1>
+        <p>初回来店から「ファン（常連客）」を育てることで<br>毎月の売上がどれだけ安定するかを可視化します</p>
+    </header>
+
+    <!-- STEP 1 -->
+    <div class="card">
+        <div class="card-title"><span>01</span>月間 初回来店者数を入力</div>
+        <div class="input-row">
+            <label>月間 新規来店者</label>
+            <input type="number" id="firstVisit" class="num-input w-md" value="100" min="1" max="99999" step="10">
+            <span class="unit">人 / 月</span>
+        </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="card">
+        <div class="card-title"><span>02</span>各ステップの来店率を設定</div>
+
+        <div class="slider-card">
+            <div class="slider-top">
+                <div class="slider-name"><span class="badge">2</span>回目 来店率</div>
+                <div class="slider-pct color-low" id="pct2">20%</div>
+            </div>
+            <div class="slider-hint">業界平均：約20%　｜　25%以上で優良、30%以上でトップクラス</div>
+            <input type="range" id="s2" class="tr-low" min="0" max="60" value="20" step="1">
+            <div class="slider-scale"><span>0%</span><span>15%</span><span>30%</span><span>45%</span><span>60%</span></div>
+            <div class="slider-result">初回 <b id="n1">100</b>人 → 2回目来店：<b id="n2">20</b>人</div>
+        </div>
+
+        <div class="slider-card">
+            <div class="slider-top">
+                <div class="slider-name"><span class="badge">3</span>回目 来店率</div>
+                <div class="slider-pct color-mid" id="pct3">25%</div>
+            </div>
+            <div class="slider-hint">2回目来店者のうち再来店する割合。業界平均：約20〜30%</div>
+            <input type="range" id="s3" class="tr-mid" min="0" max="80" value="25" step="1">
+            <div class="slider-scale"><span>0%</span><span>20%</span><span>40%</span><span>60%</span><span>80%</span></div>
+            <div class="slider-result">2回目 <b id="n2b">20</b>人 → 3回目来店：<b id="n3">5</b>人</div>
+        </div>
+
+        <div class="slider-card">
+            <div class="slider-top">
+                <div class="slider-name"><span class="badge">4</span>回目 来店率（定着）</div>
+                <div class="slider-pct color-high" id="pct4">60%</div>
+            </div>
+            <div class="slider-hint">3回来店した方がファンになる割合。60%以上で定着が見込めます</div>
+            <input type="range" id="s4" class="tr-high" min="0" max="100" value="60" step="1">
+            <div class="slider-scale"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+            <div class="slider-result">3回目 <b id="n3b">5</b>人 → ファン（定着）：<b id="n4">3</b>人</div>
+        </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="card">
+        <div class="card-title"><span>03</span>売上・LTV パラメーターを設定</div>
+        <div class="ltv-params">
+            <div class="ltv-param-box">
+                <div class="ltv-param-label">客単価（1回あたり）</div>
+                <div class="ltv-param-val">
+                    <span style="font-size:17px;color:#06C755;font-weight:900;">¥</span>
+                    <input type="number" id="unitPrice"
+                        style="width:115px;font-size:22px;font-weight:900;background:transparent;border:none;border-bottom:2px solid #c8e6d2;border-radius:0;padding:3px 0;color:#1a1a1a;outline:none;"
+                        value="2500" min="100" max="100000" step="100">
+                </div>
+                <div class="ltv-param-hint">飲食店平均：1,500〜4,000円</div>
+            </div>
+            <div class="ltv-param-box">
+                <div class="ltv-param-label">ファンの月間来店頻度</div>
+                <div class="ltv-param-val"><span id="freqVal">2</span><span class="small">回 / 月</span></div>
+                <input type="range" id="sFreq" class="tr-line" min="1" max="8" value="2" step="0.5" style="margin-top:8px;">
+                <div class="ltv-param-hint">定着後の平均来店頻度</div>
+            </div>
+            <div class="ltv-param-box">
+                <div class="ltv-param-label">平均 継続期間</div>
+                <div class="ltv-param-val"><span id="durVal">24</span><span class="small">ヶ月</span></div>
+                <input type="range" id="sDur" class="tr-line" min="6" max="60" value="24" step="6" style="margin-top:8px;">
+                <div class="ltv-param-hint">ファンが通い続ける期間</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STEP 4 ファネル -->
+    <div class="card">
+        <div class="card-title"><span>04</span>来店ファネル（視覚化）</div>
+        <div class="funnel-wrap" id="funnel"></div>
+    </div>
+
+    <!-- 定着率 -->
+    <div class="loyalty-card">
+        <div class="sec-label">総合 定着率（初回来店 → ファン化）</div>
+        <div class="big-pct color-low" id="finalPct">3.0%</div>
+        <div class="loyalty-sub" id="finalSub">100人来店 → 3人がファンに</div>
+        <div class="loyalty-comment" id="finalComment"></div>
+        <div class="mini-grid">
+            <div class="mini-box">
+                <div class="mini-num" id="s-initial">100</div>
+                <div class="mini-lbl">初回来店者（月）</div>
+            </div>
+            <div class="mini-box">
+                <div class="mini-num" id="s-loyal">3</div>
+                <div class="mini-lbl">新規ファン（月）</div>
+            </div>
+            <div class="mini-box">
+                <div class="mini-num" id="s-year">36</div>
+                <div class="mini-lbl">ファン 年間累計</div>
+            </div>
+        </div>
+        <div class="bench">
+            <div class="bench-title">📊 業界ベンチマーク（定着率）</div>
+            <div class="bench-items">
+                <div class="bench-item"><span class="bench-dot" style="background:#FC8181"></span>業界平均：約1〜3%</div>
+                <div class="bench-item"><span class="bench-dot" style="background:#F6AD55"></span>優良店舗：5〜10%</div>
+                <div class="bench-item"><span class="bench-dot" style="background:#06C755"></span>トップ店舗：10%以上</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LTV -->
+    <div class="ltv-card">
+        <div class="sec-label">ファン1人あたりの顧客生涯価値（LTV）</div>
+        <div class="ltv-hero">
+            <span class="yen">¥</span>
+            <span class="num" id="ltvNum">120,000</span>
+        </div>
+        <div class="ltv-sub" id="ltvCalc">¥2,500 × 2回/月 × 24ヶ月 = ¥120,000</div>
+        <div class="ltv-row">
+            <div class="ltv-box">
+                <div class="lbl">月間 新規ファンの<br>LTV 合計</div>
+                <div class="val accent" id="ltvMonth">—</div>
+            </div>
+            <div class="ltv-box">
+                <div class="lbl">年間 新規ファンの<br>LTV 合計</div>
+                <div class="val accent" id="ltvYear">—</div>
+            </div>
+            <div class="ltv-box">
+                <div class="lbl">ファン1人の<br>月次売上貢献</div>
+                <div class="val" id="ltvMonthly">—</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 安定化チャート -->
+    <div class="stable-card">
+        <div class="sec-label">売上安定化シミュレーション（12ヶ月）</div>
+        <div class="sec-sub">ファンが積み重なるほど、毎月の売上基盤が育っていきます</div>
+        <div class="chart-wrap">
+            <svg class="chart-svg" id="chartSvg" viewBox="0 0 820 220" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+        <div class="stable-hero">
+            <div class="lbl">安定後の月次ファン売上（<span id="durLabel">24</span>ヶ月目以降）</div>
+            <div class="val" id="stableVal">¥360,000 / 月</div>
+            <div class="sub" id="stableSub">ファン累計 72人 × ¥2,500 × 2回/月</div>
+        </div>
+    </div>
+
+    <!-- リスク可視化 -->
+    <div class="loss-card">
+        <div class="risk-hero">
+            <div class="risk-hero-main">始めていないことが、最大のリスクです。</div>
+            <div class="risk-hero-sub">現状維持は「安全」ではなく、毎月損失が積み重なる「選択」です</div>
+        </div>
+
+        <div class="compare-wrap">
+            <div class="compare-side current">
+                <div class="cmp-lbl c-red">現状（設定値）</div>
+                <div class="cmp-pct c-red" id="cmp-cur-pct">20%</div>
+                <div class="cmp-sub">月間ファン <b id="cmp-cur-fans">3</b>人</div>
+            </div>
+            <div class="compare-arrow">→</div>
+            <div class="compare-side ideal">
+                <div class="cmp-lbl c-green">目標値（スライダーで設定）</div>
+                <div class="cmp-pct c-green" id="cmp-tgt-pct">40%</div>
+                <div class="cmp-sub">月間ファン <b id="cmp-tgt-fans">6</b>人</div>
+                <div class="cmp-slider-area">
+                    <div class="cmp-slider-lbl">目標 2回目来店率</div>
+                    <input type="range" id="s2ideal" class="tr-high" min="0" max="60" value="40" step="1">
+                    <div class="slider-scale"><span>0%</span><span>20%</span><span>40%</span><span>60%</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="risk-monthly">
+            <div class="risk-monthly-lbl">現状を続けることで 毎月 失い続けている LTV（機会損失）</div>
+            <div class="risk-monthly-val" id="risk-m-val">—</div>
+            <div class="risk-monthly-sub" id="risk-m-sub">目標来店率を上回る値を設定してください</div>
+        </div>
+
+        <div class="timeline-title">このまま放置し続けると… 累積機会損失はどんどん膨らみます</div>
+        <div class="timeline-grid">
+            <div class="timeline-item tl-1"><div class="t-lbl">3ヶ月後</div><div class="t-val" id="tl-3">—</div></div>
+            <div class="timeline-item tl-2"><div class="t-lbl">6ヶ月後</div><div class="t-val" id="tl-6">—</div></div>
+            <div class="timeline-item tl-3"><div class="t-lbl">12ヶ月後</div><div class="t-val" id="tl-12">—</div></div>
+            <div class="timeline-item tl-4"><div class="t-lbl">24ヶ月後</div><div class="t-val" id="tl-24">—</div></div>
+        </div>
+
+        <hr class="risk-divider">
+
+        <div class="gain-box">
+            <div class="gain-lbl">今すぐ始めれば、年間で獲得できる LTV</div>
+            <div class="gain-val" id="gain-val">—</div>
+            <div class="gain-sub" id="gain-sub">目標来店率を達成した場合の年間 新規ファン LTV 合計</div>
+        </div>
+    </div>
+
+    <footer>
+        ※ 本シミュレーターは一般的な業界データをもとにした参考値です。実際の数値は店舗・業態により異なります。<br>
+        LTV計算式：客単価 × 月間来店頻度 × 継続月数
+    </footer>
+
+</div>
+<script>
+    const elFirst = document.getElementById('firstVisit');
+    const elS2    = document.getElementById('s2');
+    const elS3    = document.getElementById('s3');
+    const elS4    = document.getElementById('s4');
+    const elPrice = document.getElementById('unitPrice');
+    const elFreq  = document.getElementById('sFreq');
+    const elDur    = document.getElementById('sDur');
+    const elS2ideal = document.getElementById('s2ideal');
+
+    const FUNNEL_COLORS = [
+        { bg: '#E8F8EF', border: '#a8dbb8', text: '#2d8050' },
+        { bg: '#C8EDD7', border: '#7acc9a', text: '#1e6e40' },
+        { bg: '#8ED9A8', border: '#40b86a', text: '#fff'    },
+        { bg: '#06C755', border: '#04a344', text: '#fff'    },
+    ];
+
+    function r1(n) { return Math.round(n * 10) / 10; }
+    function fmtYen(n) {
+        if (n >= 1e8) return '¥' + r1(n/1e8) + '億';
+        if (n >= 1e4) return '¥' + Math.round(n/1e4) + '万';
+        return '¥' + Math.round(n).toLocaleString();
+    }
+    function fmtYenFull(n) { return '¥' + Math.round(n).toLocaleString(); }
+    function colorCls(v, lo, hi) { return v < lo ? 'color-low' : v < hi ? 'color-mid' : 'color-high'; }
+    function trackCls(v, lo, hi) { return v < lo ? 'tr-low'    : v < hi ? 'tr-mid'    : 'tr-high'; }
+
+    function setSlider(el, v, min, max, lo, hi) {
+        const pct = ((v - min) / (max - min) * 100).toFixed(1);
+        const color = v < lo ? '#FC8181' : v < hi ? '#F6AD55' : '#06C755';
+        el.style.background = `linear-gradient(to right, ${color} ${pct}%, #e0e0e0 ${pct}%)`;
+    }
+    function setLineSlider(el, v, min, max) {
+        const pct = ((v - min) / (max - min) * 100).toFixed(1);
+        el.style.background = `linear-gradient(to right, #06C755 ${pct}%, #e0e0e0 ${pct}%)`;
+    }
+
+    function buildFunnel(steps, rates) {
+        const wrap = document.getElementById('funnel');
+        wrap.innerHTML = '';
+        const maxN = steps[0].count || 1;
+        steps.forEach((step, i) => {
+            const pct = Math.max(step.count / maxN * 100, step.count > 0 ? 3 : 0);
+            const c = FUNNEL_COLORS[i];
+            const row = document.createElement('div');
+            row.className = 'funnel-row';
+            row.innerHTML =
+                `<div class="funnel-lbl">${step.label}</div>
+                 <div class="funnel-bar-cell">
+                   <div class="funnel-bar" style="width:${pct}%;background:${c.bg};border:2px solid ${c.border};color:${c.text};">
+                     ${step.count > 0 ? r1(step.count)+'人' : ''}
+                   </div>
+                 </div>
+                 <div class="funnel-count" style="color:${c.border}">${r1(step.count)}人</div>`;
+            wrap.appendChild(row);
+            if (i < steps.length - 1) {
+                const conn = document.createElement('div');
+                conn.className = 'funnel-conn';
+                conn.innerHTML =
+                    `<div></div>
+                     <div style="font-size:11px;color:#ccc;padding-left:6px;">↓ ${rates[i]}% が再来店</div>
+                     <div></div>`;
+                wrap.appendChild(conn);
+            }
+        });
+    }
+
+    function buildChart(newLoyalPerMonth, unitPrice, freq, dur) {
+        const svg = document.getElementById('chartSvg');
+        svg.innerHTML = '';
+        const W=820, H=220, pL=10, pR=10, pT=30, pB=40;
+        const cW=W-pL-pR, cH=H-pT-pB;
+        const months=12, bW=cW/months;
+        const ns='http://www.w3.org/2000/svg';
+
+        const data = [];
+        for (let m=1; m<=months; m++)
+            data.push(Math.min(m, dur) * newLoyalPerMonth * unitPrice * freq);
+        const maxVal = Math.max(...data, 1);
+
+        // 安定ライン
+        if (dur <= months) {
+            const ly = pT + cH - data[dur-1]/maxVal*cH;
+            const line = document.createElementNS(ns,'line');
+            line.setAttribute('x1', pL+(dur-1)*bW);
+            line.setAttribute('x2', W-pR);
+            line.setAttribute('y1', ly); line.setAttribute('y2', ly);
+            line.setAttribute('stroke','rgba(6,199,85,0.4)');
+            line.setAttribute('stroke-width','1.5');
+            line.setAttribute('stroke-dasharray','5 3');
+            svg.appendChild(line);
+            const lt = document.createElementNS(ns,'text');
+            lt.setAttribute('x', W-pR-2); lt.setAttribute('y', ly-4);
+            lt.setAttribute('text-anchor','end');
+            lt.setAttribute('font-size','9'); lt.setAttribute('fill','#06C755');
+            lt.setAttribute('opacity','0.7');
+            lt.textContent = '安定売上ライン';
+            svg.appendChild(lt);
+        }
+
+        // バー
+        data.forEach((val, i) => {
+            const bh = Math.max(val/maxVal*cH, 1);
+            const bx = pL + i*bW + bW*0.1;
+            const by = pT + cH - bh;
+            const bw = bW * 0.8;
+            const opacity = 0.3 + (i/(months-1))*0.7;
+
+            const rect = document.createElementNS(ns,'rect');
+            rect.setAttribute('x', bx); rect.setAttribute('y', by);
+            rect.setAttribute('width', bw); rect.setAttribute('height', bh);
+            rect.setAttribute('rx','5'); rect.setAttribute('ry','5');
+            rect.setAttribute('fill', `rgba(6,199,85,${opacity})`);
+            svg.appendChild(rect);
+
+            if (bh > 22) {
+                const txt = document.createElementNS(ns,'text');
+                txt.setAttribute('x', bx+bw/2); txt.setAttribute('y', by-4);
+                txt.setAttribute('text-anchor','middle');
+                txt.setAttribute('font-size','9');
+                txt.setAttribute('fill','#06C755');
+                txt.setAttribute('font-weight','bold');
+                txt.textContent = fmtYen(val);
+                svg.appendChild(txt);
+            }
+
+            const lbl = document.createElementNS(ns,'text');
+            lbl.setAttribute('x', bx+bw/2); lbl.setAttribute('y', pT+cH+16);
+            lbl.setAttribute('text-anchor','middle');
+            lbl.setAttribute('font-size','10'); lbl.setAttribute('fill','#bbb');
+            lbl.textContent = (i+1)+'月';
+            svg.appendChild(lbl);
+        });
+    }
+
+    function update() {
+        const n0    = Math.max(parseInt(elFirst.value)||0, 0);
+        const r2    = parseInt(elS2.value);
+        const r3    = parseInt(elS3.value);
+        const r4    = parseInt(elS4.value);
+        const price = Math.max(parseInt(elPrice.value)||0, 0);
+        const freq  = parseFloat(elFreq.value);
+        const dur   = parseInt(elDur.value);
+
+        const n1=n0, n2=n1*r2/100, n3=n2*r3/100, n4=n3*r4/100;
+        const loyaltyPct = n1>0 ? n4/n1*100 : 0;
+
+        const cc2=colorCls(r2,20,25), cc3=colorCls(r3,20,30), cc4=colorCls(r4,40,60);
+        document.getElementById('pct2').textContent=r2+'%';
+        document.getElementById('pct2').className='slider-pct '+cc2;
+        document.getElementById('pct3').textContent=r3+'%';
+        document.getElementById('pct3').className='slider-pct '+cc3;
+        document.getElementById('pct4').textContent=r4+'%';
+        document.getElementById('pct4').className='slider-pct '+cc4;
+        setSlider(elS2, r2, 0, 60, 20, 25);
+        setSlider(elS3, r3, 0, 80, 20, 30);
+        setSlider(elS4, r4, 0, 100, 40, 60);
+        document.getElementById('freqVal').textContent=freq;
+        document.getElementById('durVal').textContent=dur;
+        setLineSlider(elFreq, freq, 1, 8);
+        setLineSlider(elDur,  dur,  6, 60);
+
+        document.getElementById('n1').textContent=r1(n1);
+        document.getElementById('n2').textContent=r1(n2);
+        document.getElementById('n2b').textContent=r1(n2);
+        document.getElementById('n3').textContent=r1(n3);
+        document.getElementById('n3b').textContent=r1(n3);
+        document.getElementById('n4').textContent=r1(n4);
+
+        buildFunnel([
+            {label:'初回来店',      count:n1},
+            {label:'2回目来店',     count:n2},
+            {label:'3回目来店',     count:n3},
+            {label:'ファン（定着）',count:n4},
+        ], [r2, r3, r4]);
+
+        document.getElementById('finalPct').textContent=loyaltyPct.toFixed(1)+'%';
+        document.getElementById('finalPct').className='big-pct '+colorCls(loyaltyPct,3,10);
+        document.getElementById('finalSub').textContent=`${r1(n1)}人来店 → ${r1(n4)}人がファンに`;
+        let comment='';
+        if      (loyaltyPct>=10) comment='🏆 トップクラスの定着率！ファン化が加速しています';
+        else if (loyaltyPct>=5)  comment='✨ 優良店舗レベル。ファンを着実に積み上げています';
+        else if (loyaltyPct>=3)  comment='📈 業界平均並み。2回目来店率の改善が効果的です';
+        else if (loyaltyPct>0)   comment='⚠️ 初回体験・フォローアップの強化が急務です';
+        document.getElementById('finalComment').textContent=comment;
+        document.getElementById('s-initial').textContent=r1(n1);
+        document.getElementById('s-loyal').textContent=r1(n4);
+        document.getElementById('s-year').textContent=r1(n4*12);
+
+        const ltvPer=price*freq*dur, ltvMonth=ltvPer*n4, ltvYear=ltvPer*n4*12, mPer=price*freq;
+        document.getElementById('ltvNum').textContent=Math.round(ltvPer).toLocaleString();
+        document.getElementById('ltvCalc').textContent=
+            `¥${price.toLocaleString()} × ${freq}回/月 × ${dur}ヶ月 = ${fmtYenFull(ltvPer)}`;
+        document.getElementById('ltvMonth').textContent=n4>0?fmtYen(ltvMonth):'—';
+        document.getElementById('ltvYear').textContent=n4>0?fmtYen(ltvYear):'—';
+        document.getElementById('ltvMonthly').textContent=fmtYenFull(mPer)+' / 人';
+
+        buildChart(n4, price, freq, dur);
+        const steadyFans=dur*n4, steadySales=steadyFans*price*freq;
+        document.getElementById('durLabel').textContent=dur;
+        document.getElementById('stableVal').textContent=fmtYenFull(steadySales)+' / 月';
+        document.getElementById('stableSub').textContent=
+            `ファン累計 ${r1(steadyFans)}人 × ¥${price.toLocaleString()} × ${freq}回/月`;
+
+        // 損失比較
+        const r2ideal = parseInt(elS2ideal.value);
+        const n4ideal = n1 * r2ideal/100 * r3/100 * r4/100;
+        document.getElementById('cmp-cur-pct').textContent  = r2 + '%';
+        document.getElementById('cmp-tgt-pct').textContent  = r2ideal + '%';
+        document.getElementById('cmp-cur-fans').textContent = r1(n4);
+        document.getElementById('cmp-tgt-fans').textContent = r1(n4ideal);
+        const ip = (r2ideal / 60 * 100).toFixed(1);
+        elS2ideal.style.background = `linear-gradient(to right, #06C755 ${ip}%, #e0e0e0 ${ip}%)`;
+
+        const lostM    = Math.max(n4ideal - n4, 0);
+        const lostMoLTV = lostM * ltvPer;
+
+        document.getElementById('risk-m-val').textContent = lostMoLTV > 0 ? fmtYen(lostMoLTV) : '¥0';
+        document.getElementById('risk-m-sub').textContent = lostM > 0
+            ? `毎月 ${r1(lostM)}人 のファンを逃し続けています`
+            : '目標を現状より高く設定すると損失が表示されます';
+
+        document.getElementById('tl-3').textContent  = lostMoLTV > 0 ? fmtYen(lostMoLTV * 3)  : '—';
+        document.getElementById('tl-6').textContent  = lostMoLTV > 0 ? fmtYen(lostMoLTV * 6)  : '—';
+        document.getElementById('tl-12').textContent = lostMoLTV > 0 ? fmtYen(lostMoLTV * 12) : '—';
+        document.getElementById('tl-24').textContent = lostMoLTV > 0 ? fmtYen(lostMoLTV * 24) : '—';
+
+        const gainLTV = n4ideal * 12 * ltvPer;
+        document.getElementById('gain-val').textContent = gainLTV > 0 ? fmtYen(gainLTV) : '—';
+        document.getElementById('gain-sub').textContent =
+            `目標来店率 ${r2ideal}% 達成で 年間 ${r1(n4ideal*12)}人 のファンが生まれます`;
+    }
+
+    [elFirst,elS2,elS3,elS4,elPrice,elFreq,elDur,elS2ideal].forEach(el=>el.addEventListener('input',update));
+    update();
+</script>
+</body>
+</html>
