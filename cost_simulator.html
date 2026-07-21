@@ -818,7 +818,7 @@
           <div class="sim-num">03</div>
           <div class="sim-title-wrap">
             <div class="sim-title"><i class="fas fa-credit-card" style="color:var(--gold);margin-right:6px;"></i>クレジット決済手数料の見直し</div>
-            <div class="sim-subtitle">決済サービス変更・交渉による手数料率削減</div>
+            <div class="sim-subtitle">stera pack（オールインワン決済端末）で手数料率と端末コストを削減</div>
           </div>
           <div class="sim-preview">
             <div class="amount" id="prev3">¥0</div>
@@ -829,8 +829,25 @@
         <div class="sim-body">
           <div class="rate-note">
             <i class="fas fa-tag"></i>
-            <div><span class="rate-label">相場の目安</span>飲食店のカード決済手数料は概ね <b>3.0〜3.75%</b>。中小加盟店向けサービスや交渉で <b>1.9〜2.7%台</b> まで下がる例も。QRコード決済は <b>1.5〜3.25%程度</b> です。</div>
+            <div><span class="rate-label">相場の目安</span>飲食店のカード決済手数料は概ね <b>3.0〜3.75%</b>。<b>stera pack</b>（導入・初期0円／月額初年度0円）なら Visa/Mastercard <b>1.98%（スモールビジネス）〜2.70%（スタンダード）</b> まで下がります。</div>
           </div>
+
+          <!-- stera pack プラン選択 -->
+          <div style="font-size:0.78rem;color:var(--text3);margin-bottom:8px;font-weight:600;"><i class="fas fa-store" style="color:var(--gold);margin-right:4px;"></i>stera pack プランを選択（初期0円・月額初年度0円／下の試算はVisa/Mastercard基準）</div>
+          <div class="plan-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
+            <div class="plan-chip" id="sp_small" onclick="selectSteraPlan('sp_small')">
+              <div class="pc-name">スモールビジネス</div>
+              <div class="pc-price">1.98<span style="font-size:0.7rem;font-weight:400;">%</span></div>
+              <div class="pc-tag">中小事業者・条件あり</div>
+            </div>
+            <div class="plan-chip" id="sp_std" onclick="selectSteraPlan('sp_std')">
+              <div class="pc-name">スタンダード</div>
+              <div class="pc-price">2.70<span style="font-size:0.7rem;font-weight:400;">%</span></div>
+              <div class="pc-tag">カード決済が多い店</div>
+            </div>
+          </div>
+          <div id="stera_plan_note" style="font-size:0.72rem;color:var(--gold-ink);margin-bottom:14px;min-height:1em;font-weight:600;"></div>
+
           <div class="form-grid">
             <div class="form-group">
               <label>月間カード売上（円）</label>
@@ -841,9 +858,13 @@
               <input type="number" id="card_rate_now" placeholder="例：3.5" step="0.01" onchange="calc3()" oninput="calc3()">
             </div>
             <div class="form-group">
-              <label>見直し後の手数料率（%）</label>
-              <input type="number" id="card_rate_after" placeholder="例：2.0" step="0.01" onchange="calc3()" oninput="calc3()">
+              <label>見直し後の手数料率（%）※プラン選択で自動入力</label>
+              <input type="number" id="card_rate_after" placeholder="例：1.98" step="0.01" onchange="calc3()" oninput="calc3()">
             </div>
+          </div>
+          <div style="font-size:0.68rem;color:var(--text2);margin:-4px 0 16px;line-height:1.55;">
+            ※手数料率（税抜）：<b style="color:var(--text3);">スモールビジネス</b>＝Visa/MC 1.98％・JCB/Amex/Diners/DISCOVER 2.48％・電子マネー/コード決済等 3.24％／<b style="color:var(--text3);">スタンダード</b>＝Visa/MC 2.70％・JCB等 3.24％・その他 3.24％。上表はVisa/MC基準の試算です。<br>
+            ※スモールビジネスは条件あり（中小企業の定義に該当／上場グループ・FC加盟店でない／Visa・MC年間売上見込2,500万円以下／たばこ・百貨店・旅行代理店・宿泊・運輸・不動産等を除く）。14ヶ月目以降サービス利用料 端末1台¥3,000/月（税抜）、直近1年のキャッシュレス売上3,000万円以上で永年無料。手数料には一部非課税分を含み、請求時に消費税相当額を別途。
           </div>
           <div class="result-box">
             <div class="result-item"><div class="val red" id="r3_now">¥0</div><div class="lbl">現在（月間）</div></div>
@@ -1457,8 +1478,27 @@ function calc2() {
 }
 
 /* ============================================================
-   CALC 3: クレジット手数料
+   CALC 3: クレジット手数料（stera pack プラン）
 ============================================================ */
+const STERA_PLANS = {
+  sp_small: { name: 'スモールビジネスプラン', visa: 1.98, jcb: 2.48, other: 3.24 },
+  sp_std:   { name: 'スタンダードプラン',     visa: 2.70, jcb: 3.24, other: 3.24 },
+};
+let selectedSteraPlanId = null;
+function selectSteraPlan(id) {
+  const p = STERA_PLANS[id];
+  if (!p) return;
+  selectedSteraPlanId = id;
+  document.querySelectorAll('#card3 .plan-chip').forEach(c => c.classList.remove('selected'));
+  const chip = document.getElementById(id);
+  if (chip) chip.classList.add('selected');
+  setVal('card_rate_after', p.visa);
+  setText('stera_plan_note',
+    'stera pack ' + p.name + '：Visa/Mastercard ' + p.visa +
+    '%／JCB・Amex・Diners・DISCOVER ' + p.jcb +
+    '%／電子マネー・コード決済等 ' + p.other + '%（下の試算はVisa/Mastercard基準）');
+  calc3();
+}
 function calc3() {
   const sales = getVal('card_sales');
   const rateNow = getVal('card_rate_now') / 100;
@@ -1939,7 +1979,9 @@ function resetAll() {
   document.querySelectorAll('.plan-chip').forEach(c => c.classList.remove('selected'));
   selectedOshiPlanId = null;
   selectedPhonePlanId = null;
+  selectedSteraPlanId = null;
   setText('phone_plan_note', '');
+  setText('stera_plan_note', '');
   for (let i = 0; i < 6; i++) { sim.now[i]=0; sim.after[i]=0; sim.save[i]=0; }
   calc1(); calc2(); calc3(); calc4(); calc5(); calc6();
 }
@@ -1961,9 +2003,9 @@ function loadDemo() {
   document.getElementById('wifi_free_toggle').checked = true;
   calc2();
 
-  // クレジット
-  setVal('card_sales', 2000000); setVal('card_rate_now', 3.5); setVal('card_rate_after', 2.0);
-  calc3();
+  // クレジット：月商¥2,000,000・現行3.5% → stera pack スモールビジネス（Visa/MC 1.98%）
+  setVal('card_sales', 2000000); setVal('card_rate_now', 3.5);
+  selectSteraPlan('sp_small');
 
   // 食用油：4缶/月・缶単価¥6,000・削減30%・月額機材代¥5,000 → 提案対象
   setVal('oil_cans', 4); setVal('oil_can_price', 6000); setVal('oil_fee', 5000); setVal('oil_rate', 30);
