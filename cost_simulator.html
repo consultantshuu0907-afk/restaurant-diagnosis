@@ -936,7 +936,7 @@
           <div class="sim-num">05</div>
           <div class="sim-title-wrap">
             <div class="sim-title"><i class="fas fa-mobile-alt" style="color:var(--gold);margin-right:6px;"></i>スマホ料金の見直し</div>
-            <div class="sim-subtitle">格安SIM・プラン変更による通信費削減</div>
+            <div class="sim-subtitle">Bizパッケージ＋（法人限定）で通話し放題込み・スマホ料金を大幅見直し</div>
           </div>
           <div class="sim-preview">
             <div class="amount" id="prev5">¥0</div>
@@ -947,8 +947,40 @@
         <div class="sim-body">
           <div class="rate-note">
             <i class="fas fa-tag"></i>
-            <div><span class="rate-label">相場の目安</span>大手キャリアは1台あたり月 <b>6,000〜9,000円程度</b>。格安SIM・プラン見直しで <b>1,000〜3,000円台</b> に。差額は1台あたり月 <b>3,000〜5,000円</b> が目安です。</div>
+            <div><span class="rate-label">相場の目安</span>大手キャリアは1台あたり月 <b>6,000〜9,000円程度</b>。<b>Bizパッケージ＋（法人限定）</b>なら国内通話し放題込みで月 <b>1,800〜5,300円（税抜）</b> に。差額は1台あたり月 <b>3,000〜5,000円</b> が目安です。</div>
           </div>
+
+          <!-- Bizパッケージ＋ プラン選択 -->
+          <div style="font-size:0.78rem;color:var(--text3);margin-bottom:8px;font-weight:600;"><i class="fas fa-sim-card" style="color:var(--gold);margin-right:4px;"></i>Bizパッケージ＋ プランを選択（法人限定・税抜/月・国内通話し放題）</div>
+          <div class="plan-grid">
+            <div class="plan-chip" id="pp_1" onclick="selectPhonePlan(1800,4280,'pp_1','1GB')">
+              <div class="pc-name">1GB</div>
+              <div class="pc-price">¥1,800<span style="font-size:0.7rem;font-weight:400;">/月</span></div>
+              <div class="pc-tag">通話メイン</div>
+            </div>
+            <div class="plan-chip" id="pp_2" onclick="selectPhonePlan(4300,7780,'pp_2','5GB')">
+              <div class="pc-name">5GB</div>
+              <div class="pc-price">¥4,300<span style="font-size:0.7rem;font-weight:400;">/月</span></div>
+              <div class="pc-tag">通話＋データ</div>
+            </div>
+            <div class="plan-chip" id="pp_3" onclick="selectPhonePlan(4800,8780,'pp_3','20GB')">
+              <div class="pc-name">20GB</div>
+              <div class="pc-price">¥4,800<span style="font-size:0.7rem;font-weight:400;">/月</span></div>
+              <div class="pc-tag">外出そこそこ</div>
+            </div>
+            <div class="plan-chip" id="pp_4" onclick="selectPhonePlan(4800,9280,'pp_4','50GB')">
+              <div class="pc-name">50GB</div>
+              <div class="pc-price">¥4,800<span style="font-size:0.7rem;font-weight:400;">/月</span></div>
+              <div class="pc-tag">データ多め</div>
+            </div>
+            <div class="plan-chip" id="pp_5" onclick="selectPhonePlan(5300,10780,'pp_5','無制限')">
+              <div class="pc-name">無制限</div>
+              <div class="pc-price">¥5,300<span style="font-size:0.7rem;font-weight:400;">/月</span></div>
+              <div class="pc-tag">使い放題</div>
+            </div>
+          </div>
+          <div id="phone_plan_note" style="font-size:0.72rem;color:var(--gold-ink);margin-bottom:14px;min-height:1em;font-weight:600;"></div>
+
           <div class="form-grid">
             <div class="form-group">
               <label>台数</label>
@@ -959,9 +991,12 @@
               <input type="number" id="phone_now" placeholder="例：8000" onchange="calc5()" oninput="calc5()">
             </div>
             <div class="form-group">
-              <label>見直し後の1台あたり月額（円）</label>
-              <input type="number" id="phone_after" placeholder="例：3000" onchange="calc5()" oninput="calc5()">
+              <label>見直し後の1台あたり月額（円）※プラン選択で自動入力</label>
+              <input type="number" id="phone_after" placeholder="例：4300" onchange="calc5()" oninput="calc5()">
             </div>
+          </div>
+          <div style="font-size:0.68rem;color:var(--text2);margin:-4px 0 16px;line-height:1.55;">
+            ※Bizパッケージ＋は<b style="color:var(--text3);">法人契約限定・記載は税抜・自動更新の年間契約が必須</b>。留守番電話プラス／割込通話／グループ通話／一定額ストップが無料。申込受付〜2026年3月31日。別途機種代金がかかります。
           </div>
           <div class="result-box">
             <div class="result-item"><div class="val red" id="r5_now">¥0</div><div class="lbl">現在（月間）</div></div>
@@ -1526,6 +1561,20 @@ function calc4() {
 /* ============================================================
    CALC 5: スマホ
 ============================================================ */
+let selectedPhonePlanId = null;
+function selectPhonePlan(sp, normal, id, label) {
+  selectedPhonePlanId = id;
+  document.querySelectorAll('#card5 .plan-chip').forEach(c => c.classList.remove('selected'));
+  const chip = document.getElementById(id);
+  if (chip) chip.classList.add('selected');
+  setVal('phone_after', sp);
+  const off = normal - sp;
+  setText('phone_plan_note',
+    'Bizパッケージ＋ ' + label + '：通常 ¥' + normal.toLocaleString('ja-JP') +
+    ' → 特別 ¥' + sp.toLocaleString('ja-JP') +
+    '（月 ¥' + off.toLocaleString('ja-JP') + ' OFF・税抜／国内通話し放題込み）');
+  calc5();
+}
 function calc5() {
   const count = getVal('phone_count'), nowPer = getVal('phone_now'), afterPer = getVal('phone_after');
   const now = Math.round(count * nowPer);
@@ -1546,7 +1595,7 @@ function calc5() {
 let selectedOshiPlanId = null;
 function selectOshiPlan(price, chipId) {
   selectedOshiPlanId = chipId;
-  document.querySelectorAll('.plan-chip').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('#card6 .plan-chip').forEach(c => c.classList.remove('selected'));
   document.getElementById(chipId).classList.add('selected');
   document.getElementById('oshi_price_after').value = price;
   calc6();
@@ -1889,6 +1938,8 @@ function resetAll() {
   document.getElementById('oil_tax').checked = false;
   document.querySelectorAll('.plan-chip').forEach(c => c.classList.remove('selected'));
   selectedOshiPlanId = null;
+  selectedPhonePlanId = null;
+  setText('phone_plan_note', '');
   for (let i = 0; i < 6; i++) { sim.now[i]=0; sim.after[i]=0; sim.save[i]=0; }
   calc1(); calc2(); calc3(); calc4(); calc5(); calc6();
 }
@@ -1920,9 +1971,9 @@ function loadDemo() {
   document.getElementById('oil_rate_lbl').textContent = '30%';
   calc4();
 
-  // スマホ
-  setVal('phone_count', 3); setVal('phone_now', 8000); setVal('phone_after', 3000);
-  calc5();
+  // スマホ：3台・現在¥8,000 → Bizパッケージ＋ 5GB（特別¥4,300）
+  setVal('phone_count', 3); setVal('phone_now', 8000);
+  selectPhonePlan(4300, 7780, 'pp_2', '5GB');
 
   // おしぼり
   setVal('oshi_count', 1500); setVal('oshi_price_now', 5.0);
