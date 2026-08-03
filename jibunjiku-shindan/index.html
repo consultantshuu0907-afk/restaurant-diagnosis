@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>自分軸タイプ診断 | あなたの一歩が止まる理由、ご存じですか？</title>
+  <meta name="description" content="コーチとして活動したい・職場の対話力を高めたい・自分の生き方を整えたい。あなたが「止まりやすい理由」を1分で診断します。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=2" />
+</head>
+<body>
+
+  <!-- ========== SCREEN: TOP ========== -->
+  <div id="screen-top" class="screen active">
+    <div class="screen-inner">
+
+      <div class="top-badge">✦ 無料・1分で完了</div>
+
+      <h1 class="top-title">
+        あなたの<br>
+        <span class="accent">一歩が止まる理由</span>、<br>
+        ご存じですか？
+      </h1>
+      <p class="top-sub">— 自分軸タイプ診断 —</p>
+
+      <div class="top-message-box">
+        <p class="top-msg-lead">「変わりたい」「もっと成長したい」<br>その気持ち、ちゃんとあるのに動けない。</p>
+        <p>それは意志が弱いからでも、才能がないからでもありません。</p>
+        <p>あなたには<strong>「止まりやすいパターン」</strong>があって、<br>それをまだ知らないだけです。</p>
+        <p>この診断で、そのパターンを見つけ、<br>あなたに合った「次の一手」を明らかにします。</p>
+      </div>
+
+      <div class="top-for-who">
+        <p class="top-for-who-label">こんな方におすすめ</p>
+        <ul>
+          <li>コーチや講師として活動することに興味がある</li>
+          <li>部下育成・1on1・コンサルの質をもっと高めたい</li>
+          <li>今の働き方・生き方を根本から見直したい</li>
+          <li>自分の強みや価値観を言語化したい</li>
+          <li>コーチングに興味があるが、何から始めればいいかわからない</li>
+        </ul>
+      </div>
+
+      <ul class="top-features">
+        <li>✅ 全5問・約1分で完了</li>
+        <li>✅ 選ぶだけ。記述なし</li>
+        <li>✅ あなたのゴールと止まる理由が同時にわかる</li>
+      </ul>
+
+      <p class="top-reassurance">正解も不正解もありません。<br>思ったまま、直感で選んでください。</p>
+
+      <button class="btn-primary btn-large" id="btn-start">
+        診断をはじめる
+        <span class="btn-arrow">→</span>
+      </button>
+
+      <p class="top-note">無料・登録不要</p>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: QUESTION ========== -->
+  <div id="screen-question" class="screen">
+    <div class="screen-inner">
+
+      <div class="progress-area">
+        <div class="progress-text">
+          <span id="q-current">1</span> / <span id="q-total">5</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="question-card" id="question-card">
+        <p class="question-label">Q<span id="q-num">1</span></p>
+        <h2 class="question-text" id="question-text">質問テキスト</h2>
+      </div>
+
+      <div class="choices-area" id="choices-area">
+        <!-- JS で動的生成 -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: RESULT ========== -->
+  <div id="screen-result" class="screen">
+    <div class="screen-inner">
+
+      <div class="result-header">
+        <div class="result-emoji" id="result-emoji"></div>
+        <p class="result-label">あなたのタイプ</p>
+        <div class="result-type-badge" id="result-type-badge"></div>
+        <h2 class="result-type-name" id="result-type-name"></h2>
+      </div>
+
+      <div class="result-section">
+        <h3 class="result-section-title">📌 このタイプの特徴</h3>
+        <p class="result-section-text" id="result-feature-text"></p>
+      </div>
+
+      <div class="result-section">
+        <h3 class="result-section-title">🔍 止まりやすい理由</h3>
+        <p class="result-section-text" id="result-reason-text"></p>
+      </div>
+
+      <div class="result-section">
+        <h3 class="result-section-title">💡 今のあなたに必要なこと</h3>
+        <p class="result-section-text" id="result-need-text"></p>
+      </div>
+
+      <div class="result-push-box">
+        <p class="result-push-text" id="result-push-text"></p>
+      </div>
+
+      <!-- セミナー導線 -->
+      <div class="seminar-section">
+
+        <div class="seminar-divider"><span>— — —</span></div>
+
+        <p class="seminar-lead" id="seminar-lead-text"></p>
+
+        <div class="seminar-card">
+          <p class="seminar-card-label">FREE SEMINAR</p>
+          <h3 class="seminar-card-title" id="seminar-card-title"></h3>
+
+          <ul class="seminar-card-points" id="seminar-card-points"></ul>
+
+          <div class="seminar-course-tags" id="seminar-course-tags"></div>
+
+          <p class="seminar-card-note">難しいことはしません。来るだけで<br>「次に何をすればいいか」がクリアになって帰れます。</p>
+
+          <button class="btn-primary btn-large btn-seminar" id="btn-seminar">
+            セミナーの詳細を見てみる
+            <span class="btn-arrow">→</span>
+          </button>
+          <p class="seminar-card-sub">無料・オンライン開催・売り込みなし</p>
+        </div>
+
+      </div>
+
+      <button class="btn-retry" id="btn-retry">もう一度診断する</button>
+
+    </div>
+  </div>
+
+  <script src="js/data.js?v=2"></script>
+  <script src="js/app.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,761 @@
+/* ============================================
+   自分軸タイプ診断 — スタイルシート
+   ブルーミング・コーチングスクール ブランド準拠
+   淡いオレンジ × ナチュラルモダン × ジェンダーニュートラル
+   スマホファースト設計
+   ============================================ */
+
+/* ---------- CSS変数（カラー・フォント） ---------- */
+:root {
+  /* ベース：温かみのあるオフホワイト */
+  --color-bg:        #FAF7F4;
+  --color-white:     #FFFFFF;
+
+  /* メインカラー：テラコッタオレンジ（落ち着いた・性別を問わない） */
+  --color-primary:   #D4845A;
+  --color-primary-d: #B86A42;
+  --color-primary-l: #F7EAE2;
+
+  /* アクセント：モカベージュ（知的・落ち着き） */
+  --color-accent:    #C49A72;
+  --color-accent-l:  #F5EDE3;
+
+  /* サブカラー：スレートブルーグレー（クール・中性的） */
+  --color-sub:       #7A8FA6;
+  --color-sub-l:     #EDF1F5;
+
+  /* テキスト：クールなニュートラル系 */
+  --color-text:      #1E1E1E;   /* ほぼ黒 */
+  --color-text-sub:  #555555;   /* ミディアムグレー */
+  --color-text-light:#999999;   /* ライトグレー */
+
+  /* ボーダー */
+  --color-border:    #E8E0D8;
+
+  /* プログレスバー */
+  --color-progress:  #D4845A;
+
+  /* タイプカラー */
+  --color-type-a:    #D4845A;   /* Pro講師型：テラコッタ */
+  --color-type-b:    #7A8FA6;   /* 組織活用型：スレートブルー */
+  --color-type-c:    #C49A72;   /* 自分軸型：モカベージュ */
+
+  --font-main: 'Noto Sans JP', sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --shadow-sm: 0 2px 10px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 24px rgba(0,0,0,0.10);
+  --transition: 0.3s ease;
+}
+
+/* ---------- リセット・ベース ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.7;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- スクリーン管理 ---------- */
+.screen {
+  display: none;
+  min-height: 100vh;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.screen.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.screen-inner {
+  width: 100%;
+  max-width: 480px;
+  padding: 0 20px calc(60px + env(safe-area-inset-bottom));
+}
+
+/* ---------- TOP画面 ---------- */
+#screen-top .screen-inner {
+  padding-top: 52px;
+  text-align: center;
+}
+
+.top-badge {
+  display: inline-block;
+  background: var(--color-accent-l);
+  color: var(--color-accent);
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 5px 16px;
+  border-radius: 4px;
+  letter-spacing: 0.08em;
+  margin-bottom: 28px;
+  border: 1px solid rgba(196,154,114,0.28);
+}
+
+.top-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--color-text);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.top-title .accent {
+  color: var(--color-primary);
+  position: relative;
+  display: inline-block;
+}
+
+.top-title .accent::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+.top-sub {
+  font-size: 0.76rem;
+  color: var(--color-text-light);
+  letter-spacing: 0.22em;
+  margin-bottom: 36px;
+}
+
+.top-message-box {
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  padding: 24px 22px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+  text-align: left;
+  border: 1px solid var(--color-border);
+}
+
+.top-msg-lead {
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  color: var(--color-text) !important;
+  line-height: 1.7 !important;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 16px !important;
+}
+
+.top-message-box p {
+  font-size: 0.94rem;
+  color: var(--color-text);
+  line-height: 1.85;
+  margin-bottom: 10px;
+}
+
+.top-message-box p:last-child {
+  margin-bottom: 0;
+}
+
+.top-message-box strong {
+  color: var(--color-primary);
+  font-weight: 700;
+  background: linear-gradient(transparent 60%, rgba(212,132,90,0.15) 60%);
+}
+
+/* ---------- 「こんな方に」ブロック ---------- */
+.top-for-who {
+  background: var(--color-sub-l);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  margin-bottom: 20px;
+  text-align: left;
+  border: 1px solid rgba(122,143,166,0.18);
+}
+
+.top-for-who-label {
+  font-size: 0.71rem;
+  font-weight: 700;
+  color: var(--color-sub);
+  letter-spacing: 0.12em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.top-for-who ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.top-for-who ul li {
+  font-size: 0.88rem;
+  color: var(--color-text-sub);
+  padding: 4px 0 4px 18px;
+  position: relative;
+  line-height: 1.65;
+}
+
+.top-for-who ul li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  font-size: 0.7rem;
+  color: var(--color-sub);
+  top: 5px;
+  font-weight: 700;
+}
+
+.top-features {
+  list-style: none;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.top-features li {
+  font-size: 0.88rem;
+  color: var(--color-text-sub);
+  padding: 7px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.top-features li:last-child {
+  border-bottom: none;
+}
+
+.top-reassurance {
+  font-size: 0.82rem;
+  color: var(--color-text-light);
+  margin-bottom: 28px;
+  line-height: 1.75;
+}
+
+.top-note {
+  font-size: 0.74rem;
+  color: var(--color-text-light);
+  margin-top: 10px;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- ボタン共通 ---------- */
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-main);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background: var(--color-primary-d);
+  outline: none;
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-large {
+  padding: 18px 24px;
+  font-size: 1.05rem;
+  box-shadow: 0 4px 18px rgba(212,132,90,0.32);
+  border-radius: var(--radius-md);
+}
+
+.btn-arrow {
+  font-size: 1.1rem;
+  transition: transform var(--transition);
+}
+
+.btn-primary:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+/* ---------- 質問画面 ---------- */
+#screen-question .screen-inner {
+  padding-top: 36px;
+}
+
+.progress-area {
+  margin-bottom: 28px;
+}
+
+.progress-text {
+  text-align: right;
+  font-size: 0.76rem;
+  color: var(--color-text-light);
+  margin-bottom: 8px;
+  letter-spacing: 0.08em;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 4px;
+  background: var(--color-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--color-progress);
+  border-radius: 2px;
+  transition: width 0.5s ease;
+  width: 0%;
+}
+
+.question-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: 28px 22px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-md);
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+}
+
+.question-label {
+  font-size: 0.70rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: 0.15em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.question-text {
+  font-size: 1.12rem;
+  font-weight: 600;
+  line-height: 1.65;
+  color: var(--color-text);
+}
+
+/* ---------- 選択肢 ---------- */
+.choices-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choice-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  background: var(--color-white);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  font-family: var(--font-main);
+  font-size: 0.92rem;
+  font-weight: 400;
+  color: var(--color-text);
+  line-height: 1.65;
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--transition);
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: var(--shadow-sm);
+}
+
+.choice-btn:hover,
+.choice-btn:focus {
+  border-color: var(--color-primary);
+  background: var(--color-primary-l);
+  outline: none;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.choice-btn:active {
+  transform: scale(0.98);
+}
+
+.choice-btn.selected {
+  border-color: var(--color-primary);
+  background: var(--color-primary-l);
+  font-weight: 500;
+}
+
+.choice-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: var(--color-text-light);
+  margin-top: 1px;
+  transition: all var(--transition);
+  background: var(--color-bg);
+}
+
+.choice-btn.selected .choice-icon {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.choice-text {
+  flex: 1;
+}
+
+/* ---------- 結果画面 ---------- */
+#screen-result .screen-inner {
+  padding-top: 40px;
+}
+
+.result-header {
+  text-align: center;
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ---------- 結果ヘッダー絵文字 ---------- */
+.result-emoji {
+  font-size: 2.2rem;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.result-label {
+  font-size: 0.72rem;
+  color: var(--color-text-light);
+  letter-spacing: 0.18em;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.result-type-badge {
+  display: inline-block;
+  padding: 4px 18px;
+  border-radius: 4px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+
+.result-type-badge.type-a {
+  background: var(--color-primary-l);
+  color: var(--color-type-a);
+  border: 1px solid rgba(212,132,90,0.28);
+}
+
+.result-type-badge.type-b {
+  background: var(--color-sub-l);
+  color: var(--color-type-b);
+  border: 1px solid rgba(122,143,166,0.28);
+}
+
+.result-type-badge.type-c {
+  background: var(--color-accent-l);
+  color: var(--color-type-c);
+  border: 1px solid rgba(196,154,114,0.28);
+}
+
+.result-type-name {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.45;
+}
+
+/* ---------- 結果セクション ---------- */
+.result-section {
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  padding: 22px 20px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+}
+
+.result-section-title {
+  font-size: 0.80rem;
+  font-weight: 700;
+  color: var(--color-text-sub);
+  margin-bottom: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.result-section-text {
+  font-size: 0.92rem;
+  color: var(--color-text);
+  line-height: 1.9;
+}
+
+/* ---------- 背中押しボックス ---------- */
+.result-push-box {
+  background: var(--color-primary-l);
+  border-radius: var(--radius-md);
+  padding: 24px 20px;
+  margin-bottom: 32px;
+  text-align: center;
+  border: 1px solid rgba(212,132,90,0.22);
+}
+
+.result-push-text {
+  font-size: 0.94rem;
+  color: var(--color-text);
+  line-height: 1.95;
+}
+
+/* ---------- セミナー導線 ---------- */
+.seminar-section {
+  margin-bottom: 28px;
+  background: linear-gradient(160deg, var(--color-primary-l) 0%, var(--color-accent-l) 100%);
+  border: 1.5px solid rgba(212,132,90,0.35);
+  border-radius: var(--radius-lg);
+  padding: 22px 14px 26px;
+}
+
+.seminar-divider {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.seminar-divider span {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--color-primary-d);
+  letter-spacing: 0.4em;
+}
+
+.seminar-lead {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--color-text);
+  line-height: 1.85;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.seminar-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: 30px 22px;
+  box-shadow: 0 10px 32px rgba(212,132,90,0.32), var(--shadow-md);
+  text-align: center;
+  border: 2px solid var(--color-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+/* セミナーカード上部ラインアクセント */
+.seminar-card::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent), var(--color-primary));
+}
+
+.seminar-card-label {
+  display: inline-block;
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 6px 18px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+  margin-top: 6px;
+  text-transform: uppercase;
+  box-shadow: 0 3px 12px rgba(212,132,90,0.4);
+}
+
+.seminar-card-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.55;
+  margin-bottom: 20px;
+}
+
+.seminar-card-points {
+  list-style: none;
+  text-align: left;
+  margin-bottom: 16px;
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+}
+
+.seminar-card-points li {
+  font-size: 0.87rem;
+  color: var(--color-text-sub);
+  padding: 5px 0 5px 18px;
+  line-height: 1.65;
+  position: relative;
+}
+
+.seminar-card-points li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  font-size: 0.68rem;
+  color: var(--color-primary);
+  top: 6px;
+}
+
+/* ---------- コースタグ ---------- */
+.seminar-course-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.course-tag {
+  display: inline-block;
+  background: var(--color-sub-l);
+  color: var(--color-sub);
+  border: 1px solid rgba(122,143,166,0.25);
+  border-radius: 4px;
+  padding: 5px 14px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.seminar-card-note {
+  font-size: 0.78rem;
+  color: var(--color-text-light);
+  line-height: 1.75;
+  margin-bottom: 18px;
+}
+
+/* セミナーCTAボタン */
+.btn-seminar {
+  background: var(--color-primary) !important;
+  animation: seminar-pulse 2.2s ease-in-out infinite;
+}
+
+.btn-seminar:hover,
+.btn-seminar:focus {
+  background: var(--color-primary-d) !important;
+  animation: none;
+}
+
+@keyframes seminar-pulse {
+  0%, 100% { box-shadow: 0 4px 18px rgba(212,132,90,0.32); }
+  50%      { box-shadow: 0 6px 28px rgba(212,132,90,0.58); }
+}
+
+.seminar-card-sub {
+  font-size: 0.73rem;
+  color: var(--color-text-light);
+  margin-top: 10px;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- 再診断ボタン ---------- */
+.btn-retry {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  font-family: var(--font-main);
+  font-size: 0.88rem;
+  color: var(--color-text-light);
+  cursor: pointer;
+  transition: all var(--transition);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-retry:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-primary-l);
+}
+
+/* ---------- フェードイン アニメーション ---------- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in { animation: fadeInUp 0.4s ease forwards; }
+.fade-in-delay-1 { animation-delay: 0.1s; opacity: 0; }
+.fade-in-delay-2 { animation-delay: 0.2s; opacity: 0; }
+.fade-in-delay-3 { animation-delay: 0.3s; opacity: 0; }
+.fade-in-delay-4 { animation-delay: 0.4s; opacity: 0; }
+.fade-in-delay-5 { animation-delay: 0.5s; opacity: 0; }
+
+/* ---------- 選択肢タップ演出 ---------- */
+.choice-btn.tapping { animation: tap-pop 0.18s ease; }
+
+@keyframes tap-pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+
+/* ---------- レスポンシブ ---------- */
+@media (min-width: 480px) {
+  .top-title        { font-size: 2rem; }
+  .question-text    { font-size: 1.18rem; }
+  .result-type-name { font-size: 1.6rem; }
+}
+
+@media (min-width: 768px) {
+  .screen-inner {
+    padding: 0 24px calc(80px + env(safe-area-inset-bottom));
+    max-width: 480px;
+  }
+  #screen-top .screen-inner { padding-top: 64px; }
+}
