@@ -1057,7 +1057,7 @@
             </div>
             <div class="arrow-txt">→</div>
             <div>
-              <div style="font-size:0.72rem;color:var(--text2);margin-bottom:4px;">見直し後の単価</div>
+              <div style="font-size:0.72rem;color:var(--text2);margin-bottom:4px;">見直し後の単価（最低〜）</div>
               <div class="after-big"><span id="oshi_after_disp">–</span> 円/枚</div>
             </div>
             <div>
@@ -1071,24 +1071,27 @@
           <div class="plan-grid">
             <div class="plan-chip" id="pc_1" onclick="selectOshiPlan(2.2,'pc_1')">
               <div class="pc-name">薄手 平版</div>
-              <div class="pc-price">¥2.2<span style="font-size:0.7rem;font-weight:400;">/枚</span></div>
+              <div class="pc-price">¥2.2〜4.2<span style="font-size:0.7rem;font-weight:400;">/枚</span></div>
               <div class="pc-tag">スタンダード</div>
             </div>
             <div class="plan-chip" id="pc_2" onclick="selectOshiPlan(2.9,'pc_2')">
               <div class="pc-name">薄手 ロール</div>
-              <div class="pc-price">¥2.9<span style="font-size:0.7rem;font-weight:400;">/枚</span></div>
+              <div class="pc-price">¥2.9〜4.9<span style="font-size:0.7rem;font-weight:400;">/枚</span></div>
               <div class="pc-tag">スタンダード</div>
             </div>
             <div class="plan-chip" id="pc_3" onclick="selectOshiPlan(8.1,'pc_3')">
               <div class="pc-name">厚手 平版</div>
-              <div class="pc-price">¥8.1<span style="font-size:0.7rem;font-weight:400;">/枚</span></div>
+              <div class="pc-price">¥8.1〜10.1<span style="font-size:0.7rem;font-weight:400;">/枚</span></div>
               <div class="pc-tag">プレミアム</div>
             </div>
             <div class="plan-chip" id="pc_4" onclick="selectOshiPlan(10,'pc_4')">
               <div class="pc-name">厚手 ロール</div>
-              <div class="pc-price">¥10<span style="font-size:0.7rem;font-weight:400;">/枚</span></div>
+              <div class="pc-price">¥10〜12<span style="font-size:0.7rem;font-weight:400;">/枚</span></div>
               <div class="pc-tag">プレミアム</div>
             </div>
+          </div>
+          <div style="font-size:0.72rem;color:var(--gold-ink);margin-bottom:14px;font-weight:600;line-height:1.55;">
+            <i class="fas fa-circle-info"></i> 表示単価は<b>最低価格</b>です。数量・仕様・エリア・配送条件などにより <b>+2円程度の範囲で変動</b> する場合があります（下の試算は最低価格ベース）。
           </div>
 
           <div class="form-grid">
@@ -1101,7 +1104,7 @@
               <input type="number" id="oshi_price_now" placeholder="例：5.0" step="0.1" onchange="calc6()" oninput="calc6()">
             </div>
             <div class="form-group">
-              <label>見直し後の単価（円/枚）</label>
+              <label>見直し後の単価（円/枚）※最低価格・条件で変動</label>
               <input type="number" id="oshi_price_after" placeholder="プランを選択 or 手入力" step="0.1" onchange="calc6()" oninput="calc6()">
             </div>
           </div>
@@ -1649,11 +1652,12 @@ function calc6() {
   const save  = Math.max(0, now - aft);
   sim.now[5] = now; sim.after[5] = priceAfter > 0 ? aft : now; sim.save[5] = save;
 
-  // badge
+  // badge（見直し後は「最低価格〜+2円」の幅で表示）
+  const trim = n => (Math.round(n * 10) / 10).toString();
   setText('oshi_now_disp',   priceNow  > 0 ? priceNow  : '–');
-  setText('oshi_after_disp', priceAfter > 0 ? priceAfter : '–');
+  setText('oshi_after_disp', priceAfter > 0 ? (trim(priceAfter) + '〜' + trim(priceAfter + 2)) : '–');
   const cutPct = priceNow > 0 && priceAfter > 0 ? Math.round((priceNow - priceAfter) / priceNow * 100) : 0;
-  setText('oshi_cut_badge', cutPct > 0 ? '−' + cutPct + '% 削減' : '−?% 削減');
+  setText('oshi_cut_badge', cutPct > 0 ? '最大 −' + cutPct + '% 削減' : '−?% 削減');
 
   setText('r6_now',   fmtYen(now));
   setText('r6_after', fmtYen(sim.after[5]));
