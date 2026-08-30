@@ -134,6 +134,9 @@ body::after{
 }
 .honzon.sm{width:190px;height:190px;}
 .honzon.sm .kanji{font-size:2.2rem;}
+/* 画像に文字が焼き込まれている場合。窓を大きくして焼き込み文字を読める寸法にする */
+.honzon.labeled{width:300px;height:300px;max-width:86vw;max-height:86vw;}
+.honzon.labeled img{width:92%;height:92%;}
 
 /* ---------- 見出し ---------- */
 .eyebrow{
@@ -625,6 +628,11 @@ const CONFIG = {
   // ProLINE側でタイプ別キーワードを受け取り、シナリオを分岐させます
   LINE_ID: '@000abcde',
 
+  // 画像に「蒼龍（木）」などの文字が焼き込まれている場合は true。
+  //   true  … 御神鏡を大きくし、画面側のタイプ名は出さない（名前の二重表示を避ける）
+  //   false … 画像は絵のみ。画面側で金文字のタイプ名を大きく出す（推奨）
+  IMAGE_HAS_LABEL: true,
+
   // 将来 nbs.jp API に繋ぐ場合のみ true にする
   // ※ APIキーは絶対にここへ書かない。必ずサーバー（プロキシ）経由にすること
   USE_API: false,
@@ -902,8 +910,17 @@ function render(r){
   img.alt = t.name;
   img.style.display = '';
   kanji.style.display = 'none';
-  img.onerror = function(){ img.style.display='none'; kanji.style.display=''; };
+  img.onerror = function(){
+    img.style.display='none'; kanji.style.display='';
+    img.closest('.honzon').classList.remove('labeled');   // 漢字のときは通常の寸法に戻す
+    $('r-name').style.display='';                          // 名前が消えたままにならないよう戻す
+  };
   img.src = 'img/' + t.key + '.png';
+
+  // 画像に文字が入っているなら、画面側の大きなタイプ名は出さない（二重表示を避ける）
+  const labeled = CONFIG.IMAGE_HAS_LABEL;
+  img.closest('.honzon').classList.toggle('labeled', labeled);
+  $('r-name').style.display = labeled ? 'none' : '';
 
   $('r-name').textContent = t.name;
   $('r-yomi').textContent = t.yomi;
