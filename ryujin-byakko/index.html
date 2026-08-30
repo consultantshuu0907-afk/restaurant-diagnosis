@@ -96,6 +96,35 @@ body::after{
   box-shadow:0 0 0 4px rgba(212,184,99,.10);
 }
 
+/* ---------- 御神鏡（イラストの丸窓） ----------
+   白と金のイラストを載せるため、地は墨色にしています。
+   画像がまだ無い場合は、自動で漢字の紋章に切り替わります。 */
+.honzon{
+  position:relative;margin:0 auto 22px;
+  display:flex;align-items:center;justify-content:center;
+  width:250px;height:250px;max-width:74vw;max-height:74vw;
+}
+.honzon-ground{
+  position:absolute;inset:0;border-radius:50%;overflow:hidden;
+  background:radial-gradient(circle at 50% 40%,#3C3529 0%,#272219 58%,#191611 100%);
+  border:1px solid var(--g-2);
+  box-shadow:0 0 0 6px rgba(212,184,99,.10),0 16px 44px rgba(38,34,28,.26);
+}
+.honzon-ground::after{
+  content:'';position:absolute;inset:9px;border-radius:50%;
+  border:1px solid rgba(212,184,99,.32);
+}
+.honzon img{
+  position:relative;z-index:1;width:86%;height:86%;object-fit:contain;
+  filter:drop-shadow(0 4px 16px rgba(0,0,0,.4));
+}
+.honzon .kanji{
+  position:relative;z-index:1;font-size:2.9rem;color:var(--g-0);
+  letter-spacing:0;
+}
+.honzon.sm{width:190px;height:190px;}
+.honzon.sm .kanji{font-size:2.2rem;}
+
 /* ---------- 見出し ---------- */
 .eyebrow{
   text-align:center;font-family:var(--gothic);font-size:.66rem;font-weight:400;
@@ -234,12 +263,6 @@ select:focus,input:focus{outline:none;border-color:var(--g-1);box-shadow:0 0 0 3
   font-family:var(--gothic);font-size:.68rem;letter-spacing:.4em;text-indent:.4em;
   color:var(--g-3);margin-bottom:22px;
 }
-.reveal-mark{
-  width:86px;height:86px;margin:0 auto 20px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:2.1rem;
-  border:1px solid var(--g-1);background:linear-gradient(155deg,rgba(255,255,255,.9),rgba(235,217,160,.22));
-  box-shadow:0 0 0 5px rgba(212,184,99,.11),0 10px 30px rgba(140,110,34,.14);
-}
 .reveal-name{
   font-size:2.5rem;font-weight:700;letter-spacing:.14em;text-indent:.14em;line-height:1.4;
   margin-bottom:4px;
@@ -346,7 +369,11 @@ select:focus,input:focus{outline:none;border-color:var(--g-1);box-shadow:0 0 0 3
       <path d="M22 31c12 0 12-6 24-6s12 6 24 6 12-8 24-8 12 8 24 8 12-6 24-6" stroke="#EBD9A0" stroke-width="1" opacity=".5"/>
     </svg>
 
-    <div class="crest" style="margin-top:26px">龍</div>
+    <div class="honzon sm" style="margin-top:22px">
+      <div class="honzon-ground"></div>
+      <img id="hero-img" src="img/hero.png" alt="" />
+      <span class="kanji" id="hero-kanji" style="display:none">龍</span>
+    </div>
     <p class="eyebrow">龍神白狐</p>
 
     <h1 class="title"><span class="gold-text">五神タイプ</span><br>診断</h1>
@@ -458,7 +485,11 @@ select:focus,input:focus{outline:none;border-color:var(--g-1);box-shadow:0 0 0 3
 
     <div class="reveal">
       <p class="reveal-label">あなたの五神</p>
-      <div class="reveal-mark" id="r-mark"></div>
+      <div class="honzon">
+        <div class="honzon-ground"></div>
+        <img id="r-img" src="" alt="" />
+        <span class="kanji" id="r-mark" style="display:none"></span>
+      </div>
       <h2 class="reveal-name gold-text" id="r-name"></h2>
       <p class="reveal-yomi" id="r-yomi"></p>
       <p class="reveal-catch" id="r-catch"></p>
@@ -673,6 +704,12 @@ function show(name){
   window.scrollTo(0,0);
 }
 
+/* ── TOPの御神鏡：img/hero.png が無ければ漢字に切り替え ── */
+(function heroFallback(){
+  const h=$('hero-img'), k=$('hero-kanji');
+  h.onerror=function(){ h.style.display='none'; k.style.display=''; };
+})();
+
 /* ── 入力欄の生成 ── */
 (function buildInputs(){
   const nowY = new Date().getFullYear();
@@ -786,8 +823,15 @@ function divine(y,m,d,hh,mi,lng,known){
 function render(r){
   const t=r.type;
 
-  $('r-mark').textContent = t.mark;
-  $('r-mark').style.color = t.color;
+  // 御神鏡：img/<key>.png があれば画像、無ければ漢字の紋章
+  const img = $('r-img'), kanji = $('r-mark');
+  kanji.textContent = t.mark;
+  img.alt = t.name;
+  img.style.display = '';
+  kanji.style.display = 'none';
+  img.onerror = function(){ img.style.display='none'; kanji.style.display=''; };
+  img.src = 'img/' + t.key + '.png';
+
   $('r-name').textContent = t.name;
   $('r-yomi').textContent = t.yomi;
   $('r-catch').innerHTML  = t.catch;
