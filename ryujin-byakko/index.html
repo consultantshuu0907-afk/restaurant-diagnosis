@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>龍神白狐 ｜ 四柱推命 五神タイプ診断</title>
+<meta name="description" content="生まれた日が示す、あなたの本質。四柱推命の日干から導く五神タイプ診断。あなたの運気がいま滞っている理由を、龍神白狐がお伝えします。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   龍神白狐 — 五神タイプ診断
+   白金（白×金）／厳かな和の世界観
+   ============================================================ */
+
+:root{
+  /* 白 —— 和紙・白練・胡粉 */
+  --w-0:#FCFBF7;
+  --w-1:#F6F3EA;
+  --w-2:#EDE8DA;
+  --w-3:#E2DBC8;
+
+  /* 金 —— 金泥・金箔・古金 */
+  --g-0:#EBD9A0;
+  --g-1:#D4B863;
+  --g-2:#B8963E;
+  --g-3:#8C6E22;
+
+  /* 墨 */
+  --ink:#26221C;
+  --ink-1:#4A443A;
+  --ink-2:#7B7365;
+  --ink-3:#A79E8C;
+
+  /* 五行の色 */
+  --e-moku:#4A7C6F;
+  --e-ka:#A4453C;
+  --e-do:#A8823C;
+  --e-kin:#8C8C93;
+  --e-sui:#3D4A63;
+
+  --mincho:'Shippori Mincho B1', 'Yu Mincho', 'Hiragino Mincho ProN', serif;
+  --gothic:'Noto Sans JP', sans-serif;
+
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+
+body{
+  font-family:var(--mincho);
+  color:var(--ink);
+  background:var(--w-0);
+  line-height:1.9;
+  letter-spacing:.06em;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* 和紙のかすかな質感 */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212,184,99,.13), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(212,184,99,.08), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 0% 85%, rgba(140,110,34,.05), transparent 70%);
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:
+    repeating-linear-gradient(0deg,   rgba(38,34,28,.014) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg,  rgba(38,34,28,.010) 0 1px, transparent 1px 4px);
+}
+
+/* ---------- 画面 ---------- */
+.screen{display:none;position:relative;z-index:1;}
+.screen.active{display:block;animation:fadeUp .9s var(--ease) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+.inner{max-width:560px;margin:0 auto;padding:44px 22px 72px;}
+
+/* ---------- 金の罫・装飾 ---------- */
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--g-1) 18%,var(--g-0) 50%,var(--g-1) 82%,transparent);margin:30px 0;}
+.rule-sm{height:1px;width:52px;margin:16px auto;background:linear-gradient(90deg,transparent,var(--g-2),transparent);}
+
+.kumo{display:block;margin:0 auto;width:100%;max-width:220px;height:auto;opacity:.85;}
+
+.crest{
+  width:46px;height:46px;margin:0 auto 18px;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--g-1);border-radius:50%;
+  color:var(--g-2);font-size:1.15rem;
+  box-shadow:0 0 0 4px rgba(212,184,99,.10);
+}
+
+/* ---------- 見出し ---------- */
+.eyebrow{
+  text-align:center;font-family:var(--gothic);font-size:.66rem;font-weight:400;
+  letter-spacing:.42em;text-indent:.42em;color:var(--g-3);margin-bottom:20px;
+}
+.gold-text{
+  background:linear-gradient(160deg,var(--g-3) 0%,var(--g-1) 28%,var(--g-0) 46%,var(--g-1) 64%,var(--g-3) 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+}
+
+.title{
+  text-align:center;font-size:2.05rem;font-weight:600;line-height:1.62;
+  letter-spacing:.16em;text-indent:.16em;margin-bottom:6px;
+}
+.title-sub{
+  text-align:center;font-size:.86rem;font-weight:400;letter-spacing:.3em;text-indent:.3em;
+  color:var(--ink-2);margin-bottom:30px;
+}
+
+/* ---------- 本文 ---------- */
+.lead{font-size:1rem;line-height:2.15;text-align:center;color:var(--ink-1);}
+.lead strong{font-weight:600;color:var(--ink);border-bottom:1px solid var(--g-1);padding-bottom:1px;}
+.lead + .lead{margin-top:1.35em;}
+
+/* ---------- 枠 ---------- */
+.panel{
+  position:relative;background:linear-gradient(170deg,rgba(255,255,255,.82),rgba(246,243,234,.62));
+  border:1px solid var(--w-3);padding:30px 24px;margin:30px 0;
+}
+.panel::before,.panel::after{
+  content:'';position:absolute;width:13px;height:13px;border:1px solid var(--g-1);
+}
+.panel::before{top:-1px;left:-1px;border-right:none;border-bottom:none;}
+.panel::after{bottom:-1px;right:-1px;border-left:none;border-top:none;}
+
+.panel-title{
+  text-align:center;font-size:.76rem;font-family:var(--gothic);letter-spacing:.34em;text-indent:.34em;
+  color:var(--g-3);margin-bottom:18px;
+}
+
+.list{list-style:none;}
+.list li{
+  position:relative;padding-left:24px;font-size:.94rem;line-height:2;color:var(--ink-1);
+  margin-bottom:9px;
+}
+.list li::before{
+  content:'';position:absolute;left:5px;top:.95em;width:6px;height:6px;
+  background:var(--g-1);transform:rotate(45deg);
+}
+
+/* ---------- ボタン ---------- */
+.btn{
+  display:block;width:100%;border:none;cursor:pointer;
+  font-family:var(--mincho);font-size:1.02rem;font-weight:600;letter-spacing:.2em;text-indent:.2em;
+  padding:19px 20px;color:var(--w-0);text-align:center;text-decoration:none;
+  background:linear-gradient(140deg,var(--g-3),var(--g-2) 42%,var(--g-1) 70%,var(--g-2));
+  box-shadow:0 6px 22px rgba(140,110,34,.26);
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease),filter .3s;
+  position:relative;overflow:hidden;
+}
+.btn::after{
+  content:'';position:absolute;inset:3px;border:1px solid rgba(255,255,255,.36);pointer-events:none;
+}
+.btn:active{transform:translateY(1px);box-shadow:0 3px 12px rgba(140,110,34,.3);}
+.btn:disabled{opacity:.34;cursor:not-allowed;box-shadow:none;}
+.btn-ghost{
+  background:transparent;color:var(--g-3);border:1px solid var(--g-1);box-shadow:none;font-size:.9rem;font-weight:500;
+}
+.btn-ghost::after{display:none;}
+.btn-note{text-align:center;font-family:var(--gothic);font-size:.72rem;letter-spacing:.14em;color:var(--ink-3);margin-top:11px;}
+
+/* ---------- 入力 ---------- */
+.field{margin-bottom:26px;}
+.field-label{
+  display:block;font-family:var(--gothic);font-size:.75rem;font-weight:500;
+  letter-spacing:.2em;color:var(--g-3);margin-bottom:9px;
+}
+.field-label .req{color:var(--e-ka);margin-left:.5em;font-size:.68rem;}
+.field-help{font-family:var(--gothic);font-size:.7rem;line-height:1.75;color:var(--ink-3);margin-top:7px;letter-spacing:.04em;}
+
+.row{display:flex;gap:9px;}
+.row > *{flex:1;}
+.row .u{display:flex;align-items:center;gap:6px;}
+.row .u span{font-size:.8rem;color:var(--ink-2);flex:0 0 auto;}
+
+select,input[type="number"]{
+  width:100%;font-family:var(--mincho);font-size:1rem;color:var(--ink);
+  background:rgba(255,255,255,.85);border:1px solid var(--w-3);border-radius:0;
+  padding:13px 12px;appearance:none;-webkit-appearance:none;
+  transition:border-color .3s,box-shadow .3s;
+}
+select{
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%23B8963E' stroke-width='1.3' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 13px center;padding-right:34px;
+}
+select:focus,input:focus{outline:none;border-color:var(--g-1);box-shadow:0 0 0 3px rgba(212,184,99,.16);}
+
+.toggle{display:flex;gap:8px;margin-top:10px;}
+.toggle button{
+  flex:1;font-family:var(--gothic);font-size:.78rem;letter-spacing:.08em;cursor:pointer;
+  padding:11px 8px;background:rgba(255,255,255,.7);border:1px solid var(--w-3);color:var(--ink-2);
+  transition:all .3s var(--ease);
+}
+.toggle button.on{border-color:var(--g-1);background:rgba(212,184,99,.13);color:var(--g-3);font-weight:500;}
+
+/* ---------- 祈祷（ローディング） ---------- */
+#screen-load .inner{padding-top:110px;min-height:82vh;}
+.ritual{text-align:center;}
+.ritual-ring{
+  width:120px;height:120px;margin:0 auto 40px;position:relative;
+}
+.ritual-ring i{
+  position:absolute;inset:0;border-radius:50%;border:1px solid transparent;
+  border-top-color:var(--g-1);border-right-color:rgba(212,184,99,.3);
+  animation:spin 2.6s linear infinite;
+}
+.ritual-ring i:nth-child(2){inset:15px;animation-duration:3.6s;animation-direction:reverse;border-top-color:var(--g-2);}
+.ritual-ring i:nth-child(3){inset:30px;animation-duration:5s;border-top-color:var(--g-0);}
+.ritual-ring b{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;color:var(--g-2);font-weight:400;
+  animation:pulse 2.6s ease-in-out infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes pulse{0%,100%{opacity:.45;}50%{opacity:1;}}
+
+.ritual-text{
+  font-size:1.02rem;letter-spacing:.24em;text-indent:.24em;color:var(--ink-1);
+  min-height:2.4em;transition:opacity .55s;
+}
+
+/* ---------- 結果 ---------- */
+.reveal{text-align:center;margin-bottom:8px;}
+.reveal-label{
+  font-family:var(--gothic);font-size:.68rem;letter-spacing:.4em;text-indent:.4em;
+  color:var(--g-3);margin-bottom:22px;
+}
+.reveal-mark{
+  width:86px;height:86px;margin:0 auto 20px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:2.1rem;
+  border:1px solid var(--g-1);background:linear-gradient(155deg,rgba(255,255,255,.9),rgba(235,217,160,.22));
+  box-shadow:0 0 0 5px rgba(212,184,99,.11),0 10px 30px rgba(140,110,34,.14);
+}
+.reveal-name{
+  font-size:2.5rem;font-weight:700;letter-spacing:.14em;text-indent:.14em;line-height:1.4;
+  margin-bottom:4px;
+}
+.reveal-yomi{
+  font-family:var(--gothic);font-size:.72rem;letter-spacing:.34em;text-indent:.34em;color:var(--ink-3);
+  margin-bottom:14px;
+}
+.reveal-catch{font-size:1.02rem;color:var(--ink-1);line-height:1.95;}
+
+/* 命式 */
+.meishiki{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--w-3);
+  border:1px solid var(--w-3);margin:26px 0 6px;
+}
+.meishiki div{background:var(--w-0);padding:15px 10px;text-align:center;}
+.meishiki dt{
+  font-family:var(--gothic);font-size:.64rem;letter-spacing:.22em;color:var(--ink-3);margin-bottom:7px;
+}
+.meishiki dd{font-size:1.35rem;font-weight:600;letter-spacing:.1em;color:var(--ink);}
+.meishiki dd small{display:block;font-family:var(--gothic);font-size:.62rem;font-weight:400;letter-spacing:.1em;color:var(--ink-2);margin-top:5px;}
+.meishiki-note{font-family:var(--gothic);font-size:.68rem;line-height:1.85;color:var(--ink-3);text-align:center;}
+
+/* 節（結果の各章） */
+.sec{margin:34px 0;}
+.sec-head{
+  display:flex;align-items:center;gap:12px;margin-bottom:15px;
+}
+.sec-head span{
+  flex:0 0 auto;width:26px;height:26px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--g-1);color:var(--g-2);font-size:.72rem;transform:rotate(45deg);
+}
+.sec-head span i{transform:rotate(-45deg);font-style:normal;}
+.sec-head h3{font-size:1.02rem;font-weight:600;letter-spacing:.14em;color:var(--ink);}
+.sec p{font-size:.96rem;line-height:2.1;color:var(--ink-1);}
+
+.kotoba{
+  border-left:2px solid var(--g-1);padding:4px 0 4px 20px;margin:30px 0;
+  font-size:1rem;line-height:2.15;color:var(--ink-1);
+}
+.kotoba cite{
+  display:block;font-family:var(--gothic);font-style:normal;font-size:.68rem;
+  letter-spacing:.24em;color:var(--g-3);margin-top:12px;
+}
+
+/* LINE 導線 */
+.gate{
+  position:relative;margin:44px 0 0;padding:34px 22px 30px;
+  background:linear-gradient(168deg,rgba(38,34,28,.97),rgba(58,50,36,.97));
+  color:var(--w-1);
+}
+.gate::before{
+  content:'';position:absolute;inset:6px;border:1px solid rgba(212,184,99,.4);pointer-events:none;
+}
+.gate-label{
+  text-align:center;font-family:var(--gothic);font-size:.66rem;letter-spacing:.4em;text-indent:.4em;
+  color:var(--g-1);margin-bottom:16px;
+}
+.gate h3{
+  text-align:center;font-size:1.24rem;font-weight:600;letter-spacing:.1em;line-height:1.75;
+  margin-bottom:16px;color:var(--w-0);
+}
+.gate p{text-align:center;font-size:.9rem;line-height:2;color:rgba(246,243,234,.82);}
+.gift{list-style:none;margin:22px 0 26px;}
+.gift li{
+  display:flex;gap:12px;align-items:flex-start;padding:11px 0;
+  border-bottom:1px solid rgba(212,184,99,.18);font-size:.88rem;line-height:1.85;
+  color:rgba(246,243,234,.9);
+}
+.gift li:last-child{border-bottom:none;}
+.gift li b{
+  flex:0 0 auto;font-family:var(--gothic);font-size:.62rem;font-weight:500;letter-spacing:.12em;
+  color:var(--g-0);border:1px solid rgba(212,184,99,.45);padding:3px 8px;margin-top:3px;white-space:nowrap;
+}
+.gate .btn{margin-top:4px;}
+.gate .btn-note{color:rgba(246,243,234,.5);}
+
+.retry{
+  display:block;margin:38px auto 0;background:none;border:none;cursor:pointer;
+  font-family:var(--gothic);font-size:.76rem;letter-spacing:.16em;color:var(--ink-3);
+  text-decoration:underline;text-underline-offset:5px;
+}
+
+.foot{
+  text-align:center;font-family:var(--gothic);font-size:.66rem;line-height:2;
+  color:var(--ink-3);margin-top:44px;letter-spacing:.08em;
+}
+
+@media (max-width:400px){
+  .title{font-size:1.78rem;}
+  .reveal-name{font-size:2.1rem;}
+  .inner{padding:36px 18px 60px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ 序：入口 ══════════════ -->
+<section id="screen-top" class="screen active">
+  <div class="inner">
+
+    <svg class="kumo" viewBox="0 0 220 34" fill="none" aria-hidden="true">
+      <path d="M8 25c14 0 14-9 28-9s14 9 28 9 14-13 28-13 14 13 28 13 14-9 28-9 14 9 28 9" stroke="#D4B863" stroke-width="1" opacity=".75"/>
+      <path d="M22 31c12 0 12-6 24-6s12 6 24 6 12-8 24-8 12 8 24 8 12-6 24-6" stroke="#EBD9A0" stroke-width="1" opacity=".5"/>
+    </svg>
+
+    <div class="crest" style="margin-top:26px">龍</div>
+    <p class="eyebrow">龍神白狐</p>
+
+    <h1 class="title"><span class="gold-text">五神タイプ</span><br>診断</h1>
+    <p class="title-sub">生まれた日が示す、あなたの本質</p>
+
+    <div class="rule"></div>
+
+    <p class="lead">
+      同じように努力しているのに、<br>
+      進む人と、止まる人がいます。
+    </p>
+    <p class="lead">
+      その差は、能力ではありません。<br>
+      <strong>持って生まれた気の巡り</strong>と、<br>
+      いまの過ごし方が、<br>
+      噛み合っていないだけです。
+    </p>
+    <p class="lead">
+      四柱推命では、生まれた日の干支に<br>
+      その人の本質が宿るとされます。
+    </p>
+
+    <div class="rule"></div>
+
+    <div class="panel">
+      <p class="panel-title">この診断でわかること</p>
+      <ul class="list">
+        <li>あなたが生まれ持った五神のタイプ</li>
+        <li>その本質が、いま滞っている理由</li>
+        <li>運気を整えるために、まず何を変えるか</li>
+      </ul>
+    </div>
+
+    <p class="lead" style="font-size:.9rem;color:var(--ink-2)">
+      お伺いするのは、生年月日と<br>
+      お生まれの時刻・土地のみです。
+    </p>
+
+    <div style="margin-top:34px">
+      <button class="btn" id="go-input">診断をはじめる</button>
+      <p class="btn-note">所要 約1分 ／ 無料 ／ 登録不要</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════ 一：お伺い ══════════════ -->
+<section id="screen-input" class="screen">
+  <div class="inner">
+
+    <div class="crest">問</div>
+    <p class="eyebrow">生年月日をお伺いします</p>
+    <div class="rule-sm"></div>
+
+    <p class="lead" style="font-size:.92rem;margin-bottom:34px">
+      いただいた情報は、この端末の中だけで<br>
+      計算に用います。どこにも送信されません。
+    </p>
+
+    <div class="field">
+      <label class="field-label" for="in-year">お生まれの年月日<span class="req">必須</span></label>
+      <div class="row">
+        <div class="u"><select id="in-year"></select><span>年</span></div>
+        <div class="u"><select id="in-month"></select><span>月</span></div>
+        <div class="u"><select id="in-day"></select><span>日</span></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">お生まれの時刻</label>
+      <div class="toggle" id="tg-time">
+        <button type="button" data-v="known">わかる</button>
+        <button type="button" data-v="unknown" class="on">わからない</button>
+      </div>
+      <div class="row" id="time-row" style="margin-top:12px;display:none">
+        <div class="u"><select id="in-hour"></select><span>時</span></div>
+        <div class="u"><select id="in-minute"></select><span>分</span></div>
+      </div>
+      <p class="field-help">わからない場合は正午（12時）として計算します。時刻がわかると、時柱まで読み解けます。</p>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="in-pref">お生まれの土地<span class="req">必須</span></label>
+      <select id="in-pref"></select>
+      <p class="field-help">経度によって真太陽時が変わるため、お伺いしています。</p>
+    </div>
+
+    <div class="rule"></div>
+
+    <button class="btn" id="go-ritual" disabled>命式を立てる</button>
+    <button class="btn btn-ghost" id="back-top" style="margin-top:12px">戻る</button>
+
+  </div>
+</section>
+
+<!-- ══════════════ 二：祈祷 ══════════════ -->
+<section id="screen-load" class="screen">
+  <div class="inner">
+    <div class="ritual">
+      <div class="ritual-ring"><i></i><i></i><i></i><b>✦</b></div>
+      <p class="ritual-text" id="ritual-text">命式を立てております</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 三：ご神託 ══════════════ -->
+<section id="screen-result" class="screen">
+  <div class="inner">
+
+    <div class="reveal">
+      <p class="reveal-label">あなたの五神</p>
+      <div class="reveal-mark" id="r-mark"></div>
+      <h2 class="reveal-name gold-text" id="r-name"></h2>
+      <p class="reveal-yomi" id="r-yomi"></p>
+      <p class="reveal-catch" id="r-catch"></p>
+    </div>
+
+    <div class="rule"></div>
+
+    <p class="panel-title" style="margin-bottom:0">あなたの命式（一部）</p>
+    <dl class="meishiki" id="r-meishiki"></dl>
+    <p class="meishiki-note" id="r-meishiki-note"></p>
+
+    <div class="sec">
+      <div class="sec-head"><span><i>一</i></span><h3>あなたの本質</h3></div>
+      <p id="r-honshitsu"></p>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span><i>二</i></span><h3>いま、滞っている理由</h3></div>
+      <p id="r-todokoori"></p>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span><i>三</i></span><h3>運気を整える鍵</h3></div>
+      <p id="r-kagi"></p>
+    </div>
+
+    <div class="kotoba">
+      <span id="r-kotoba"></span>
+      <cite>― 龍神白狐より</cite>
+    </div>
+
+    <!-- LINE 導線（フロー④→⑤→⑥） -->
+    <div class="gate">
+      <p class="gate-label">ここから先は、LINEにて</p>
+      <h3 id="gate-title"></h3>
+      <p>
+        診断だけでは、まだ半分です。<br>
+        あなたのタイプに合わせたお話と、<br>
+        明日から三日間の贈りものをお渡しします。
+      </p>
+
+      <ul class="gift">
+        <li><b>その日</b><span id="gift-0"></span></li>
+        <li><b>一日目</b><span>いまの悩みの正体と、なぜそれが解けるのか</span></li>
+        <li><b>二日目</b><span>占いの成り立ちと、龍神様の力の仕組み</span></li>
+        <li><b>三日目</b><span>実際に流れが変わった方々の話</span></li>
+      </ul>
+
+      <a class="btn" id="gate-btn" href="#" target="_blank" rel="noopener">
+        LINEで結果を受け取る
+      </a>
+      <p class="btn-note">無料 ／ いつでも解除できます</p>
+    </div>
+
+    <button class="retry" id="btn-retry">もう一度、はじめから</button>
+
+    <p class="foot">
+      本診断は四柱推命の日干（日柱の天干）に基づく<br>
+      五行分類によるものです。<br>
+      より精密な鑑定は、個別にて承ります。
+    </p>
+
+  </div>
+</section>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   龍神白狐 — 五神タイプ診断
+   ════════════════════════════════════════════════════════════ */
+
+/* ── 設定 ─────────────────────────────────────────────
+   ここだけ書き換えれば運用できます
+   ──────────────────────────────────────────────────── */
+const CONFIG = {
+  // LINE公式アカウントのID（@から始まる）
+  // ProLINE側でタイプ別キーワードを受け取り、シナリオを分岐させます
+  LINE_ID: '@000abcde',
+
+  // 将来 nbs.jp API に繋ぐ場合のみ true にする
+  // ※ APIキーは絶対にここへ書かない。必ずサーバー（プロキシ）経由にすること
+  USE_API: false,
+  API_PROXY_URL: ''   // 例: 'https://your-worker.workers.dev/calculate'
+};
+
+/* ── 干支の基礎データ ───────────────────────────── */
+const KAN = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+const SHI = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+const KAN_YOMI = {甲:'きのえ',乙:'きのと',丙:'ひのえ',丁:'ひのと',戊:'つちのえ',
+                  己:'つちのと',庚:'かのえ',辛:'かのと',壬:'みずのえ',癸:'みずのと'};
+const SHI_YOMI = {子:'ね',丑:'うし',寅:'とら',卯:'う',辰:'たつ',巳:'み',
+                  午:'うま',未:'ひつじ',申:'さる',酉:'とり',戌:'いぬ',亥:'い'};
+// 天干 → 五行
+const KAN_ELEM = {甲:'木',乙:'木',丙:'火',丁:'火',戊:'土',
+                  己:'土',庚:'金',辛:'金',壬:'水',癸:'水'};
+// 天干 → 陰陽
+const KAN_YIN = {甲:'陽',乙:'陰',丙:'陽',丁:'陰',戊:'陽',
+                 己:'陰',庚:'陽',辛:'陰',壬:'陽',癸:'陰'};
+
+/* ── 都道府県 → 県庁所在地の経度（東経） ──────────── */
+const PREFS = [
+  ['北海道',141.3469],['青森県',140.7400],['岩手県',141.1527],['宮城県',140.8719],
+  ['秋田県',140.1024],['山形県',140.3633],['福島県',140.4676],['茨城県',140.4468],
+  ['栃木県',139.8836],['群馬県',139.0608],['埼玉県',139.6489],['千葉県',140.1233],
+  ['東京都',139.6917],['神奈川県',139.6425],['新潟県',139.0232],['富山県',137.2113],
+  ['石川県',136.6256],['福井県',136.2216],['山梨県',138.5684],['長野県',138.1810],
+  ['岐阜県',136.7223],['静岡県',138.3831],['愛知県',136.9066],['三重県',136.5086],
+  ['滋賀県',135.8686],['京都府',135.7681],['大阪府',135.5023],['兵庫県',135.1830],
+  ['奈良県',135.8048],['和歌山県',135.1675],['鳥取県',134.2381],['島根県',133.0505],
+  ['岡山県',133.9350],['広島県',132.4596],['山口県',131.4714],['徳島県',134.5593],
+  ['香川県',134.0434],['愛媛県',132.7657],['高知県',133.5311],['福岡県',130.4017],
+  ['佐賀県',130.2988],['長崎県',129.8737],['熊本県',130.7417],['大分県',131.6126],
+  ['宮崎県',131.4239],['鹿児島県',130.5581],['沖縄県',127.6809],
+  ['海外・わからない',135.0000]
+];
+
+/* ── 五神タイプ（五行に対応） ──────────────────────
+   木=蒼龍 火=紅龍 土=黄龍 金=白狐 水=黒龍
+   ※五行の色（青・赤・黄・白・黒）に則った配当
+   ──────────────────────────────────────────────── */
+const TYPES = {
+  木:{
+    key:'souryu', name:'蒼龍', yomi:'そうりゅう', mark:'昇',
+    elem:'木', color:'var(--e-moku)',
+    catch:'伸びることでしか、<br>整わない方です。',
+    honshitsu:'木の気を持つあなたは、上へ上へと伸びる樹のような性質を宿しています。新しいものに心が動き、まだ誰も手をつけていない場所に自然と足が向く。頭の中には、いつも次の構想があります。人から「行動力がある」と言われる一方、ご自身では「落ち着きがない」と感じておられるかもしれません。それは欠点ではなく、伸びることでしか整わない気を持って生まれたということです。',
+    todokoori:'いま流れが滞っているとすれば、多くの場合その原因は「伸びしろのない場所に、長く留まっていること」です。木は、日の当たらない場所では育ちません。同じ環境、同じ役割、同じ人間関係の中に居続けると、蒼龍の気は行き場を失い、内側でくすぶり始めます。焦りや苛立ちとして表に出ることもあります。それは怠けているのではなく、伸びられていないという合図です。',
+    kagi:'必要なのは、休むことではなく「新しい枝を伸ばすこと」です。大きな決断でなくて構いません。今まで行かなかった場所へ足を運ぶ。学んだことのない分野に触れる。会ったことのない人と話す。小さくても新しい方向へ一歩伸ばした瞬間、木の気は再び巡り始めます。留まることより、動くことがあなたの整え方です。',
+    kotoba:'汝は樹なり。<br>止まりて休むにあらず、<br>伸びてこそ、根は深くなる。'
+  },
+  火:{
+    key:'kouryu', name:'紅龍', yomi:'こうりゅう', mark:'燿',
+    elem:'火', color:'var(--e-ka)',
+    catch:'照らすために<br>生まれた方です。',
+    honshitsu:'火の気を持つあなたは、自らが光となって周りを照らす性質を宿しています。感情が豊かで、心が動いたときの熱量は誰にも真似できません。あなたが本気で語ると、聞いている人の表情が変わる。その力を、ご自身では当たり前のことだと思っておられるかもしれません。人が集まり、場が明るくなるのは、あなたが燃えているからです。',
+    todokoori:'いま流れが滞っているとすれば、原因は「燃やす対象を見失っていること」か「燃やしすぎて燃料が尽きていること」のどちらかです。火は、薪がなければ消え、風がなければ弱まります。心から打ち込めるものがない期間が続くと、紅龍の気は急速に冷えます。逆に、周りのために燃やし続けて、ご自身に何も残っていないこともあります。どちらの場合も、無気力さとして現れます。',
+    kagi:'必要なのは「もう一度、心が動くものに触れること」です。理屈で選んだ正しいものではなく、理由もなく胸が熱くなるもの。そして同時に、あなたに薪をくべてくれる人のそばにいること。火は独りでは燃え続けられません。与える側でいる時間と、受け取る側でいる時間。その両方が揃ったとき、紅龍の光は戻ります。',
+    kotoba:'汝は灯なり。<br>己を照らさぬ火は、<br>やがて人をも照らせぬ。'
+  },
+  土:{
+    key:'ouryu', name:'黄龍', yomi:'おうりゅう', mark:'安',
+    elem:'土', color:'var(--e-do)',
+    catch:'すべてを受け止めて<br>こられた方です。',
+    honshitsu:'土の気を持つあなたは、万物を受け止め、育む大地の性質を宿しています。頼まれごとを断れない。相手の事情が見えてしまう。気づけば、あなたのところに人の悩みが集まっている。それは、あなたの器が大きいからです。派手さはなくとも、あなたがいるからこそ回っている場所が必ずあります。周りはそれを、当たり前のように享受しています。',
+    todokoori:'いま流れが滞っているとすれば、原因は「受け止めすぎて、ご自身の分が残っていないこと」です。大地は何でも受け入れますが、休耕せずに作物を作り続ければ痩せます。人の期待に応え続け、自分の望みを後回しにする日々が長く続くと、黄龍の気は重く沈みます。疲れているのに、休むことに罪悪感がある。その状態です。',
+    kagi:'必要なのは「自分のために土地を空けること」です。誰のためでもない時間を、意識して確保すること。断ることは冷たさではなく、土を休ませる行為です。そしてもう一つ、あなたが受け取る側に回ること。与え続けてきた方ほど、受け取ることに慣れていません。受け取れるようになったとき、黄龍の実りは戻ります。',
+    kotoba:'汝は大地なり。<br>休ませぬ土に、<br>実りは宿らず。'
+  },
+  金:{
+    key:'byakko', name:'白狐', yomi:'びゃっこ', mark:'覚',
+    elem:'金', color:'var(--e-kin)',
+    catch:'見えすぎてしまう<br>方です。',
+    honshitsu:'金の気を持つあなたは、研ぎ澄まされた刃のような性質を宿しています。物事の本質が、理屈より先に見えてしまう。人の言葉の裏や、場の空気の変化に、誰よりも早く気づく。曖昧なものや筋の通らないものに、強い違和感を覚える。その感覚は、五神のなかでも白狐だけが持つものです。生まれつきの、鋭さそのものです。',
+    todokoori:'いま流れが滞っているとすれば、原因は「見えすぎることに、疲れていること」です。刃は、鞘に納めねば刃こぼれします。周囲の粗さや矛盾が見えるのに、それを言えば角が立つ。だから飲み込む。その繰り返しで、白狐の気は内側に向かい、やがてご自身を斬り始めます。人への失望として、あるいは自己嫌悪として現れます。',
+    kagi:'必要なのは「鋭さを向ける先を、外に定めること」です。あなたの目は、本来は物事を正すために授かったものです。違和感を飲み込むのではなく、形にすること。書く、話す、選び直す。何でも構いません。そしてもう一つ、すべてを見ないと決めること。見ないと決めた瞬間、白狐の気は静まり、鋭さは再び武器に戻ります。',
+    kotoba:'汝は刃なり。<br>己に向ける刃を、<br>いまこそ鞘に納めよ。'
+  },
+  水:{
+    key:'kokuryu', name:'黒龍', yomi:'こくりゅう', mark:'深',
+    elem:'水', color:'var(--e-sui)',
+    catch:'深く潜ることが<br>できる方です。',
+    honshitsu:'水の気を持つあなたは、形を持たず、どこへでも流れ込む水の性質を宿しています。相手や場に合わせて、自然に姿を変えられる。物事を深く考え、簡単には結論を出さない。表面的なやりとりよりも、一人で思索する時間に価値を感じる。その静けさの奥に、他の誰も届かない深さを持っています。',
+    todokoori:'いま流れが滞っているとすれば、原因は「流れる先がなく、澱んでいること」です。水は流れているうちは澄み、止まれば濁ります。考える材料はあるのに、それを出す場がない。深く潜れるのに、浮かび上がるきっかけがない。そういう時期が続くと、黒龍の気は重く沈み、思索は堂々巡りに変わります。動けないのではなく、流路がないのです。',
+    kagi:'必要なのは「外へ出す流路をつくること」です。考えたことを、誰かに話す。書き出す。形にして人に渡す。出口を一つ作るだけで、水は再び動き始めます。もう一つ大切なのは、流れる先を自分で選ぶこと。水は低い方へ流れますが、あなたは向きを決められます。深さは、あなたが生まれ持った力です。',
+    kotoba:'汝は水なり。<br>淀みは深さにあらず、<br>流れてこそ、澄む。'
+  }
+};
+
+/* ════════ 計算部 ════════
+   検証済み：nbs.jp 公式ドキュメントの実レスポンス例
+   （1974-10-03 11:00 / 経度139.75 → 日柱 丁丑・時柱 丙午・真太陽時 11:19）
+   と完全一致することを確認済み
+   ════════════════════════ */
+
+// グレゴリオ暦 → ユリウス通日
+function toJDN(y,m,d){
+  const a=Math.floor((14-m)/12), yy=y+4800-a, mm=m+12*a-3;
+  return d+Math.floor((153*mm+2)/5)+365*yy+Math.floor(yy/4)-Math.floor(yy/100)+Math.floor(yy/400)-32045;
+}
+
+// 真太陽時（経度補正のみ。日本標準時子午線＝東経135度からの差）
+function toTrueSolar(y,m,d,hh,mi,lng){
+  const shift = Math.round((lng-135)*4);          // 1度 = 4分
+  const t = new Date(Date.UTC(y,m-1,d,hh,mi));
+  t.setUTCMinutes(t.getUTCMinutes()+shift);
+  return {
+    y:t.getUTCFullYear(), m:t.getUTCMonth()+1, d:t.getUTCDate(),
+    hh:t.getUTCHours(), mi:t.getUTCMinutes(), shift
+  };
+}
+
+// 日柱（真太陽時の日付を基準に）
+function dayPillar(y,m,d){
+  const n=(toJDN(y,m,d)+49)%60;
+  return {n, kan:KAN[n%10], shi:SHI[n%12], number:n+1};
+}
+
+// 時柱（時支 ＋ 五鼠遁による時干）
+function hourPillar(dayKan,hh){
+  const shiIdx = Math.floor(((hh+1)%24)/2);       // 23:00〜00:59 = 子
+  // 五鼠遁：甲己→甲子 / 乙庚→丙子 / 丙辛→戊子 / 丁壬→庚子 / 戊癸→壬子
+  const start = [0,2,4,6,8][KAN.indexOf(dayKan)%5];
+  return {kan:KAN[(start+shiIdx)%10], shi:SHI[shiIdx]};
+}
+
+/* ════════ 画面制御 ════════ */
+const $  = id => document.getElementById(id);
+const screens = {top:$('screen-top'), input:$('screen-input'), load:$('screen-load'), result:$('screen-result')};
+
+function show(name){
+  Object.values(screens).forEach(s=>s.classList.remove('active'));
+  screens[name].classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* ── 入力欄の生成 ── */
+(function buildInputs(){
+  const nowY = new Date().getFullYear();
+  const opt = (v,t) => '<option value="'+v+'">'+t+'</option>';
+
+  let y='<option value="">—</option>';
+  for(let i=nowY;i>=1930;i--) y+=opt(i,i);
+  $('in-year').innerHTML=y;
+
+  let m='<option value="">—</option>';
+  for(let i=1;i<=12;i++) m+=opt(i,i);
+  $('in-month').innerHTML=m;
+
+  $('in-day').innerHTML='<option value="">—</option>';
+
+  let h='';
+  for(let i=0;i<24;i++) h+=opt(i,String(i).padStart(2,'0'));
+  $('in-hour').innerHTML=h; $('in-hour').value=12;
+
+  let mi='';
+  for(let i=0;i<60;i+=5) mi+=opt(i,String(i).padStart(2,'0'));
+  $('in-minute').innerHTML=mi; $('in-minute').value=0;
+
+  let p='<option value="">—</option>';
+  PREFS.forEach(function(x){ p+=opt(x[1],x[0]); });
+  $('in-pref').innerHTML=p;
+})();
+
+// 月に応じて日を出し直す
+function refreshDays(){
+  const y=+$('in-year').value, m=+$('in-month').value;
+  const sel=$('in-day'), prev=sel.value;
+  if(!y||!m){ sel.innerHTML='<option value="">—</option>'; return; }
+  const last=new Date(y,m,0).getDate();
+  let s='<option value="">—</option>';
+  for(let i=1;i<=last;i++) s+='<option value="'+i+'">'+i+'</option>';
+  sel.innerHTML=s;
+  if(prev && +prev<=last) sel.value=prev;
+}
+
+let timeKnown=false;
+
+function validate(){
+  const ok = $('in-year').value && $('in-month').value && $('in-day').value && $('in-pref').value;
+  $('go-ritual').disabled = !ok;
+}
+
+['in-year','in-month'].forEach(function(id){
+  $(id).addEventListener('change',function(){refreshDays();validate();});
+});
+['in-day','in-pref'].forEach(function(id){
+  $(id).addEventListener('change',validate);
+});
+
+$('tg-time').addEventListener('click',function(e){
+  const b=e.target.closest('button'); if(!b) return;
+  Array.prototype.forEach.call($('tg-time').children,function(x){x.classList.remove('on');});
+  b.classList.add('on');
+  timeKnown = b.dataset.v==='known';
+  $('time-row').style.display = timeKnown ? 'flex' : 'none';
+});
+
+/* ── 遷移 ── */
+$('go-input').addEventListener('click',function(){show('input');});
+$('back-top').addEventListener('click',function(){show('top');});
+$('btn-retry').addEventListener('click',function(){show('top');});
+
+const RITUAL_STEPS = [
+  '命式を立てております',
+  '真太陽時を求めております',
+  '日柱の干支を読み解いております',
+  '五行の巡りを検めております',
+  'ご神託が降りました'
+];
+
+$('go-ritual').addEventListener('click',function(){
+  const y=+$('in-year').value, m=+$('in-month').value, d=+$('in-day').value;
+  const lng=parseFloat($('in-pref').value);
+  const hh = timeKnown ? +$('in-hour').value : 12;
+  const mi = timeKnown ? +$('in-minute').value : 0;
+
+  show('load');
+
+  // 演出（占いには「間」が要ります）
+  let i=0;
+  const el=$('ritual-text');
+  const timer=setInterval(function(){
+    i++;
+    if(i>=RITUAL_STEPS.length){ clearInterval(timer); return; }
+    el.style.opacity=0;
+    setTimeout(function(){ el.textContent=RITUAL_STEPS[i]; el.style.opacity=1; },420);
+  },900);
+
+  setTimeout(function(){
+    clearInterval(timer);
+    render(divine(y,m,d,hh,mi,lng,timeKnown));
+    show('result');
+  },4600);
+});
+
+/* ── 鑑定 ── */
+function divine(y,m,d,hh,mi,lng,known){
+  const ts   = toTrueSolar(y,m,d,hh,mi,lng);
+  const day  = dayPillar(ts.y,ts.m,ts.d);
+  const hour = hourPillar(day.kan, ts.hh);
+  const elem = KAN_ELEM[day.kan];
+  return {day:day, hour:hour, elem:elem, ts:ts, known:known, type:TYPES[elem]};
+}
+
+/* ── 描画 ── */
+function render(r){
+  const t=r.type;
+
+  $('r-mark').textContent = t.mark;
+  $('r-mark').style.color = t.color;
+  $('r-name').textContent = t.name;
+  $('r-yomi').textContent = t.yomi;
+  $('r-catch').innerHTML  = t.catch;
+
+  // 命式（チラ見せ）
+  const rows = [
+    ['日柱（本命）', r.day.kan + r.day.shi, KAN_YOMI[r.day.kan] + '・' + SHI_YOMI[r.day.shi]],
+    ['日干の五行',   r.elem,                KAN_YIN[r.day.kan] + 'の' + r.elem]
+  ];
+  if(r.known){
+    rows.push(['時柱', r.hour.kan + r.hour.shi, KAN_YOMI[r.hour.kan] + '・' + SHI_YOMI[r.hour.shi]]);
+    rows.push(['真太陽時',
+      String(r.ts.hh).padStart(2,'0') + ':' + String(r.ts.mi).padStart(2,'0'),
+      (r.ts.shift>=0?'+':'') + r.ts.shift + '分 補正']);
+  }
+  $('r-meishiki').innerHTML = rows.map(function(x){
+    return '<div><dt>'+x[0]+'</dt><dd>'+x[1]+'<small>'+x[2]+'</small></dd></div>';
+  }).join('');
+
+  $('r-meishiki-note').innerHTML = r.known
+    ? '年柱・月柱・十神までを含む全体の読み解きは、個別鑑定にて承ります。'
+    : 'お生まれの時刻がわかると、時柱まで読み解けます。<br>年柱・月柱を含む全体の鑑定は、個別にて承ります。';
+
+  $('r-honshitsu').textContent  = t.honshitsu;
+  $('r-todokoori').textContent  = t.todokoori;
+  $('r-kagi').textContent       = t.kagi;
+  $('r-kotoba').innerHTML       = t.kotoba;
+
+  // LINE 導線（フロー④→⑤）
+  $('gate-title').innerHTML = t.name+'のあなたへ、<br>お伝えしたいことがあります';
+  $('gift-0').textContent   = t.name+'タイプに向けた、あなただけのお話';
+
+  // ProLINE がキーワードを受け取り、タイプ別シナリオへ分岐します
+  const keyword = t.name+'タイプ';
+  $('gate-btn').href = 'https://line.me/R/oaMessage/'+encodeURIComponent(CONFIG.LINE_ID)+'/?'+encodeURIComponent(keyword);
+
+  // 結果を保持（同じ端末で開き直したときのため）
+  try{
+    localStorage.setItem('ryujin_result', JSON.stringify({
+      type:t.key, name:t.name, elem:r.elem,
+      day:r.day.kan+r.day.shi, at:new Date().toISOString()
+    }));
+  }catch(e){}
+}
+</script>
+</body>
+</html>
