@@ -2,7 +2,8 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<!-- maximum-scale は指定しない：拡大できないと、見えにくい方が読めなくなるため -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>龍神白狐 ｜ 四柱推命 五神タイプ診断</title>
 <meta name="description" content="生まれた日が示す、あなたの本質。四柱推命の日干から導く五神タイプ診断。あなたの運気がいま滞っている理由を、龍神白狐がお伝えします。" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,17 +22,23 @@
   --w-2:#EDE8DA;
   --w-3:#E2DBC8;
 
-  /* 金 —— 金泥・金箔・古金 */
+  /* 金（装飾用）—— 罫線・環・地紋。文字には使わない */
   --g-0:#EBD9A0;
   --g-1:#D4B863;
   --g-2:#B8963E;
   --g-3:#8C6E22;
 
-  /* 墨 */
-  --ink:#26221C;
-  --ink-1:#4A443A;
-  --ink-2:#7B7365;
-  --ink-3:#A79E8C;
+  /* 金（文字用）—— 白地でのコントラストを実測して決定
+     gt-1 3.10:1（大きい文字用）/ gt-2 4.64:1 / gt-3 6.98:1 */
+  --gt-1:#AE8B33;
+  --gt-2:#8C6E22;
+  --gt-3:#6B5418;
+
+  /* 墨 —— すべて白地で4.5:1以上 */
+  --ink:#26221C;    /* 15.27:1 */
+  --ink-1:#4A443A;  /*  9.31:1 */
+  --ink-2:#6E665A;  /*  5.46:1 */
+  --ink-3:#767063;  /*  4.75:1 */
 
   /* 五行の色 */
   --e-moku:#4A7C6F;
@@ -59,6 +66,9 @@ body{
   min-height:100vh;
   overflow-x:hidden;
 }
+
+/* 日本語の折り返しを文節単位にする（対応ブラウザのみ。非対応でも実害なし） */
+p,li,h1,h2,h3,dd,dt,.btn{word-break:auto-phrase;}
 
 /* 和紙のかすかな質感 */
 body::before{
@@ -92,7 +102,7 @@ body::after{
   width:46px;height:46px;margin:0 auto 18px;
   display:flex;align-items:center;justify-content:center;
   border:1px solid var(--g-1);border-radius:50%;
-  color:var(--g-2);font-size:1.15rem;
+  color:var(--gt-2);font-size:1.15rem;
   box-shadow:0 0 0 4px rgba(212,184,99,.10);
 }
 
@@ -127,13 +137,17 @@ body::after{
 
 /* ---------- 見出し ---------- */
 .eyebrow{
-  text-align:center;font-family:var(--gothic);font-size:.66rem;font-weight:400;
+  text-align:center;font-family:var(--gothic);font-size:.70rem;font-weight:400;
   letter-spacing:.42em;text-indent:.42em;color:var(--g-3);margin-bottom:20px;
 }
+/* 金箔文字：最も明るい部分でも白地に3.10:1（大きい文字の基準3:1）を確保 */
 .gold-text{
-  background:linear-gradient(160deg,var(--g-3) 0%,var(--g-1) 28%,var(--g-0) 46%,var(--g-1) 64%,var(--g-3) 100%);
+  background:linear-gradient(160deg,var(--gt-3) 0%,var(--gt-2) 26%,var(--gt-1) 46%,var(--gt-2) 66%,var(--gt-3) 100%);
   -webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;color:transparent;
+  -webkit-text-fill-color:transparent;color:var(--gt-2);
+}
+@supports not ((-webkit-background-clip:text) or (background-clip:text)){
+  .gold-text{background:none;-webkit-text-fill-color:var(--gt-2);color:var(--gt-2);}
 }
 
 .title{
@@ -177,25 +191,44 @@ body::after{
 }
 
 /* ---------- ボタン ---------- */
+/* 主ボタン：白文字を載せるため、地は最も明るい部分でも4.64:1 の深金 */
 .btn{
-  display:block;width:100%;border:none;cursor:pointer;
+  display:block;width:100%;min-height:56px;border:none;cursor:pointer;
   font-family:var(--mincho);font-size:1.02rem;font-weight:600;letter-spacing:.2em;text-indent:.2em;
   padding:19px 20px;color:var(--w-0);text-align:center;text-decoration:none;
-  background:linear-gradient(140deg,var(--g-3),var(--g-2) 42%,var(--g-1) 70%,var(--g-2));
-  box-shadow:0 6px 22px rgba(140,110,34,.26);
-  transition:transform .3s var(--ease),box-shadow .3s var(--ease),filter .3s;
+  background:linear-gradient(140deg,var(--gt-3),#7E621D 40%,var(--gt-2) 68%,#705618);
+  box-shadow:0 6px 22px rgba(107,84,24,.28);
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease),filter .25s var(--ease);
   position:relative;overflow:hidden;
 }
+/* 金箔の照り。文字の下を通らないよう上端だけに置く */
+.btn::before{
+  content:'';position:absolute;left:0;right:0;top:0;height:38%;pointer-events:none;
+  background:linear-gradient(180deg,rgba(235,217,160,.30),transparent);
+}
 .btn::after{
-  content:'';position:absolute;inset:3px;border:1px solid rgba(255,255,255,.36);pointer-events:none;
+  content:'';position:absolute;inset:3px;border:1px solid rgba(255,255,255,.34);pointer-events:none;
 }
-.btn:active{transform:translateY(1px);box-shadow:0 3px 12px rgba(140,110,34,.3);}
-.btn:disabled{opacity:.34;cursor:not-allowed;box-shadow:none;}
+.btn:hover{filter:brightness(1.09);box-shadow:0 8px 26px rgba(107,84,24,.34);}
+.btn:active{transform:translateY(1px);box-shadow:0 3px 12px rgba(107,84,24,.32);}
+.btn:disabled{opacity:.38;cursor:not-allowed;box-shadow:none;filter:none;}
+.btn:disabled::before{display:none;}
 .btn-ghost{
-  background:transparent;color:var(--g-3);border:1px solid var(--g-1);box-shadow:none;font-size:.9rem;font-weight:500;
+  background:transparent;color:var(--gt-2);border:1px solid var(--g-1);box-shadow:none;
+  font-size:.9rem;font-weight:500;
 }
-.btn-ghost::after{display:none;}
+.btn-ghost::before,.btn-ghost::after{display:none;}
+.btn-ghost:hover{filter:none;background:rgba(212,184,99,.10);box-shadow:none;}
 .btn-note{text-align:center;font-family:var(--gothic);font-size:.72rem;letter-spacing:.14em;color:var(--ink-3);margin-top:11px;}
+
+/* キーボード操作の可視化
+   :where() は詰め込み優先度が0になり、後段の outline:none に負けるため使わない */
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+input:focus-visible{
+  outline:2px solid var(--gt-2);outline-offset:3px;
+}
 
 /* ---------- 入力 ---------- */
 .field{margin-bottom:26px;}
@@ -203,7 +236,7 @@ body::after{
   display:block;font-family:var(--gothic);font-size:.75rem;font-weight:500;
   letter-spacing:.2em;color:var(--g-3);margin-bottom:9px;
 }
-.field-label .req{color:var(--e-ka);margin-left:.5em;font-size:.68rem;}
+.field-label .req{color:var(--e-ka);margin-left:.5em;font-size:.72rem;}
 .field-help{font-family:var(--gothic);font-size:.7rem;line-height:1.75;color:var(--ink-3);margin-top:7px;letter-spacing:.04em;}
 
 .row{display:flex;gap:9px;}
@@ -221,15 +254,17 @@ select{
   background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%23B8963E' stroke-width='1.3' fill='none'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 13px center;padding-right:34px;
 }
-select:focus,input:focus{outline:none;border-color:var(--g-1);box-shadow:0 0 0 3px rgba(212,184,99,.16);}
+/* outline は消さない。消すとキーボード操作で位置がわからなくなる */
+select:focus,input:focus{border-color:var(--g-1);box-shadow:0 0 0 3px rgba(212,184,99,.28);}
 
 .toggle{display:flex;gap:8px;margin-top:10px;}
 .toggle button{
-  flex:1;font-family:var(--gothic);font-size:.78rem;letter-spacing:.08em;cursor:pointer;
-  padding:11px 8px;background:rgba(255,255,255,.7);border:1px solid var(--w-3);color:var(--ink-2);
-  transition:all .3s var(--ease);
+  flex:1;min-height:48px;font-family:var(--gothic);font-size:.82rem;letter-spacing:.08em;cursor:pointer;
+  padding:12px 8px;background:rgba(255,255,255,.7);border:1px solid var(--w-3);color:var(--ink-2);
+  transition:border-color .25s var(--ease),background .25s var(--ease),color .25s var(--ease);
 }
-.toggle button.on{border-color:var(--g-1);background:rgba(212,184,99,.13);color:var(--g-3);font-weight:500;}
+.toggle button:hover{border-color:var(--g-1);}
+.toggle button.on{border-color:var(--g-1);background:rgba(212,184,99,.15);color:var(--gt-2);font-weight:600;}
 
 /* ---------- 祈祷（ローディング） ---------- */
 #screen-load .inner{padding-top:110px;min-height:82vh;}
@@ -260,7 +295,7 @@ select:focus,input:focus{outline:none;border-color:var(--g-1);box-shadow:0 0 0 3
 /* ---------- 結果 ---------- */
 .reveal{text-align:center;margin-bottom:8px;}
 .reveal-label{
-  font-family:var(--gothic);font-size:.68rem;letter-spacing:.4em;text-indent:.4em;
+  font-family:var(--gothic);font-size:.72rem;letter-spacing:.4em;text-indent:.4em;
   color:var(--g-3);margin-bottom:22px;
 }
 .reveal-name{
@@ -280,11 +315,11 @@ select:focus,input:focus{outline:none;border-color:var(--g-1);box-shadow:0 0 0 3
 }
 .meishiki div{background:var(--w-0);padding:15px 10px;text-align:center;}
 .meishiki dt{
-  font-family:var(--gothic);font-size:.64rem;letter-spacing:.22em;color:var(--ink-3);margin-bottom:7px;
+  font-family:var(--gothic);font-size:.72rem;letter-spacing:.22em;color:var(--ink-3);margin-bottom:7px;
 }
 .meishiki dd{font-size:1.35rem;font-weight:600;letter-spacing:.1em;color:var(--ink);}
-.meishiki dd small{display:block;font-family:var(--gothic);font-size:.62rem;font-weight:400;letter-spacing:.1em;color:var(--ink-2);margin-top:5px;}
-.meishiki-note{font-family:var(--gothic);font-size:.68rem;line-height:1.85;color:var(--ink-3);text-align:center;}
+.meishiki dd small{display:block;font-family:var(--gothic);font-size:.72rem;font-weight:400;letter-spacing:.1em;color:var(--ink-2);margin-top:5px;}
+.meishiki-note{font-family:var(--gothic);font-size:.72rem;line-height:1.85;color:var(--ink-3);text-align:center;}
 
 /* 節（結果の各章） */
 .sec{margin:34px 0;}
@@ -293,7 +328,7 @@ select:focus,input:focus{outline:none;border-color:var(--g-1);box-shadow:0 0 0 3
 }
 .sec-head span{
   flex:0 0 auto;width:26px;height:26px;display:flex;align-items:center;justify-content:center;
-  border:1px solid var(--g-1);color:var(--g-2);font-size:.72rem;transform:rotate(45deg);
+  border:1px solid var(--g-1);color:var(--gt-2);font-size:.72rem;transform:rotate(45deg);
 }
 .sec-head span i{transform:rotate(-45deg);font-style:normal;}
 .sec-head h3{font-size:1.02rem;font-weight:600;letter-spacing:.14em;color:var(--ink);}
@@ -304,7 +339,7 @@ select:focus,input:focus{outline:none;border-color:var(--g-1);box-shadow:0 0 0 3
   font-size:1rem;line-height:2.15;color:var(--ink-1);
 }
 .kotoba cite{
-  display:block;font-family:var(--gothic);font-style:normal;font-size:.68rem;
+  display:block;font-family:var(--gothic);font-style:normal;font-size:.72rem;
   letter-spacing:.24em;color:var(--g-3);margin-top:12px;
 }
 
@@ -318,7 +353,7 @@ select:focus,input:focus{outline:none;border-color:var(--g-1);box-shadow:0 0 0 3
   content:'';position:absolute;inset:6px;border:1px solid rgba(212,184,99,.4);pointer-events:none;
 }
 .gate-label{
-  text-align:center;font-family:var(--gothic);font-size:.66rem;letter-spacing:.4em;text-indent:.4em;
+  text-align:center;font-family:var(--gothic);font-size:.70rem;letter-spacing:.4em;text-indent:.4em;
   color:var(--g-1);margin-bottom:16px;
 }
 .gate h3{
@@ -334,11 +369,11 @@ select:focus,input:focus{outline:none;border-color:var(--g-1);box-shadow:0 0 0 3
 }
 .gift li:last-child{border-bottom:none;}
 .gift li b{
-  flex:0 0 auto;font-family:var(--gothic);font-size:.62rem;font-weight:500;letter-spacing:.12em;
+  flex:0 0 auto;font-family:var(--gothic);font-size:.72rem;font-weight:500;letter-spacing:.12em;
   color:var(--g-0);border:1px solid rgba(212,184,99,.45);padding:3px 8px;margin-top:3px;white-space:nowrap;
 }
 .gate .btn{margin-top:4px;}
-.gate .btn-note{color:rgba(246,243,234,.5);}
+.gate .btn-note{color:rgba(246,243,234,.66);}
 
 .retry{
   display:block;margin:38px auto 0;background:none;border:none;cursor:pointer;
@@ -347,14 +382,35 @@ select:focus,input:focus{outline:none;border-color:var(--g-1);box-shadow:0 0 0 3
 }
 
 .foot{
-  text-align:center;font-family:var(--gothic);font-size:.66rem;line-height:2;
+  text-align:center;font-family:var(--gothic);font-size:.70rem;line-height:2;
   color:var(--ink-3);margin-top:44px;letter-spacing:.08em;
 }
+
+/* ---------- ご神託の段階表示（荘厳な「間」をつくる） ---------- */
+.stage{opacity:0;transform:translateY(12px);}
+.screen.active .stage{animation:rise .95s var(--ease) forwards;}
+.screen.active .stage-1{animation-delay:.06s;}
+.screen.active .stage-2{animation-delay:.34s;}
+.screen.active .stage-3{animation-delay:.70s;}
+.screen.active .stage-4{animation-delay:1.02s;}
+@keyframes rise{to{opacity:1;transform:none;}}
 
 @media (max-width:400px){
   .title{font-size:1.78rem;}
   .reveal-name{font-size:2.1rem;}
   .inner{padding:36px 18px 60px;}
+}
+
+/* ---------- 「視差効果を減らす」設定への対応 ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+  .stage{opacity:1;transform:none;}
+  .ritual-ring i{border-top-color:var(--g-1);}
 }
 </style>
 </head>
@@ -473,8 +529,8 @@ select:focus,input:focus{outline:none;border-color:var(--g-1);box-shadow:0 0 0 3
 <section id="screen-load" class="screen">
   <div class="inner">
     <div class="ritual">
-      <div class="ritual-ring"><i></i><i></i><i></i><b>✦</b></div>
-      <p class="ritual-text" id="ritual-text">命式を立てております</p>
+      <div class="ritual-ring" aria-hidden="true"><i></i><i></i><i></i><b>✦</b></div>
+      <p class="ritual-text" id="ritual-text" role="status" aria-live="polite">命式を立てております</p>
     </div>
   </div>
 </section>
@@ -484,15 +540,15 @@ select:focus,input:focus{outline:none;border-color:var(--g-1);box-shadow:0 0 0 3
   <div class="inner">
 
     <div class="reveal">
-      <p class="reveal-label">あなたの五神</p>
-      <div class="honzon">
+      <p class="reveal-label stage stage-1">あなたの五神</p>
+      <div class="honzon stage stage-2">
         <div class="honzon-ground"></div>
         <img id="r-img" src="" alt="" />
         <span class="kanji" id="r-mark" style="display:none"></span>
       </div>
-      <h2 class="reveal-name gold-text" id="r-name"></h2>
-      <p class="reveal-yomi" id="r-yomi"></p>
-      <p class="reveal-catch" id="r-catch"></p>
+      <h2 class="reveal-name gold-text stage stage-3" id="r-name"></h2>
+      <p class="reveal-yomi stage stage-3" id="r-yomi"></p>
+      <p class="reveal-catch stage stage-4" id="r-catch"></p>
     </div>
 
     <div class="rule"></div>
@@ -528,7 +584,8 @@ select:focus,input:focus{outline:none;border-color:var(--g-1);box-shadow:0 0 0 3
       <p>
         診断だけでは、まだ半分です。<br>
         あなたのタイプに合わせたお話と、<br>
-        明日から三日間の贈りものをお渡しします。
+        明日から三日間の贈りものを<br>
+        お渡しします。
       </p>
 
       <ul class="gift">
@@ -696,6 +753,9 @@ function hourPillar(dayKan,hh){
 
 /* ════════ 画面制御 ════════ */
 const $  = id => document.getElementById(id);
+// OSの「視差効果を減らす」設定
+const REDUCED_MOTION = window.matchMedia &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const screens = {top:$('screen-top'), input:$('screen-input'), load:$('screen-load'), result:$('screen-result')};
 
 function show(name){
@@ -704,10 +764,14 @@ function show(name){
   window.scrollTo(0,0);
 }
 
-/* ── TOPの御神鏡：img/hero.png が無ければ漢字に切り替え ── */
+/* ── TOPの御神鏡：img/hero.png が無ければ漢字に切り替え ──
+   スクリプトが走る前に読み込みが失敗している場合があるため、
+   ハンドラの登録だけでなく、済んだ結果も確認する */
 (function heroFallback(){
   const h=$('hero-img'), k=$('hero-kanji');
-  h.onerror=function(){ h.style.display='none'; k.style.display=''; };
+  function fail(){ h.style.display='none'; k.style.display=''; }
+  h.onerror=fail;
+  if(h.complete && h.naturalWidth===0) fail();
 })();
 
 /* ── 入力欄の生成 ── */
@@ -793,9 +857,18 @@ $('go-ritual').addEventListener('click',function(){
 
   show('load');
 
+  const result = divine(y,m,d,hh,mi,lng,timeKnown);
+  const el = $('ritual-text');
+
+  // 「視差効果を減らす」設定の方には、演出を省いてすぐ結果をお見せする
+  if(REDUCED_MOTION){
+    el.textContent = RITUAL_STEPS[RITUAL_STEPS.length-1];
+    setTimeout(function(){ render(result); show('result'); }, 700);
+    return;
+  }
+
   // 演出（占いには「間」が要ります）
   let i=0;
-  const el=$('ritual-text');
   const timer=setInterval(function(){
     i++;
     if(i>=RITUAL_STEPS.length){ clearInterval(timer); return; }
@@ -805,7 +878,7 @@ $('go-ritual').addEventListener('click',function(){
 
   setTimeout(function(){
     clearInterval(timer);
-    render(divine(y,m,d,hh,mi,lng,timeKnown));
+    render(result);
     show('result');
   },4600);
 });
