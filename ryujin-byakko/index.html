@@ -144,12 +144,16 @@ body::after{
 }
 .honzon.sm{width:240px;height:240px;}
 .honzon.sm .kanji{width:92px;height:92px;font-size:2.2rem;}
-/* TOPはまだタイプが決まっていない画面なので、
-   画像に焼き込まれた「蒼龍（木）」等の文字だけを表示から外す。
-   画像そのものは加工していない。CSSで下端を隠しているだけ。 */
+/* TOPはまだタイプが決まっていない画面。
+   画像に焼き込まれた「黄龍（土）」等の文字を出さないよう、
+   下端を霞に溶かす。絵と文字が縦に重なっているため、
+   切り落とすのではなく、ぼかして消している。 */
 .honzon.sm img{
-  clip-path:inset(0 0 13% 0);
-  transform:scale(1.12) translateY(6%);
+  --fade:linear-gradient(to bottom,
+    #000 0%, #000 54%, rgba(0,0,0,.72) 68%, rgba(0,0,0,.28) 78%, transparent 86%);
+  -webkit-mask-image:var(--fade);
+  mask-image:var(--fade);
+  transform:scale(1.14) translateY(-4%);
 }
 
 /* ---------- 見出し ---------- */
@@ -444,7 +448,7 @@ select:focus,input:focus{border-color:var(--g-1);box-shadow:0 0 0 3px rgba(212,1
 
     <div class="honzon sm" style="margin-top:22px">
       <div class="honzon-ground"></div>
-      <img id="hero-img" src="img/hero.png" alt="" />
+      <img id="hero-img" src="img/hero.webp" alt="" />
       <span class="kanji" id="hero-kanji" style="display:none">龍</span>
     </div>
     <p class="eyebrow">龍神白狐</p>
@@ -791,7 +795,12 @@ function show(name){
    ハンドラの登録だけでなく、済んだ結果も確認する */
 (function heroFallback(){
   const h=$('hero-img'), k=$('hero-kanji');
-  function fail(){ h.style.display='none'; k.style.display=''; }
+  let tried=0;
+  function fail(){
+    tried++;
+    if(tried===1){ h.src='img/hero.png'; return; }   // WebP が読めない環境向け
+    h.style.display='none'; k.style.display='';
+  }
   h.onerror=fail;
   if(h.complete && h.naturalWidth===0) fail();
 })();
@@ -924,12 +933,15 @@ function render(r){
   img.alt = t.name;
   img.style.display = '';
   kanji.style.display = 'none';
-  // 画像が無いときは漢字の紋章に切り替え、タイプ名も必ず出す
+  // WebP →（読めなければ）PNG →（それも無ければ）漢字の紋章
+  let tried = 0;
   img.onerror = function(){
+    tried++;
+    if(tried === 1){ img.src = 'img/' + t.key + '.png'; return; }
     img.style.display='none'; kanji.style.display='';
     $('r-name').style.display='';
   };
-  img.src = 'img/' + t.key + '.png';
+  img.src = 'img/' + t.key + '.webp';
 
   // 画像に文字が焼き込まれているなら、画面側のタイプ名は出さない（二重表示を避ける）
   $('r-name').style.display = CONFIG.IMAGE_HAS_LABEL ? 'none' : '';
