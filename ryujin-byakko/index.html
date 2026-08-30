@@ -106,37 +106,51 @@ body::after{
   box-shadow:0 0 0 4px rgba(212,184,99,.10);
 }
 
-/* ---------- 御神鏡（イラストの丸窓） ----------
-   白と金のイラストを載せるため、地は墨色にしています。
+/* ---------- 御神影（イラストの置き場） ----------
+   白と金の絵を、和紙の地にそのまま置きます。
+   白が地に沈まないよう、背後に淡い光背を敷き、
+   輪郭にごく薄い影を落として浮かせています。
    画像がまだ無い場合は、自動で漢字の紋章に切り替わります。 */
 .honzon{
-  position:relative;margin:0 auto 22px;
+  position:relative;margin:0 auto 18px;
   display:flex;align-items:center;justify-content:center;
-  width:250px;height:250px;max-width:74vw;max-height:74vw;
+  width:330px;height:330px;max-width:90vw;max-height:90vw;
 }
+/* 光背：金の気配だけを残した、輪郭のないにじみ。
+   円として見えないよう、外へ長く引いて溶かす */
 .honzon-ground{
-  position:absolute;inset:0;border-radius:50%;overflow:hidden;
-  background:radial-gradient(circle at 50% 40%,#3C3529 0%,#272219 58%,#191611 100%);
-  border:1px solid var(--g-2);
-  box-shadow:0 0 0 6px rgba(212,184,99,.10),0 16px 44px rgba(38,34,28,.26);
-}
-.honzon-ground::after{
-  content:'';position:absolute;inset:9px;border-radius:50%;
-  border:1px solid rgba(212,184,99,.32);
+  position:absolute;inset:-16%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle at 50% 46%,
+    rgba(235,217,160,.32) 0%,
+    rgba(224,200,132,.20) 26%,
+    rgba(212,184,99,.11) 46%,
+    rgba(212,184,99,.045) 64%,
+    rgba(212,184,99,.014) 80%,
+    rgba(212,184,99,0) 100%);
 }
 .honzon img{
-  position:relative;z-index:1;width:86%;height:86%;object-fit:contain;
-  filter:drop-shadow(0 4px 16px rgba(0,0,0,.4));
+  position:relative;z-index:1;width:100%;height:100%;object-fit:contain;
+  /* 二重の影：金のにじみで温度を、細い墨の影で輪郭を出す */
+  filter:
+    drop-shadow(0 6px 18px rgba(140,110,34,.26))
+    drop-shadow(0 1px 1px rgba(38,34,28,.16));
 }
 .honzon .kanji{
-  position:relative;z-index:1;font-size:2.9rem;color:var(--g-0);
-  letter-spacing:0;
+  position:relative;z-index:1;
+  width:112px;height:112px;display:flex;align-items:center;justify-content:center;
+  font-size:2.9rem;color:var(--gt-2);letter-spacing:0;
+  border:1px solid var(--g-1);border-radius:50%;
+  box-shadow:0 0 0 5px rgba(212,184,99,.12);
 }
-.honzon.sm{width:190px;height:190px;}
-.honzon.sm .kanji{font-size:2.2rem;}
-/* 画像に文字が焼き込まれている場合。窓を大きくして焼き込み文字を読める寸法にする */
-.honzon.labeled{width:300px;height:300px;max-width:86vw;max-height:86vw;}
-.honzon.labeled img{width:92%;height:92%;}
+.honzon.sm{width:240px;height:240px;}
+.honzon.sm .kanji{width:92px;height:92px;font-size:2.2rem;}
+/* TOPはまだタイプが決まっていない画面なので、
+   画像に焼き込まれた「蒼龍（木）」等の文字だけを表示から外す。
+   画像そのものは加工していない。CSSで下端を隠しているだけ。 */
+.honzon.sm img{
+  clip-path:inset(0 0 13% 0);
+  transform:scale(1.12) translateY(6%);
+}
 
 /* ---------- 見出し ---------- */
 .eyebrow{
@@ -910,17 +924,15 @@ function render(r){
   img.alt = t.name;
   img.style.display = '';
   kanji.style.display = 'none';
+  // 画像が無いときは漢字の紋章に切り替え、タイプ名も必ず出す
   img.onerror = function(){
     img.style.display='none'; kanji.style.display='';
-    img.closest('.honzon').classList.remove('labeled');   // 漢字のときは通常の寸法に戻す
-    $('r-name').style.display='';                          // 名前が消えたままにならないよう戻す
+    $('r-name').style.display='';
   };
   img.src = 'img/' + t.key + '.png';
 
-  // 画像に文字が入っているなら、画面側の大きなタイプ名は出さない（二重表示を避ける）
-  const labeled = CONFIG.IMAGE_HAS_LABEL;
-  img.closest('.honzon').classList.toggle('labeled', labeled);
-  $('r-name').style.display = labeled ? 'none' : '';
+  // 画像に文字が焼き込まれているなら、画面側のタイプ名は出さない（二重表示を避ける）
+  $('r-name').style.display = CONFIG.IMAGE_HAS_LABEL ? 'none' : '';
 
   $('r-name').textContent = t.name;
   $('r-yomi').textContent = t.yomi;
