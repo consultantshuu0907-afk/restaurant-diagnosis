@@ -415,6 +415,35 @@ select:focus,input:focus{border-color:var(--g-1);box-shadow:0 0 0 3px rgba(212,1
   flex:0 0 auto;font-family:var(--gothic);font-size:.72rem;font-weight:500;letter-spacing:.12em;
   color:var(--g-0);border:1px solid rgba(212,184,99,.45);padding:3px 8px;margin-top:3px;white-space:nowrap;
 }
+/* 受け取り方の案内（墨地の上） */
+.howto{
+  border:1px solid rgba(212,184,99,.34);
+  padding:18px 16px 16px;margin:0 0 22px;
+  background:rgba(212,184,99,.055);
+}
+.howto-title{
+  text-align:center;font-family:var(--gothic);font-size:.70rem;font-weight:500;
+  letter-spacing:.34em;text-indent:.34em;color:var(--g-1);margin-bottom:14px;
+}
+.howto ol{list-style:none;}
+.howto ol li{
+  position:relative;display:flex;gap:11px;align-items:flex-start;
+  font-size:.90rem;line-height:1.85;color:rgba(246,243,234,.94);
+  padding:7px 0;text-align:left;
+}
+.howto ol li i{
+  flex:0 0 auto;width:21px;height:21px;margin-top:.28em;
+  display:flex;align-items:center;justify-content:center;
+  font-style:normal;font-size:.72rem;color:var(--g-0);
+  border:1px solid rgba(212,184,99,.55);border-radius:50%;
+}
+.howto ol li span{flex:1 1 auto;}
+.howto ol li b{color:var(--g-0);font-weight:600;}
+.howto-note{
+  margin-top:12px;padding-top:12px;border-top:1px solid rgba(212,184,99,.20);
+  text-align:center;font-size:.84rem;line-height:1.9;color:rgba(246,243,234,.78);
+}
+
 .gate .btn{margin-top:4px;}
 /* LINE_ID 未設定のとき。押せないことが見てわかる状態にする */
 .btn.is-off{
@@ -645,6 +674,21 @@ select:focus,input:focus{border-color:var(--g-1);box-shadow:0 0 0 3px rgba(212,1
         <li><b>二日目</b><span>龍神と白狐の力、その仕組みの話</span></li>
         <li><b>三日目</b><span>成功事例と具体例で、未来が変わる</span></li>
       </ul>
+
+      <!-- 押したあと何が起きるかを先に伝える。
+           LINEに文字が入るだけで止まってしまう方が出ないように -->
+      <div class="howto" id="howto">
+        <p class="howto-title">受け取り方</p>
+        <ol>
+          <li><i>一</i><span>下のボタンを押すと、LINEが開きます</span></li>
+          <li><i>二</i><span>トークに<b id="howto-keyword">タイプ名</b>と文字が入った状態になります</span></li>
+          <li><i>三</i><span>そのまま<b>送信</b>してください</span></li>
+        </ol>
+        <p class="howto-note">
+          送信いただくと、あなたのタイプに合わせた<br>
+          詳しいお話が届きます。
+        </p>
+      </div>
 
       <a class="btn" id="gate-btn" href="#" target="_blank" rel="noopener">
         LINEで結果を受け取る
@@ -998,14 +1042,19 @@ function render(r){
 
   // ProLINE がキーワードを受け取り、タイプ別シナリオへ分岐します
   const keyword = t.name+'タイプ';
+  // 受け取り方の案内に、実際に送られる言葉を入れる
+  $('howto-keyword').textContent = '「' + keyword + '」';
+
   const btn = $('gate-btn');
   if(!CONFIG.LINE_ID || CONFIG.LINE_ID === CONFIG.LINE_ID_PLACEHOLDER){
+    $('howto').style.display = 'none';   // 押せないときは案内も出さない
     // LINE_ID が未設定。無関係のアカウントへ飛ばさないよう、押せなくする
     btn.removeAttribute('href');
     btn.setAttribute('aria-disabled','true');
     btn.classList.add('is-off');
     btn.textContent = 'ただいま準備中です';
   }else{
+    $('howto').style.display = '';
     btn.href = 'https://line.me/R/oaMessage/'+encodeURIComponent(CONFIG.LINE_ID)+'/?'+encodeURIComponent(keyword);
     btn.setAttribute('aria-disabled','false');
     btn.classList.remove('is-off');
