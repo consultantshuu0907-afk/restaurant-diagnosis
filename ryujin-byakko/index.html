@@ -444,6 +444,44 @@ select:focus,input:focus{border-color:var(--g-1);box-shadow:0 0 0 3px rgba(212,1
   text-align:center;font-size:.84rem;line-height:1.9;color:rgba(246,243,234,.78);
 }
 
+/* パソコン向けのQR。読み取り精度を保つため地は白のまま */
+.qr-block{
+  border:1px solid rgba(212,184,99,.34);
+  padding:20px 16px 16px;margin:0 0 22px;
+  background:rgba(212,184,99,.055);
+}
+.qr-frame{
+  width:280px;max-width:100%;margin:0 auto 18px;
+  background:#fff;padding:12px;border:1px solid rgba(212,184,99,.5);
+}
+.qr-frame img{display:block;width:100%;height:auto;}
+.qr-block ol{list-style:none;}
+.qr-block ol li{
+  display:flex;gap:11px;align-items:flex-start;text-align:left;
+  font-size:.90rem;line-height:1.85;color:rgba(246,243,234,.94);padding:7px 0;
+}
+.qr-block ol li i{
+  flex:0 0 auto;width:21px;height:21px;margin-top:.28em;
+  display:flex;align-items:center;justify-content:center;
+  font-style:normal;font-size:.72rem;color:var(--g-0);
+  border:1px solid rgba(212,184,99,.55);border-radius:50%;
+}
+.qr-block ol li span{flex:1 1 auto;}
+.qr-block ol li b{color:var(--g-0);font-weight:600;}
+.qr-copy{
+  display:block;width:100%;min-height:46px;margin:14px 0 0;cursor:pointer;
+  font-family:var(--gothic);font-size:.82rem;letter-spacing:.1em;
+  color:var(--g-0);background:transparent;
+  border:1px solid rgba(212,184,99,.5);
+  transition:background .25s var(--ease),color .25s var(--ease);
+}
+.qr-copy:hover{background:rgba(212,184,99,.14);}
+.qr-copy.done{background:rgba(212,184,99,.20);color:var(--w-0);}
+.qr-fallback{
+  margin-top:12px;text-align:center;font-family:var(--gothic);
+  font-size:.74rem;line-height:1.9;color:rgba(246,243,234,.66);
+}
+
 .gate .btn{margin-top:4px;}
 /* LINE_ID 未設定のとき。押せないことが見てわかる状態にする */
 .btn.is-off{
@@ -690,10 +728,32 @@ select:focus,input:focus{border-color:var(--g-1);box-shadow:0 0 0 3px rgba(212,1
         </p>
       </div>
 
+      <!-- パソコンからご覧の方へ。LINEアプリを開けないのでQRを出す -->
+      <div class="qr-block" id="qr-block" hidden>
+        <p class="howto-title">スマートフォンで読み取ってください</p>
+        <div class="qr-frame">
+          <img id="qr-img" src="" width="640" height="640" alt="" />
+        </div>
+        <ol>
+          <li><i>一</i><span>QRコードを読み取ると、LINEが開いて友だち追加できます</span></li>
+          <li><i>二</i><span>トークに<b id="qr-keyword">タイプ名</b>と文字が入った状態になります</span></li>
+          <li><i>三</i><span>そのまま<b>送信</b>してください</span></li>
+        </ol>
+        <button type="button" class="qr-copy" id="qr-copy">キーワードをコピー</button>
+        <p class="qr-fallback">
+          文字が入っていない場合は、上のボタンでコピーして<br>
+          トークに貼り付けて送信してください。
+        </p>
+        <p class="howto-note">
+          送信いただくと、あなたのタイプに合わせた<br>
+          詳しいお話が届きます。
+        </p>
+      </div>
+
       <a class="btn" id="gate-btn" href="#" target="_blank" rel="noopener">
         LINEで結果を受け取る
       </a>
-      <p class="btn-note">無料 ／ いつでも解除できます</p>
+      <p class="btn-note" id="btn-note">無料 ／ いつでも解除できます</p>
     </div>
 
     <button class="retry" id="btn-retry">もう一度、はじめから</button>
@@ -859,6 +919,11 @@ const $  = id => document.getElementById(id);
 // OSの「視差効果を減らす」設定
 const REDUCED_MOTION = window.matchMedia &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// スマートフォンかどうか。パソコンではLINEアプリを開けないためQRに切り替える。
+// iPadOSはUAにiPadと出ないことがあるので、タッチ点数でも判定する。
+const IS_MOBILE = /iPhone|iPad|iPod|Android|Mobile/i.test(navigator.userAgent) ||
+  (navigator.maxTouchPoints > 1 && /Mac/i.test(navigator.platform || ''));
 const screens = {top:$('screen-top'), input:$('screen-input'), load:$('screen-load'), result:$('screen-result')};
 
 function show(name){
@@ -866,6 +931,27 @@ function show(name){
   screens[name].classList.add('active');
   window.scrollTo(0,0);
 }
+
+/* ── キーワードのコピー（パソコン向け） ── */
+$('qr-copy').addEventListener('click', function(){
+  const kw = ($('qr-keyword').textContent || '').replace(/[「」]/g, '');
+  const done = function(){
+    const b = $('qr-copy');
+    b.textContent = 'コピーしました'; b.classList.add('done');
+    setTimeout(function(){ b.textContent = 'キーワードをコピー'; b.classList.remove('done'); }, 2200);
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(kw).then(done, fallback);
+  }else{ fallback(); }
+  function fallback(){
+    // クリップボードが使えない環境向け
+    const ta = document.createElement('textarea');
+    ta.value = kw; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); done(); }catch(e){}
+    document.body.removeChild(ta);
+  }
+});
 
 /* ── 入力欄の生成 ── */
 (function buildInputs(){
@@ -1044,17 +1130,30 @@ function render(r){
   const keyword = t.name+'タイプ';
   // 受け取り方の案内に、実際に送られる言葉を入れる
   $('howto-keyword').textContent = '「' + keyword + '」';
+  $('qr-keyword').textContent    = '「' + keyword + '」';
+
+  // パソコンからはLINEアプリを開けないので、代わりにQRを出す。
+  // QRにはタイプ別のメッセージURLを埋め込んであるため、
+  // 読み取れば友だち追加とキーワード入力が同時に済む。
+  const qr = $('qr-block'), qrImg = $('qr-img');
+  qrImg.src = 'img/qr-' + t.key + '.png';
+  qrImg.alt = '龍神白狐 公式LINE 友だち追加用QRコード（' + keyword + '）';
+  qr.hidden = IS_MOBILE;
+  $('howto').hidden = !IS_MOBILE;
+  $('btn-note').textContent = IS_MOBILE
+    ? '無料 ／ いつでも解除できます'
+    : 'LINEアプリをお使いのパソコンでは、こちらからも開けます';
 
   const btn = $('gate-btn');
   if(!CONFIG.LINE_ID || CONFIG.LINE_ID === CONFIG.LINE_ID_PLACEHOLDER){
-    $('howto').style.display = 'none';   // 押せないときは案内も出さない
+    $('howto').hidden = true;            // 押せないときは案内もQRも出さない
+    $('qr-block').hidden = true;
     // LINE_ID が未設定。無関係のアカウントへ飛ばさないよう、押せなくする
     btn.removeAttribute('href');
     btn.setAttribute('aria-disabled','true');
     btn.classList.add('is-off');
     btn.textContent = 'ただいま準備中です';
   }else{
-    $('howto').style.display = '';
     btn.href = 'https://line.me/R/oaMessage/'+encodeURIComponent(CONFIG.LINE_ID)+'/?'+encodeURIComponent(keyword);
     btn.setAttribute('aria-disabled','false');
     btn.classList.remove('is-off');
