@@ -8,9 +8,15 @@
   ouryu.webp  / .png    黄龍（土）
   byakko.webp / .png    白狐（金）
   kokuryu.webp/ .png    黒龍（水）
-  hero.webp   / .png    TOP用（黄龍の複製）
 
-  original/             いただいた元画像（1254px・無加工）
+  hero-banner.webp/.png  TOP画（開運診断のバナー）
+  ogp.jpg                LINE・SNSで共有したときのプレビュー画像
+  qr-*.png               タイプ別のLINE登録用QR
+  favicon.ico / icon-*   アイコン
+
+  _original/             いただいた元画像（無加工）
+                         先頭のアンダースコアにより、公開サイトには
+                         配信されません（ビルドを軽くするため）
 
 いただいた画像に対して行った処理
 --------------------------------
@@ -20,7 +26,7 @@
 3. WebPに変換（合計 11.19MB → 約 0.8MB）
    WebPが読めない環境向けに .png も置いてあり、自動で切り替わります
 
-元画像は original/ にそのまま残してあります。
+元画像は _original/ にそのまま残してあります。
 やり直したい場合はここから再生成できます。
 
 表示のしかた
