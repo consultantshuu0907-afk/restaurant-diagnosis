@@ -142,19 +142,6 @@ body::after{
   border:1px solid var(--g-1);border-radius:50%;
   box-shadow:0 0 0 5px rgba(212,184,99,.12);
 }
-.honzon.sm{width:240px;height:240px;}
-.honzon.sm .kanji{width:92px;height:92px;font-size:2.2rem;}
-/* TOPはまだタイプが決まっていない画面。
-   画像に焼き込まれた「黄龍（土）」等の文字を出さないよう、
-   下端を霞に溶かす。絵と文字が縦に重なっているため、
-   切り落とすのではなく、ぼかして消している。 */
-.honzon.sm img{
-  --fade:linear-gradient(to bottom,
-    #000 0%, #000 54%, rgba(0,0,0,.72) 68%, rgba(0,0,0,.28) 78%, transparent 86%);
-  -webkit-mask-image:var(--fade);
-  mask-image:var(--fade);
-  transform:scale(1.14) translateY(-4%);
-}
 
 /* ---------- 見出し ---------- */
 .eyebrow{
@@ -174,6 +161,18 @@ body::after{
 .title{
   text-align:center;font-size:2.05rem;font-weight:600;line-height:1.62;
   letter-spacing:.16em;text-indent:.16em;margin-bottom:6px;
+}
+/* トップ画（横幅いっぱい）。読み込み前に高さを確保して、
+   表示がガタつかないようにしている */
+.hero-banner{display:block;}
+.hero-banner img{
+  display:block;width:100%;height:auto;aspect-ratio:1200/800;
+  border-bottom:1px solid rgba(212,184,99,.34);
+}
+/* 画像が主役になったので、見出しは控えめに */
+.title-lite{
+  text-align:center;font-size:1.32rem;font-weight:600;line-height:1.75;
+  letter-spacing:.14em;text-indent:.14em;margin-bottom:8px;
 }
 .title-sub{
   text-align:center;font-size:.86rem;font-weight:400;letter-spacing:.3em;text-indent:.3em;
@@ -446,21 +445,21 @@ select:focus,input:focus{border-color:var(--g-1);box-shadow:0 0 0 3px rgba(212,1
 
 <!-- ══════════════ 序：入口 ══════════════ -->
 <section id="screen-top" class="screen active">
+
+  <!-- トップ画（横幅いっぱい）。文字は画像に入っているため alt に同じ内容を書く -->
+  <picture class="hero-banner">
+    <source srcset="img/hero-banner.webp" type="image/webp" />
+    <img src="img/hero-banner.png" width="1200" height="800"
+         alt="開運診断 ― ご縁・人脈・チャンスを引き寄せる。お稲荷さん・龍神・白狐の力で、あなたの未来を明るく照らします。" />
+  </picture>
+
   <div class="inner">
 
-    <svg class="kumo" viewBox="0 0 220 34" fill="none" aria-hidden="true">
-      <path d="M8 25c14 0 14-9 28-9s14 9 28 9 14-13 28-13 14 13 28 13 14-9 28-9 14 9 28 9" stroke="#D4B863" stroke-width="1" opacity=".75"/>
-      <path d="M22 31c12 0 12-6 24-6s12 6 24 6 12-8 24-8 12 8 24 8 12-6 24-6" stroke="#EBD9A0" stroke-width="1" opacity=".5"/>
-    </svg>
+    <p class="eyebrow" style="margin-top:4px">龍神白狐</p>
 
-    <div class="honzon sm" style="margin-top:22px">
-      <div class="honzon-ground"></div>
-      <img id="hero-img" src="img/hero.webp" alt="" />
-      <span class="kanji" id="hero-kanji" style="display:none">龍</span>
-    </div>
-    <p class="eyebrow">龍神白狐</p>
-
-    <h1 class="title"><span class="gold-text">五神タイプ</span><br>診断</h1>
+    <h1 class="title-lite">
+      <span class="gold-text">四柱推命</span>による<br>五神タイプ診断
+    </h1>
     <p class="title-sub">生まれた日が示す、あなたの本質</p>
 
     <div class="rule"></div>
@@ -799,21 +798,6 @@ function show(name){
   screens[name].classList.add('active');
   window.scrollTo(0,0);
 }
-
-/* ── TOPの御神鏡：img/hero.png が無ければ漢字に切り替え ──
-   スクリプトが走る前に読み込みが失敗している場合があるため、
-   ハンドラの登録だけでなく、済んだ結果も確認する */
-(function heroFallback(){
-  const h=$('hero-img'), k=$('hero-kanji');
-  let tried=0;
-  function fail(){
-    tried++;
-    if(tried===1){ h.src='img/hero.png'; return; }   // WebP が読めない環境向け
-    h.style.display='none'; k.style.display='';
-  }
-  h.onerror=fail;
-  if(h.complete && h.naturalWidth===0) fail();
-})();
 
 /* ── 入力欄の生成 ── */
 (function buildInputs(){
