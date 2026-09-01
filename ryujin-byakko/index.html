@@ -394,6 +394,13 @@ select:focus,input:focus{border-color:var(--g-1);box-shadow:0 0 0 3px rgba(212,1
   color:var(--g-0);border:1px solid rgba(212,184,99,.45);padding:3px 8px;margin-top:3px;white-space:nowrap;
 }
 .gate .btn{margin-top:4px;}
+/* LINE_ID 未設定のとき。押せないことが見てわかる状態にする */
+.btn.is-off{
+  background:rgba(246,243,234,.14);color:rgba(246,243,234,.62);
+  box-shadow:none;cursor:not-allowed;pointer-events:none;
+}
+.btn.is-off::before{display:none;}
+.btn.is-off::after{border-color:rgba(246,243,234,.20);}
 .gate .btn-note{color:rgba(246,243,234,.66);}
 
 .retry{
@@ -644,7 +651,10 @@ select:focus,input:focus{border-color:var(--g-1);box-shadow:0 0 0 3px rgba(212,1
 const CONFIG = {
   // LINE公式アカウントのID（@から始まる）
   // ProLINE側でタイプ別キーワードを受け取り、シナリオを分岐させます
+  // ↓ここを実際のIDに書き換えるまで、LINEボタンは押せない状態になります
+  //   （未設定のまま公開して、無関係のアカウントへ誘導しないため）
   LINE_ID: '@000abcde',
+  LINE_ID_PLACEHOLDER: '@000abcde',
 
   // 画像に「蒼龍（木）」などの文字が焼き込まれている場合は true。
   //   true  … 御神鏡を大きくし、画面側のタイプ名は出さない（名前の二重表示を避ける）
@@ -980,7 +990,19 @@ function render(r){
 
   // ProLINE がキーワードを受け取り、タイプ別シナリオへ分岐します
   const keyword = t.name+'タイプ';
-  $('gate-btn').href = 'https://line.me/R/oaMessage/'+encodeURIComponent(CONFIG.LINE_ID)+'/?'+encodeURIComponent(keyword);
+  const btn = $('gate-btn');
+  if(!CONFIG.LINE_ID || CONFIG.LINE_ID === CONFIG.LINE_ID_PLACEHOLDER){
+    // LINE_ID が未設定。無関係のアカウントへ飛ばさないよう、押せなくする
+    btn.removeAttribute('href');
+    btn.setAttribute('aria-disabled','true');
+    btn.classList.add('is-off');
+    btn.textContent = 'ただいま準備中です';
+  }else{
+    btn.href = 'https://line.me/R/oaMessage/'+encodeURIComponent(CONFIG.LINE_ID)+'/?'+encodeURIComponent(keyword);
+    btn.setAttribute('aria-disabled','false');
+    btn.classList.remove('is-off');
+    btn.textContent = 'LINEで結果を受け取る';
+  }
 
   // 結果を保持（同じ端末で開き直したときのため）
   try{
