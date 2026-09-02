@@ -27,7 +27,10 @@
   /* テキスト：クールなニュートラル系 */
   --color-text:      #1E1E1E;   /* ほぼ黒 */
   --color-text-sub:  #555555;   /* ミディアムグレー */
-  --color-text-light:#999999;   /* ライトグレー */
+  --color-text-light:#727272;   /* ライトグレー（白背景・オフホワイト背景ともコントラスト比4.5:1以上を確保） */
+
+  /* フォーカスリング */
+  --color-focus-ring: #B86A42;
 
   /* ボーダー */
   --color-border:    #E8E0D8;
@@ -74,6 +77,13 @@ body {
 /* テキストは幅に応じて自然に折り返す（孤立行を抑制、対応ブラウザのみ有効） */
 p, li, h1, h2, h3 {
   text-wrap: pretty;
+}
+
+/* 画面遷移時にフォーカスを移す見出し（視覚的なリングは不要） */
+#top-title:focus,
+#question-text:focus,
+#result-type-name:focus {
+  outline: none;
 }
 
 /* ---------- スクリーン管理 ---------- */
@@ -243,10 +253,20 @@ p, li, h1, h2, h3 {
 }
 
 .top-features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 0.88rem;
   color: var(--color-text-sub);
   padding: 7px 0;
   border-bottom: 1px solid var(--color-border);
+}
+
+.feature-icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  color: var(--color-primary);
 }
 
 .top-features li:last-child {
@@ -287,10 +307,17 @@ p, li, h1, h2, h3 {
   -webkit-tap-highlight-color: transparent;
 }
 
-.btn-primary:hover,
-.btn-primary:focus {
+.btn-primary:hover {
   background: var(--color-primary-d);
+}
+
+.btn-primary:focus {
   outline: none;
+}
+
+.btn-primary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-white), 0 0 0 5px var(--color-focus-ring);
 }
 
 .btn-primary:active {
@@ -403,13 +430,22 @@ p, li, h1, h2, h3 {
   box-shadow: var(--shadow-sm);
 }
 
-.choice-btn:hover,
+.choice-btn:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-l);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
 .choice-btn:focus {
+  outline: none;
+}
+
+.choice-btn:focus-visible {
   border-color: var(--color-primary);
   background: var(--color-primary-l);
   outline: none;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 0 0 3px var(--color-white), 0 0 0 5px var(--color-focus-ring);
 }
 
 .choice-btn:active {
@@ -521,12 +557,22 @@ p, li, h1, h2, h3 {
 }
 
 .result-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 0.80rem;
   font-weight: 700;
   color: var(--color-text-sub);
   margin-bottom: 10px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.section-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--color-primary);
 }
 
 .result-section-text {
@@ -689,9 +735,12 @@ p, li, h1, h2, h3 {
   animation: seminar-pulse 2.2s ease-in-out infinite;
 }
 
-.btn-seminar:hover,
-.btn-seminar:focus {
+.btn-seminar:hover {
   background: var(--color-primary-d) !important;
+  animation: none;
+}
+
+.btn-seminar:focus-visible {
   animation: none;
 }
 
@@ -729,6 +778,12 @@ p, li, h1, h2, h3 {
   background: var(--color-primary-l);
 }
 
+.btn-retry:focus-visible {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-white), 0 0 0 5px var(--color-focus-ring);
+}
+
 /* ---------- フェードイン アニメーション ---------- */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
@@ -764,4 +819,22 @@ p, li, h1, h2, h3 {
     max-width: 480px;
   }
   #screen-top .screen-inner { padding-top: 64px; }
+}
+
+/* ---------- モーション低減設定への配慮 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .fade-in,
+  .fade-in-delay-1, .fade-in-delay-2, .fade-in-delay-3, .fade-in-delay-4, .fade-in-delay-5 {
+    opacity: 1;
+    animation: none;
+  }
+  .btn-seminar {
+    animation: none;
+  }
 }

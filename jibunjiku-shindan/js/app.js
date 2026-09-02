@@ -57,6 +57,7 @@ const els = {
   qNum:              document.getElementById("q-num"),
   questionText:      document.getElementById("question-text"),
   choicesArea:       document.getElementById("choices-area"),
+  progressBar:       document.getElementById("progress-bar"),
   progressFill:      document.getElementById("progress-fill"),
   resultEmoji:       document.getElementById("result-emoji"),
   resultTypeBadge:   document.getElementById("result-type-badge"),
@@ -71,6 +72,12 @@ const els = {
   seminarCourseTags: document.getElementById("seminar-course-tags")
 };
 
+const FOCUS_TARGET_ID = {
+  top: "top-title",
+  question: "question-text",
+  result: "result-type-name"
+};
+
 function showScreen(name) {
   Object.values(screens).forEach(s => s.classList.remove("active", "visible"));
   const target = screens[name];
@@ -79,6 +86,12 @@ function showScreen(name) {
     requestAnimationFrame(() => target.classList.add("visible"));
   });
   window.scrollTo({ top: 0, behavior: "smooth" });
+
+  // スクリーン遷移のたびに見出しへフォーカスを移し、スクリーンリーダーにも変化を伝える
+  const focusEl = document.getElementById(FOCUS_TARGET_ID[name]);
+  if (focusEl) {
+    setTimeout(() => focusEl.focus({ preventScroll: true }), 50);
+  }
 }
 
 function nl2br(text) {
@@ -92,6 +105,8 @@ function renderQuestion(index) {
   els.qTotal.textContent   = total;
   els.qNum.textContent     = index + 1;
   els.progressFill.style.width = ((index / total) * 100) + "%";
+  els.progressBar.setAttribute("aria-valuenow", index);
+  els.progressBar.setAttribute("aria-valuemax", total);
   els.questionText.innerHTML = nl2br(q.text);
 
   const card = document.getElementById("question-card");
