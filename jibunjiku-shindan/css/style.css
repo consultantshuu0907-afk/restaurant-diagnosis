@@ -68,6 +68,12 @@ body {
   line-height: 1.7;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  line-break: strict; /* 「ょ」「ー」等が行頭に来る禁則違反を防ぐ */
+}
+
+/* テキストは幅に応じて自然に折り返す（孤立行を抑制、対応ブラウザのみ有効） */
+p, li, h1, h2, h3 {
+  text-wrap: pretty;
 }
 
 /* ---------- スクリーン管理 ---------- */
