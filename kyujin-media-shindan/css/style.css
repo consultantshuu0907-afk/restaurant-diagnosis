@@ -1606,3 +1606,20 @@ ul {
     font-size: var(--fs-xs);
     color: var(--text-sub);
 }
+
+/* 連絡先モーダル・フッターのリンク */
+.contact-list a,
+.footer-copy a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.contact-list a:hover,
+.footer-copy a:hover {
+    color: var(--accent-color);
+}
+
+.modal-content .btn-block + .btn-block {
+    margin-top: var(--spacing-sm);
+}

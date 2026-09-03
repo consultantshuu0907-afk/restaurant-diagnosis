@@ -382,7 +382,7 @@ python verify_mynavi.py "＜マイナビバイト料金表＞.pdf"
 | やりたいこと | 編集場所 |
 | --- | --- |
 | 会社名・キャッチコピー | `index.html` のヘッダー `.brand` |
-| 連絡先（TEL／Email／営業時間） | `index.html` の `.contact-list` |
+| 連絡先（TEL／FAX／所在地） | `index.html` の `.contact-list` とフッター |
 | 配色 | `css/style.css` 冒頭の `:root` 変数 |
 | 媒体の追加・変更 | `js/script.js` の `mediaDatabase` |
 | 配点の調整 | `js/script.js` の `WEIGHTS` |
@@ -437,7 +437,6 @@ python verify_mynavi.py "＜マイナビバイト料金表＞.pdf"
 - 本料金は2025年11月時点のものであり、予告なく変更となる場合があります。
 - バイトル／バイトルNEXT以外の4媒体の料金は一般的な目安であり、公式料金表とは照合していません。
 - 入力内容はブラウザ内でのみ処理され、外部に送信されません。
-- お問い合わせ先（TEL・Email）は仮の値です。公開前に実際の値へ差し替えてください。
 - 「バイトル」「バイトルNEXT」はディップ株式会社の登録商標です。
 
 ---
@@ -445,4 +444,6 @@ python verify_mynavi.py "＜マイナビバイト料金表＞.pdf"
 ## お問い合わせ
 
 株式会社JJS
-TEL: 03-XXXX-XXXX ／ Email: info@jjs-recruitment.co.jp ／ 営業時間: 平日 9:00〜18:00
+〒600-8188 京都府京都市下京区和泉町529
+TEL: 075-600-9973 ／ FAX: 075-600-9972
+https://jjsumire.co.jp/
