@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>求人媒体適正活用診断 | 株式会社JJS</title>
+    <meta name="description" content="6つの質問に答えるだけで、貴社の採用課題に最適な求人媒体をランキング形式でご提案します。株式会社JJSオリジナル診断ツール。">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome は SVG 版（JS）を使用。CSSを読み込めない環境でもアイコンが表示される -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ========================================
+         ヘッダー
+         ======================================== -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="brand">
+                <span class="brand-mark"><i class="fas fa-briefcase"></i></span>
+                <div class="brand-text">
+                    <span class="brand-name">株式会社JJS</span>
+                    <span class="brand-tagline">採用を、科学する。</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-ghost btn-sm" onclick="showPricing()">
+                    <i class="fas fa-table"></i> 掲載料金表
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="showContact()">
+                    <i class="fas fa-comments"></i> お問い合わせ
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========================================
+         トップページ
+         ======================================== -->
+    <main id="homePage" class="page active">
+
+        <section class="hero">
+            <div class="container hero-inner">
+                <p class="hero-eyebrow"><i class="fas fa-bolt"></i> 所要時間 約1分・無料</p>
+                <h1 class="hero-title">
+                    求人媒体<span class="hero-accent">適正活用</span>診断
+                </h1>
+                <p class="hero-lead">
+                    「どの求人媒体に出せばいいか分からない」を、6つの質問で解決。<br>
+                    貴社の採用条件にもっとも適した媒体を、マッチ度スコア付きのランキングでご提案します。
+                </p>
+                <button class="btn btn-primary btn-lg" onclick="startDiagnosis()">
+                    <i class="fas fa-play"></i> 無料で診断をはじめる
+                </button>
+                <p class="hero-note">※ 入力内容が外部に送信されることはありません</p>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">この診断でわかること</h2>
+                <p class="section-lead">7つの主要求人媒体を、貴社の条件で自動採点します。</p>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-ranking-star"></i></div>
+                        <h3>おすすめ媒体ランキング</h3>
+                        <p>雇用形態・職種・ターゲット層・予算・重視ポイントの5軸で採点し、適合度の高い順に媒体を並べます。エリアは掲載料金の算出に使います。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-percent"></i></div>
+                        <h3>100点満点のマッチ度</h3>
+                        <p>「なんとなくおすすめ」ではなく、各媒体が貴社条件に何点合致しているかを数値で確認できます。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-yen-sign"></i></div>
+                        <h3>エリア別の実勢料金</h3>
+                        <p>バイトル／バイトルNEXT／マイナビバイトは公式料金表を収録。ご選択のエリアで「予算内で使える最上位プラン」まで提示します。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-list-check"></i></div>
+                        <h3>媒体ごとの特徴</h3>
+                        <p>それぞれの媒体が得意とする層・職種・訴求の傾向を整理してお伝えします。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="steps">
+            <div class="container">
+                <h2 class="section-title">診断の流れ</h2>
+                <ol class="step-list">
+                    <li class="step-item">
+                        <span class="step-num">1</span>
+                        <h3>6つの質問に回答</h3>
+                        <p>募集エリア・雇用形態・職種・ターゲット層・予算・重視ポイントを選ぶだけ。</p>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-num">2</span>
+                        <h3>自動でスコア計算</h3>
+                        <p>回答内容と媒体データベースを照合し、100点満点でマッチ度を算出します。</p>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-num">3</span>
+                        <h3>ランキングを確認</h3>
+                        <p>上位媒体の特徴と費用感をチェック。そのままご相談いただくことも可能です。</p>
+                    </li>
+                </ol>
+                <div class="center">
+                    <button class="btn btn-primary btn-lg" onclick="startDiagnosis()">
+                        <i class="fas fa-play"></i> 診断をはじめる
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ========================================
+         診断ページ
+         ======================================== -->
+    <main id="diagnosisPage" class="page">
+        <div class="container diagnosis-wrap">
+
+            <div class="progress-area">
+                <div class="progress-head">
+                    <span class="progress-label">質問 <strong id="currentQuestionNum">1</strong> / 6</span>
+                    <span class="progress-percent" id="progressPercent">17%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 17%;"></div>
+                </div>
+            </div>
+
+            <!-- Q1: 募集エリア（選択肢は公式料金データから自動生成） -->
+            <section class="question-block active" data-question="1">
+                <p class="question-index">Question 1</p>
+                <h2 class="question-title">募集エリアはどちらですか</h2>
+                <p class="question-help">
+                    <i class="fas fa-circle-dot"></i>
+                    1つ選択してください。掲載料金はエリアで大きく変わるため、結果はこのエリアの料金で算出します
+                </p>
+                <div class="option-grid" id="areaOptions"></div>
+                <p class="error-message" id="error1"><i class="fas fa-circle-exclamation"></i> エリアを選択してください</p>
+            </section>
+
+            <!-- Q2: 雇用形態 -->
+            <section class="question-block" data-question="2">
+                <p class="question-index">Question 2</p>
+                <h2 class="question-title">募集する雇用形態を教えてください</h2>
+                <p class="question-help"><i class="fas fa-check-double"></i> あてはまるものをすべて選択してください（複数選択可）</p>
+                <div class="option-grid">
+                    <label class="option">
+                        <input type="checkbox" name="employmentType" value="fulltime">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-user-tie"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">正社員</span>
+                                <span class="option-desc">無期雇用のフルタイム採用</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="employmentType" value="contract">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-file-signature"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">契約社員</span>
+                                <span class="option-desc">期間の定めがある直接雇用</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="employmentType" value="parttime">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-clock"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">アルバイト・パート</span>
+                                <span class="option-desc">シフト制・短時間勤務</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="employmentType" value="dispatch">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-people-arrows"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">派遣社員</span>
+                                <span class="option-desc">人材派遣・紹介予定派遣</span>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+                <p class="error-message" id="error2"><i class="fas fa-circle-exclamation"></i> 1つ以上選択してください</p>
+            </section>
+
+            <!-- Q2: 職種カテゴリ -->
+            <section class="question-block" data-question="3">
+                <p class="question-index">Question 3</p>
+                <h2 class="question-title">募集職種のカテゴリはどれですか</h2>
+                <p class="question-help"><i class="fas fa-check-double"></i> あてはまるものをすべて選択してください（複数選択可）</p>
+                <div class="option-grid">
+                    <label class="option">
+                        <input type="checkbox" name="jobCategory" value="sales">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-handshake"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">営業</span>
+                                <span class="option-desc">法人・個人営業／販売促進</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="jobCategory" value="office">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-building-columns"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">事務・管理</span>
+                                <span class="option-desc">一般事務／経理・人事・総務</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="jobCategory" value="it">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-laptop-code"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">IT・エンジニア</span>
+                                <span class="option-desc">開発／インフラ／Web</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="jobCategory" value="service">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-utensils"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">サービス・接客</span>
+                                <span class="option-desc">飲食／小売／宿泊</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="jobCategory" value="manufacturing">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-helmet-safety"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">製造・物流・建設</span>
+                                <span class="option-desc">工場／倉庫／ドライバー／施工</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="jobCategory" value="medical">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-user-nurse"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">医療・介護・保育</span>
+                                <span class="option-desc">看護／介護／保育／福祉</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="jobCategory" value="other">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-ellipsis"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">その他・専門職</span>
+                                <span class="option-desc">企画／クリエイティブ／士業など</span>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+                <p class="error-message" id="error3"><i class="fas fa-circle-exclamation"></i> 1つ以上選択してください</p>
+            </section>
+
+            <!-- Q3: ターゲット層 -->
+            <section class="question-block" data-question="4">
+                <p class="question-index">Question 4</p>
+                <h2 class="question-title">採用したいターゲット層はどこですか</h2>
+                <p class="question-help"><i class="fas fa-check-double"></i> あてはまるものをすべて選択してください（複数選択可）</p>
+                <div class="option-grid">
+                    <label class="option">
+                        <input type="checkbox" name="targetAge" value="student">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-graduation-cap"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">学生・10代</span>
+                                <span class="option-desc">高校生／大学生／フリーター層</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="targetAge" value="20s">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-seedling"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">20代</span>
+                                <span class="option-desc">第二新卒／若手ポテンシャル</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="targetAge" value="30s">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-chart-line"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">30代</span>
+                                <span class="option-desc">経験者・即戦力層</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="targetAge" value="40s">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-user-gear"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">40代以上</span>
+                                <span class="option-desc">マネジメント／専門スキル層</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="targetAge" value="female">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-venus"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">女性を中心に採用したい</span>
+                                <span class="option-desc">両立支援・働きやすさを訴求</span>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+                <p class="error-message" id="error4"><i class="fas fa-circle-exclamation"></i> 1つ以上選択してください</p>
+            </section>
+
+            <!-- Q4: 予算帯 -->
+            <section class="question-block" data-question="5">
+                <p class="question-index">Question 5</p>
+                <h2 class="question-title">1回の募集にかけられる予算はどのくらいですか</h2>
+                <p class="question-help"><i class="fas fa-check-double"></i> 検討中の帯をすべて選択してください（複数選択可）</p>
+                <div class="option-grid">
+                    <label class="option">
+                        <input type="checkbox" name="budget" value="low">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-coins"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">〜20万円</span>
+                                <span class="option-desc">まずは小さく試したい</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="budget" value="medium">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-sack-dollar"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">20〜50万円</span>
+                                <span class="option-desc">標準的な掲載プラン</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="budget" value="high">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-gem"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">50〜100万円</span>
+                                <span class="option-desc">上位プラン・複数枠を検討</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="budget" value="premium">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-crown"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">100万円〜</span>
+                                <span class="option-desc">大型採用・年間契約も視野</span>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+                <p class="error-message" id="error5"><i class="fas fa-circle-exclamation"></i> 1つ以上選択してください</p>
+            </section>
+
+            <!-- Q5: 重視ポイント -->
+            <section class="question-block" data-question="6">
+                <p class="question-index">Question 6</p>
+                <h2 class="question-title">媒体選びで重視したいポイントはどれですか</h2>
+                <p class="question-help"><i class="fas fa-check-double"></i> あてはまるものをすべて選択してください（複数選択可）</p>
+                <div class="option-grid">
+                    <label class="option">
+                        <input type="checkbox" name="priority" value="cost">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-piggy-bank"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">コストパフォーマンス</span>
+                                <span class="option-desc">1採用あたりの費用を抑えたい</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="priority" value="volume">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-users"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">応募数の多さ</span>
+                                <span class="option-desc">まず母集団を大きく集めたい</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="priority" value="matching">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-bullseye"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">応募の質・マッチング精度</span>
+                                <span class="option-desc">条件に合う人材だけに届けたい</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="priority" value="speed">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-gauge-high"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">スピード</span>
+                                <span class="option-desc">できるだけ早く採用を決めたい</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="priority" value="support">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-headset"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">運用サポート</span>
+                                <span class="option-desc">原稿作成や改善提案を任せたい</span>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+                <p class="error-message" id="error6"><i class="fas fa-circle-exclamation"></i> 1つ以上選択してください</p>
+            </section>
+
+            <div class="question-nav">
+                <button class="btn btn-ghost" id="prevBtn" onclick="previousQuestion()">
+                    <i class="fas fa-arrow-left"></i> 戻る
+                </button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">
+                    次へ <i class="fas fa-arrow-right"></i>
+                </button>
+                <button class="btn btn-primary" id="submitBtn" onclick="submitDiagnosis()" style="display: none;">
+                    <i class="fas fa-wand-magic-sparkles"></i> 診断結果を見る
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ========================================
+         結果ページ
+         ======================================== -->
+    <main id="resultPage" class="page">
+        <div class="container result-wrap">
+            <div class="result-head">
+                <p class="result-eyebrow"><i class="fas fa-circle-check"></i> 診断完了</p>
+                <h2 class="result-title">貴社におすすめの求人媒体</h2>
+                <p class="result-lead" id="resultLead">ご回答内容をもとに、7媒体を100点満点で採点しました。</p>
+            </div>
+
+            <div class="result-summary" id="resultSummary"></div>
+
+            <div class="ranking" id="rankingList"></div>
+
+            <div class="result-actions">
+                <button class="btn btn-primary btn-lg" onclick="showContact()">
+                    <i class="fas fa-paper-plane"></i> この結果について相談する
+                </button>
+                <button class="btn btn-outline" onclick="downloadPDF()">
+                    <i class="fas fa-file-pdf"></i> 結果を保存・印刷
+                </button>
+                <button class="btn btn-ghost" onclick="restartDiagnosis()">
+                    <i class="fas fa-rotate-left"></i> もう一度診断する
+                </button>
+            </div>
+
+            <p class="result-disclaimer">
+                ※ 掲載料金は一般的な目安であり、時期・エリア・プランにより変動します。正確な費用は個別にお問い合わせください。
+            </p>
+        </div>
+    </main>
+
+    <!-- ========================================
+         公式料金表ページ
+         ======================================== -->
+    <main id="pricingPage" class="page">
+        <div class="container pricing-wrap">
+            <div class="pricing-head">
+                <p class="pricing-eyebrow"><i class="fas fa-file-invoice-yen"></i> 公式掲載料金表</p>
+                <h2 class="pricing-title">求人媒体 掲載料金表</h2>
+                <p class="pricing-lead">
+                    バイトル／バイトルNEXTはディップ株式会社の公式料金表（<strong>2026年1月13日ご掲載開始分より適用</strong>）、
+                    マイナビバイトはマイナビ料金表（No.MB202509・2025年9月時点）を、エリア別・プラン別に収録しています。
+                    金額はすべて<strong>税別</strong>です。
+                </p>
+            </div>
+
+            <div class="price-controls">
+                <div class="price-tabs" role="tablist">
+                    <button class="price-tab active" data-media="baitoru" role="tab"
+                            onclick="selectPriceMedia('baitoru')">バイトル<span>アルバイト・パート</span></button>
+                    <button class="price-tab" data-media="next" role="tab"
+                            onclick="selectPriceMedia('next')">バイトルNEXT<span>正社員・契約社員</span></button>
+                    <button class="price-tab" data-media="mynavi" role="tab"
+                            onclick="selectPriceMedia('mynavi')">マイナビバイト<span>バイト・正社員</span></button>
+                </div>
+                <label class="price-region" id="priceRegionRow">
+                    <span class="price-region-label"><i class="fas fa-map"></i> エリア</span>
+                    <select id="priceRegion"></select>
+                </label>
+            </div>
+
+            <div id="pricingBody"></div>
+
+            <div class="price-notes">
+                <h3><i class="fas fa-circle-info"></i> 注意事項（公式料金表より）</h3>
+                <ul id="pricingNotes"></ul>
+            </div>
+
+            <div class="result-actions">
+                <button class="btn btn-primary" onclick="showContact()">
+                    <i class="fas fa-paper-plane"></i> 掲載について相談する
+                </button>
+                <button class="btn btn-ghost" onclick="showPage('homePage')">
+                    <i class="fas fa-house"></i> トップへ戻る
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ========================================
+         フッター
+         ======================================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <p class="footer-brand">株式会社JJS</p>
+            <p class="footer-copy">&copy; 2026 JJS Co., Ltd. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ========================================
+         お問い合わせモーダル
+         ======================================== -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+            <button class="modal-close" onclick="closeContact()" aria-label="閉じる">
+                <i class="fas fa-xmark"></i>
+            </button>
+            <h3 class="modal-title" id="contactTitle"><i class="fas fa-comments"></i> お問い合わせ</h3>
+            <p class="modal-lead">
+                診断結果をもとにした媒体選定・原稿作成・掲載手配まで、株式会社JJSが一括でサポートいたします。
+                お気軽にご連絡ください。
+            </p>
+            <div class="contact-list">
+                <p><i class="fas fa-phone"></i> TEL: 03-XXXX-XXXX</p>
+                <p><i class="fas fa-envelope"></i> Email: info@jjs-recruitment.co.jp</p>
+                <p><i class="fas fa-clock"></i> 営業時間: 平日 9:00〜18:00</p>
+            </div>
+            <button class="btn btn-primary btn-block" onclick="closeContact()">閉じる</button>
+        </div>
+    </div>
+
+    <script src="js/pricing-data.js"></script>
+    <script src="js/pricing-mynavi.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

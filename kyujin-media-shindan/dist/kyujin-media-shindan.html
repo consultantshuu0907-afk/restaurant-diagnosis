@@ -1,0 +1,3847 @@
+<title>求人媒体適正活用診断</title>
+<meta name="description" content="6つの質問で、貴社の採用条件にもっとも適した求人媒体をマッチ度スコア付きで提案します。株式会社JJS">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome は SVG 版（JS）。外部CSSを読み込めない環境でもアイコンが出る -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+<style>
+/* 明るい配色に固定したデザインのため、フォーム部品も明るい系に揃える */
+:root { color-scheme: light; }
+
+/* ========================================
+   CSS変数（カラー・スペーシング・タイポグラフィ）
+   ======================================== */
+:root {
+    /* カラーパレット */
+    --primary-color: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #dbeafe;
+    --accent-color: #0ea5e9;
+    --accent-light: #e0f2fe;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+
+    /* テキスト */
+    --text-main: #0f172a;
+    --text-sub: #475569;
+    --text-muted: #94a3b8;
+    --text-invert: #ffffff;
+
+    /* 背景・境界 */
+    --bg-body: #f1f5f9;
+    --bg-surface: #ffffff;
+    --bg-soft: #f8fafc;
+    --border-color: #e2e8f0;
+    --border-strong: #cbd5e1;
+
+    /* スペーシング */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 40px;
+    --spacing-2xl: 64px;
+
+    /* フォントサイズ */
+    --fs-xs: 0.75rem;
+    --fs-sm: 0.875rem;
+    --fs-base: 1rem;
+    --fs-lg: 1.125rem;
+    --fs-xl: 1.375rem;
+    --fs-2xl: 1.75rem;
+    --fs-3xl: 2.25rem;
+    --fs-4xl: 3rem;
+
+    /* 角丸 */
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-full: 999px;
+
+    /* シャドウ */
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+    --shadow-md: 0 6px 16px rgba(15, 23, 42, 0.08);
+    --shadow-lg: 0 18px 40px rgba(15, 23, 42, 0.14);
+
+    /* トランジション */
+    --transition: 0.22s ease;
+
+    /* レイアウト */
+    --container-width: 1080px;
+}
+
+/* ========================================
+   リセット & 基本設定
+   ======================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+    font-size: var(--fs-base);
+    line-height: 1.8;
+    color: var(--text-main);
+    background: var(--bg-body);
+    -webkit-font-smoothing: antialiased;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+button {
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: inherit;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+.container {
+    width: 100%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+}
+
+.center {
+    text-align: center;
+}
+
+/* ========================================
+   ページ切り替え
+   ======================================== */
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+    animation: fadeInUp 0.45s ease both;
+}
+
+/* ========================================
+   ヘッダー
+   ======================================== */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    height: 68px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.brand-mark {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: var(--text-invert);
+    font-size: var(--fs-lg);
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+}
+
+.brand-name {
+    font-weight: 700;
+    font-size: var(--fs-base);
+    white-space: nowrap;
+}
+
+.brand-tagline {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+}
+
+/* ========================================
+   ボタン
+   ======================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: 12px 24px;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: var(--fs-base);
+    line-height: 1.4;
+    transition: transform var(--transition), box-shadow var(--transition),
+        background-color var(--transition), color var(--transition);
+    white-space: nowrap;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: var(--text-invert);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-outline {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background: var(--bg-surface);
+}
+
+.btn-outline:hover {
+    background: var(--primary-light);
+}
+
+.btn-ghost {
+    color: var(--text-sub);
+    border: 2px solid var(--border-color);
+    background: var(--bg-surface);
+}
+
+.btn-ghost:hover {
+    border-color: var(--border-strong);
+    color: var(--text-main);
+}
+
+.btn-lg {
+    padding: 16px 40px;
+    font-size: var(--fs-lg);
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: var(--fs-sm);
+}
+
+.btn-block {
+    width: 100%;
+}
+
+/* ========================================
+   ヒーロー
+   ======================================== */
+.hero {
+    position: relative;
+    overflow: hidden;
+    padding: var(--spacing-2xl) 0;
+    background:
+        radial-gradient(900px 400px at 15% -10%, rgba(14, 165, 233, 0.28), transparent 60%),
+        radial-gradient(700px 400px at 90% 10%, rgba(37, 99, 235, 0.24), transparent 60%),
+        linear-gradient(160deg, #0b1e3f 0%, #143a75 55%, #1d4ed8 100%);
+    color: var(--text-invert);
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 44px 44px;
+    pointer-events: none;
+}
+
+.hero-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 760px;
+}
+
+.hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    margin-bottom: var(--spacing-lg);
+}
+
+.hero-title {
+    font-size: var(--fs-4xl);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+    margin-bottom: var(--spacing-md);
+}
+
+.hero-accent {
+    background: linear-gradient(120deg, #7dd3fc, #38bdf8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero-lead {
+    font-size: var(--fs-lg);
+    color: rgba(255, 255, 255, 0.88);
+    margin-bottom: var(--spacing-xl);
+}
+
+.hero-note {
+    margin-top: var(--spacing-md);
+    font-size: var(--fs-xs);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ========================================
+   セクション共通
+   ======================================== */
+.features,
+.steps {
+    padding: var(--spacing-2xl) 0;
+}
+
+.steps {
+    background: var(--bg-surface);
+}
+
+.section-title {
+    font-size: var(--fs-2xl);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.section-title::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 4px;
+    margin: var(--spacing-md) auto 0;
+    border-radius: var(--radius-full);
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+}
+
+.section-lead {
+    text-align: center;
+    color: var(--text-sub);
+    margin: var(--spacing-md) 0 var(--spacing-xl);
+}
+
+/* ========================================
+   特徴カード
+   ======================================== */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.feature-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.feature-icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: var(--spacing-md);
+    border-radius: var(--radius-md);
+    background: var(--primary-light);
+    color: var(--primary-color);
+    font-size: var(--fs-xl);
+}
+
+.feature-card h3 {
+    font-size: var(--fs-lg);
+    margin-bottom: var(--spacing-sm);
+}
+
+.feature-card p {
+    font-size: var(--fs-sm);
+    color: var(--text-sub);
+}
+
+/* ========================================
+   ステップ
+   ======================================== */
+.step-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.step-item {
+    position: relative;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    background: var(--bg-soft);
+    border: 1px solid var(--border-color);
+}
+
+.step-num {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: var(--spacing-md);
+    border-radius: var(--radius-full);
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: var(--text-invert);
+    font-weight: 700;
+}
+
+.step-item h3 {
+    font-size: var(--fs-lg);
+    margin-bottom: var(--spacing-sm);
+}
+
+.step-item p {
+    font-size: var(--fs-sm);
+    color: var(--text-sub);
+}
+
+/* ========================================
+   診断ページ
+   ======================================== */
+.diagnosis-wrap {
+    max-width: 860px;
+    padding-top: var(--spacing-xl);
+    padding-bottom: var(--spacing-2xl);
+}
+
+/* プログレスバー */
+.progress-area {
+    margin-bottom: var(--spacing-xl);
+}
+
+.progress-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-sm);
+    font-size: var(--fs-sm);
+    color: var(--text-sub);
+}
+
+.progress-label strong {
+    color: var(--primary-color);
+    font-size: var(--fs-lg);
+}
+
+.progress-percent {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.progress-bar {
+    height: 10px;
+    border-radius: var(--radius-full);
+    background: var(--border-color);
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: var(--radius-full);
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    transition: width 0.4s ease;
+}
+
+/* 質問ブロック */
+.question-block {
+    display: none;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-sm);
+}
+
+.question-block.active {
+    display: block;
+    animation: fadeInUp 0.35s ease both;
+}
+
+.question-index {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-color);
+    margin-bottom: var(--spacing-xs);
+}
+
+.question-title {
+    font-size: var(--fs-xl);
+    font-weight: 700;
+    line-height: 1.6;
+    margin-bottom: var(--spacing-sm);
+}
+
+.question-help {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* 選択肢（カスタムチェックボックス） */
+.option-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.option {
+    display: block;
+    cursor: pointer;
+}
+
+.option input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.option-body {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    height: 100%;
+    padding: var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--bg-soft);
+    transition: border-color var(--transition), background-color var(--transition),
+        box-shadow var(--transition), transform var(--transition);
+}
+
+.option:hover .option-body {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.option input:focus-visible + .option-body {
+    outline: 3px solid var(--accent-light);
+    outline-offset: 2px;
+}
+
+.option input:checked + .option-body {
+    border-color: var(--primary-color);
+    background: var(--primary-light);
+    box-shadow: var(--shadow-sm);
+}
+
+.option-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+    color: var(--primary-color);
+    border: 1px solid var(--border-color);
+    transition: background-color var(--transition), color var(--transition);
+}
+
+.option input:checked + .option-body .option-icon {
+    background: var(--primary-color);
+    color: var(--text-invert);
+    border-color: var(--primary-color);
+}
+
+.option-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.5;
+}
+
+.option-label {
+    font-weight: 600;
+}
+
+.option-desc {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+}
+
+/* エラーメッセージ */
+.error-message {
+    display: none;
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-sm);
+    background: #fef2f2;
+    color: var(--danger-color);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+}
+
+.error-message.show {
+    display: block;
+    animation: shake 0.35s ease;
+}
+
+/* 質問ナビゲーション */
+.question-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+/* ========================================
+   結果ページ
+   ======================================== */
+.result-wrap {
+    max-width: 900px;
+    padding-top: var(--spacing-xl);
+    padding-bottom: var(--spacing-2xl);
+}
+
+.result-head {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.result-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    background: #ecfdf5;
+    color: var(--success-color);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+}
+
+.result-title {
+    font-size: var(--fs-2xl);
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+}
+
+.result-lead {
+    color: var(--text-sub);
+    font-size: var(--fs-sm);
+}
+
+/* 診断条件サマリー */
+.result-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+}
+
+.summary-item {
+    font-size: var(--fs-sm);
+}
+
+.summary-item dt {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-xs);
+}
+
+.summary-item dd {
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+/* ランキングカード */
+.ranking {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.rank-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    animation: fadeInUp 0.45s ease both;
+}
+
+.rank-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: var(--border-strong);
+}
+
+.rank-card.rank-1::before {
+    background: linear-gradient(180deg, #f59e0b, #fbbf24);
+}
+
+.rank-card.rank-2::before {
+    background: linear-gradient(180deg, #94a3b8, #cbd5e1);
+}
+
+.rank-card.rank-3::before {
+    background: linear-gradient(180deg, #b45309, #d97706);
+}
+
+.rank-card.rank-1 {
+    border-color: var(--warning-color);
+    box-shadow: var(--shadow-md);
+}
+
+.rank-head {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-md);
+}
+
+.rank-badge {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    background: var(--bg-soft);
+    border: 2px solid var(--border-color);
+    font-weight: 700;
+    font-size: var(--fs-lg);
+    color: var(--text-sub);
+}
+
+.rank-1 .rank-badge {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    border-color: transparent;
+    color: var(--text-invert);
+}
+
+.rank-2 .rank-badge {
+    background: linear-gradient(135deg, #94a3b8, #cbd5e1);
+    border-color: transparent;
+    color: var(--text-invert);
+}
+
+.rank-3 .rank-badge {
+    background: linear-gradient(135deg, #b45309, #d97706);
+    border-color: transparent;
+    color: var(--text-invert);
+}
+
+.rank-name-area {
+    flex: 1 1 200px;
+    min-width: 0;
+}
+
+.rank-name {
+    font-size: var(--fs-xl);
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.rank-catch {
+    font-size: var(--fs-sm);
+    color: var(--text-sub);
+}
+
+.rank-score {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.rank-score-value {
+    font-size: var(--fs-3xl);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--primary-color);
+}
+
+.rank-score-unit {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    margin-left: 2px;
+}
+
+.rank-score-label {
+    display: block;
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+}
+
+/* スコアバー */
+.score-bar {
+    height: 8px;
+    border-radius: var(--radius-full);
+    background: var(--border-color);
+    overflow: hidden;
+    margin-bottom: var(--spacing-lg);
+}
+
+.score-bar-fill {
+    height: 100%;
+    border-radius: var(--radius-full);
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    width: 0;
+    transition: width 0.9s ease;
+}
+
+.rank-1 .score-bar-fill {
+    background: linear-gradient(90deg, var(--warning-color), #fbbf24);
+}
+
+/* 媒体詳細 */
+.rank-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.rank-section h4 {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    color: var(--text-sub);
+    margin-bottom: var(--spacing-sm);
+}
+
+.rank-section h4 i {
+    color: var(--accent-color);
+}
+
+.feature-list li {
+    position: relative;
+    padding-left: 22px;
+    font-size: var(--fs-sm);
+    color: var(--text-sub);
+    margin-bottom: var(--spacing-xs);
+}
+
+.feature-list li::before {
+    content: "\f00c";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--success-color);
+    font-size: var(--fs-xs);
+}
+
+.pricing-box {
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    background: var(--accent-light);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: #0c4a6e;
+}
+
+/* 公式料金データがある媒体の詳細ボックス */
+.pricing-box-detail {
+    font-weight: 400;
+}
+
+.pricing-row {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: baseline;
+    gap: 2px var(--spacing-sm);
+    padding: var(--spacing-xs) 0;
+    border-bottom: 1px dashed rgba(12, 74, 110, 0.2);
+}
+
+.pricing-row:first-child {
+    padding-top: 0;
+}
+
+.pricing-row-label {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.pricing-row-yen {
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.pricing-row-note {
+    grid-column: 1 / -1;
+    font-size: var(--fs-xs);
+    color: #075985;
+}
+
+/* 出典未照合の参考値であることを明示 */
+.pricing-box-ref {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    color: #78350f;
+    font-weight: 400;
+}
+
+.pricing-ref-badge {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    color: #b45309;
+    margin-bottom: var(--spacing-sm);
+}
+
+.pricing-ref-value {
+    font-weight: 600;
+    font-size: var(--fs-sm);
+}
+
+.pricing-box-ref .pricing-box-foot {
+    color: #92400e;
+    margin-bottom: 0;
+}
+
+.pricing-verified-badge {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    color: var(--success-color);
+    margin-bottom: var(--spacing-sm);
+}
+
+.pricing-box-area {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid rgba(12, 74, 110, 0.25);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+}
+
+/* 予算内で選べる最上位プランを強調 */
+.pricing-row.is-best {
+    margin: 0 calc(var(--spacing-sm) * -1) var(--spacing-xs);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    border-bottom: none;
+    background: var(--bg-surface);
+    box-shadow: inset 0 0 0 2px var(--primary-color);
+}
+
+.pricing-row.is-best .pricing-row-label {
+    color: var(--primary-dark);
+}
+
+.pricing-row.is-best .pricing-row-yen {
+    color: var(--primary-dark);
+    font-size: var(--fs-xl);
+}
+
+.pricing-box-foot {
+    margin: var(--spacing-sm) 0;
+    font-size: var(--fs-xs);
+    color: #075985;
+}
+
+/* 結果サマリーの募集エリアを強調 */
+.summary-item-area dt {
+    color: var(--primary-color);
+}
+
+.summary-item-area dd {
+    font-weight: 700;
+}
+
+.pricing-box-detail .btn {
+    width: 100%;
+    background: var(--bg-surface);
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    margin-top: var(--spacing-sm);
+}
+
+.tag {
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    background: var(--bg-soft);
+    border: 1px solid var(--border-color);
+    font-size: var(--fs-xs);
+    color: var(--text-sub);
+}
+
+.tag.tag-match {
+    background: var(--primary-light);
+    border-color: var(--primary-color);
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+/* 結果アクション */
+.result-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+}
+
+.result-disclaimer {
+    margin-top: var(--spacing-lg);
+    text-align: center;
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+}
+
+/* ========================================
+   公式料金表ページ
+   ======================================== */
+.pricing-wrap {
+    max-width: 1180px;
+    padding-top: var(--spacing-xl);
+    padding-bottom: var(--spacing-2xl);
+}
+
+.pricing-head {
+    margin-bottom: var(--spacing-xl);
+}
+
+.pricing-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+}
+
+.pricing-title {
+    font-size: var(--fs-2xl);
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+}
+
+.pricing-lead {
+    font-size: var(--fs-sm);
+    color: var(--text-sub);
+    max-width: 720px;
+}
+
+/* 媒体タブ・エリア選択 */
+.price-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.price-tabs {
+    display: flex;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-full);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+}
+
+.price-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.35;
+    padding: 8px 20px;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    color: var(--text-sub);
+    transition: background-color var(--transition), color var(--transition);
+}
+
+.price-tab span {
+    font-size: var(--fs-xs);
+    font-weight: 400;
+    opacity: 0.75;
+}
+
+.price-tab:hover {
+    background: var(--bg-soft);
+}
+
+.price-tab.active {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: var(--text-invert);
+}
+
+.price-region {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.price-region-label {
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--text-sub);
+    white-space: nowrap;
+}
+
+.price-region select {
+    font-family: inherit;
+    font-size: var(--fs-sm);
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border-color);
+    background: var(--bg-surface);
+    color: var(--text-main);
+    cursor: pointer;
+}
+
+.price-region select:focus-visible {
+    outline: 3px solid var(--accent-light);
+    border-color: var(--primary-color);
+}
+
+.price-area-note {
+    font-size: var(--fs-sm);
+    color: var(--text-sub);
+    margin-bottom: var(--spacing-lg);
+}
+
+.price-area-note i {
+    color: var(--accent-color);
+}
+
+.price-table-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--fs-lg);
+    margin: var(--spacing-xl) 0 var(--spacing-md);
+}
+
+.price-table-title i {
+    color: var(--primary-color);
+}
+
+/* 横スクロールコンテナ */
+.table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+    -webkit-overflow-scrolling: touch;
+}
+
+.price-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: var(--fs-sm);
+    white-space: nowrap;
+}
+
+.price-table th,
+.price-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.price-table thead th {
+    background: var(--bg-soft);
+    text-align: center;
+    font-weight: 700;
+    font-size: var(--fs-xs);
+    color: var(--text-sub);
+}
+
+.price-table tbody tr:nth-child(even) td {
+    background: var(--bg-soft);
+}
+
+.price-table tbody tr:hover td {
+    background: var(--primary-light);
+}
+
+/* 横スクロール時にプラン名列を固定 */
+.price-table .sticky-col {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--bg-surface);
+    text-align: left;
+    box-shadow: 1px 0 0 var(--border-color);
+}
+
+.price-table thead .sticky-col {
+    background: var(--bg-soft);
+}
+
+.price-table .plan-cell {
+    font-weight: 700;
+    color: var(--primary-dark);
+    vertical-align: middle;
+}
+
+.price-table .slot-cell {
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-sub);
+    background: var(--bg-surface);
+}
+
+.price-table .cell-unit {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+}
+
+.price-table .cell-empty {
+    color: var(--text-muted);
+}
+
+.price-unit-note,
+.pricing-empty {
+    margin-top: var(--spacing-sm);
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+}
+
+.price-notes {
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+}
+
+.price-notes h3 {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--fs-base);
+    margin-bottom: var(--spacing-md);
+}
+
+.price-notes h3 i {
+    color: var(--warning-color);
+}
+
+.price-notes li {
+    position: relative;
+    padding-left: 18px;
+    font-size: var(--fs-sm);
+    color: var(--text-sub);
+    margin-bottom: var(--spacing-xs);
+}
+
+.price-notes li::before {
+    content: "※";
+    position: absolute;
+    left: 0;
+    color: var(--text-muted);
+}
+
+/* ========================================
+   フッター
+   ======================================== */
+.site-footer {
+    padding: var(--spacing-xl) 0;
+    background: #0f172a;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+}
+
+.footer-brand {
+    font-weight: 700;
+    color: var(--text-invert);
+    margin-bottom: var(--spacing-xs);
+}
+
+.footer-copy {
+    font-size: var(--fs-xs);
+}
+
+/* ========================================
+   モーダル
+   ======================================== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(3px);
+    padding: var(--spacing-lg);
+    overflow-y: auto;
+}
+
+.modal-overlay.show {
+    display: grid;
+    place-items: center;
+    animation: fadeIn 0.25s ease both;
+}
+
+.modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-lg);
+    animation: scaleIn 0.28s ease both;
+}
+
+.modal-close {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-full);
+    color: var(--text-muted);
+    transition: background-color var(--transition), color var(--transition);
+}
+
+.modal-close:hover {
+    background: var(--bg-soft);
+    color: var(--text-main);
+}
+
+.modal-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--fs-xl);
+    margin-bottom: var(--spacing-md);
+}
+
+.modal-title i {
+    color: var(--primary-color);
+}
+
+.modal-lead {
+    font-size: var(--fs-sm);
+    color: var(--text-sub);
+    margin-bottom: var(--spacing-lg);
+}
+
+.contact-list {
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    background: var(--bg-soft);
+    border: 1px solid var(--border-color);
+    margin-bottom: var(--spacing-lg);
+}
+
+.contact-list p {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--fs-sm);
+    padding: var(--spacing-xs) 0;
+}
+
+.contact-list i {
+    width: 18px;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+/* ========================================
+   アニメーション
+   ======================================== */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.94); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25%      { transform: translateX(-6px); }
+    75%      { transform: translateX(6px); }
+}
+
+/* ========================================
+   レスポンシブ（タブレット）
+   ======================================== */
+@media (max-width: 768px) {
+    :root {
+        --fs-4xl: 2.25rem;
+        --fs-3xl: 1.875rem;
+        --fs-2xl: 1.5rem;
+        --spacing-2xl: 48px;
+    }
+
+    .container {
+        padding: 0 var(--spacing-md);
+    }
+
+    .brand-tagline {
+        display: none;
+    }
+
+    .question-block {
+        padding: var(--spacing-lg);
+    }
+
+    .option-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rank-head {
+        gap: var(--spacing-sm);
+    }
+
+    .rank-score {
+        text-align: left;
+    }
+
+    .result-actions .btn {
+        width: 100%;
+    }
+
+    .price-tab span {
+        display: none;
+    }
+
+    .price-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .price-tabs {
+        justify-content: center;
+    }
+
+    .price-region {
+        justify-content: space-between;
+    }
+
+    .price-region select {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+/* ========================================
+   レスポンシブ（スマートフォン）
+   ======================================== */
+@media (max-width: 480px) {
+    :root {
+        --fs-4xl: 1.875rem;
+        --fs-xl: 1.2rem;
+    }
+
+    .btn-lg {
+        padding: 14px 24px;
+        font-size: var(--fs-base);
+    }
+
+    /* 狭い画面ではヘッダーを圧縮して横あふれを防ぐ */
+    .header-inner {
+        gap: var(--spacing-sm);
+    }
+
+    .brand-mark {
+        width: 34px;
+        height: 34px;
+        font-size: var(--fs-base);
+    }
+
+    .brand-name {
+        font-size: var(--fs-sm);
+    }
+
+    .header-actions {
+        gap: var(--spacing-xs);
+    }
+
+    .header-actions .btn {
+        padding: 8px 10px;
+        font-size: var(--fs-xs);
+        gap: var(--spacing-xs);
+    }
+
+    .question-nav .btn {
+        flex: 1;
+        padding: 12px 14px;
+    }
+
+    .modal-content {
+        padding: var(--spacing-lg);
+    }
+
+    .rank-score-value {
+        font-size: var(--fs-2xl);
+    }
+}
+
+/* ========================================
+   印刷（PDF保存）用
+   ======================================== */
+@media print {
+    body {
+        background: #fff;
+    }
+
+    .site-header,
+    .site-footer,
+    .result-actions,
+    .modal-overlay {
+        display: none !important;
+    }
+
+    .rank-card {
+        break-inside: avoid;
+        box-shadow: none;
+    }
+}
+
+/* マイナビバイト料金表（セクション見出し・備考セル） */
+.price-section-title {
+    margin: var(--spacing-2xl) 0 var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--primary-color);
+    font-size: var(--fs-xl);
+    color: var(--primary-dark);
+}
+
+.price-table .cell-note {
+    text-align: left;
+    white-space: normal;
+    min-width: 260px;
+    font-size: var(--fs-xs);
+    color: var(--text-sub);
+}
+
+</style>
+
+
+    <!-- ========================================
+         ヘッダー
+         ======================================== -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="brand">
+                <span class="brand-mark"><i class="fas fa-briefcase"></i></span>
+                <div class="brand-text">
+                    <span class="brand-name">株式会社JJS</span>
+                    <span class="brand-tagline">採用を、科学する。</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-ghost btn-sm" onclick="showPricing()">
+                    <i class="fas fa-table"></i> 掲載料金表
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="showContact()">
+                    <i class="fas fa-comments"></i> お問い合わせ
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========================================
+         トップページ
+         ======================================== -->
+    <main id="homePage" class="page active">
+
+        <section class="hero">
+            <div class="container hero-inner">
+                <p class="hero-eyebrow"><i class="fas fa-bolt"></i> 所要時間 約1分・無料</p>
+                <h1 class="hero-title">
+                    求人媒体<span class="hero-accent">適正活用</span>診断
+                </h1>
+                <p class="hero-lead">
+                    「どの求人媒体に出せばいいか分からない」を、6つの質問で解決。<br>
+                    貴社の採用条件にもっとも適した媒体を、マッチ度スコア付きのランキングでご提案します。
+                </p>
+                <button class="btn btn-primary btn-lg" onclick="startDiagnosis()">
+                    <i class="fas fa-play"></i> 無料で診断をはじめる
+                </button>
+                <p class="hero-note">※ 入力内容が外部に送信されることはありません</p>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">この診断でわかること</h2>
+                <p class="section-lead">7つの主要求人媒体を、貴社の条件で自動採点します。</p>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-ranking-star"></i></div>
+                        <h3>おすすめ媒体ランキング</h3>
+                        <p>雇用形態・職種・ターゲット層・予算・重視ポイントの5軸で採点し、適合度の高い順に媒体を並べます。エリアは掲載料金の算出に使います。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-percent"></i></div>
+                        <h3>100点満点のマッチ度</h3>
+                        <p>「なんとなくおすすめ」ではなく、各媒体が貴社条件に何点合致しているかを数値で確認できます。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-yen-sign"></i></div>
+                        <h3>エリア別の実勢料金</h3>
+                        <p>バイトル／バイトルNEXT／マイナビバイトは公式料金表を収録。ご選択のエリアで「予算内で使える最上位プラン」まで提示します。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-list-check"></i></div>
+                        <h3>媒体ごとの特徴</h3>
+                        <p>それぞれの媒体が得意とする層・職種・訴求の傾向を整理してお伝えします。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="steps">
+            <div class="container">
+                <h2 class="section-title">診断の流れ</h2>
+                <ol class="step-list">
+                    <li class="step-item">
+                        <span class="step-num">1</span>
+                        <h3>6つの質問に回答</h3>
+                        <p>募集エリア・雇用形態・職種・ターゲット層・予算・重視ポイントを選ぶだけ。</p>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-num">2</span>
+                        <h3>自動でスコア計算</h3>
+                        <p>回答内容と媒体データベースを照合し、100点満点でマッチ度を算出します。</p>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-num">3</span>
+                        <h3>ランキングを確認</h3>
+                        <p>上位媒体の特徴と費用感をチェック。そのままご相談いただくことも可能です。</p>
+                    </li>
+                </ol>
+                <div class="center">
+                    <button class="btn btn-primary btn-lg" onclick="startDiagnosis()">
+                        <i class="fas fa-play"></i> 診断をはじめる
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ========================================
+         診断ページ
+         ======================================== -->
+    <main id="diagnosisPage" class="page">
+        <div class="container diagnosis-wrap">
+
+            <div class="progress-area">
+                <div class="progress-head">
+                    <span class="progress-label">質問 <strong id="currentQuestionNum">1</strong> / 6</span>
+                    <span class="progress-percent" id="progressPercent">17%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 17%;"></div>
+                </div>
+            </div>
+
+            <!-- Q1: 募集エリア（選択肢は公式料金データから自動生成） -->
+            <section class="question-block active" data-question="1">
+                <p class="question-index">Question 1</p>
+                <h2 class="question-title">募集エリアはどちらですか</h2>
+                <p class="question-help">
+                    <i class="fas fa-circle-dot"></i>
+                    1つ選択してください。掲載料金はエリアで大きく変わるため、結果はこのエリアの料金で算出します
+                </p>
+                <div class="option-grid" id="areaOptions"></div>
+                <p class="error-message" id="error1"><i class="fas fa-circle-exclamation"></i> エリアを選択してください</p>
+            </section>
+
+            <!-- Q2: 雇用形態 -->
+            <section class="question-block" data-question="2">
+                <p class="question-index">Question 2</p>
+                <h2 class="question-title">募集する雇用形態を教えてください</h2>
+                <p class="question-help"><i class="fas fa-check-double"></i> あてはまるものをすべて選択してください（複数選択可）</p>
+                <div class="option-grid">
+                    <label class="option">
+                        <input type="checkbox" name="employmentType" value="fulltime">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-user-tie"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">正社員</span>
+                                <span class="option-desc">無期雇用のフルタイム採用</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="employmentType" value="contract">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-file-signature"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">契約社員</span>
+                                <span class="option-desc">期間の定めがある直接雇用</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="employmentType" value="parttime">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-clock"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">アルバイト・パート</span>
+                                <span class="option-desc">シフト制・短時間勤務</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="employmentType" value="dispatch">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-people-arrows"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">派遣社員</span>
+                                <span class="option-desc">人材派遣・紹介予定派遣</span>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+                <p class="error-message" id="error2"><i class="fas fa-circle-exclamation"></i> 1つ以上選択してください</p>
+            </section>
+
+            <!-- Q2: 職種カテゴリ -->
+            <section class="question-block" data-question="3">
+                <p class="question-index">Question 3</p>
+                <h2 class="question-title">募集職種のカテゴリはどれですか</h2>
+                <p class="question-help"><i class="fas fa-check-double"></i> あてはまるものをすべて選択してください（複数選択可）</p>
+                <div class="option-grid">
+                    <label class="option">
+                        <input type="checkbox" name="jobCategory" value="sales">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-handshake"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">営業</span>
+                                <span class="option-desc">法人・個人営業／販売促進</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="jobCategory" value="office">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-building-columns"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">事務・管理</span>
+                                <span class="option-desc">一般事務／経理・人事・総務</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="jobCategory" value="it">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-laptop-code"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">IT・エンジニア</span>
+                                <span class="option-desc">開発／インフラ／Web</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="jobCategory" value="service">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-utensils"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">サービス・接客</span>
+                                <span class="option-desc">飲食／小売／宿泊</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="jobCategory" value="manufacturing">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-helmet-safety"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">製造・物流・建設</span>
+                                <span class="option-desc">工場／倉庫／ドライバー／施工</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="jobCategory" value="medical">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-user-nurse"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">医療・介護・保育</span>
+                                <span class="option-desc">看護／介護／保育／福祉</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="jobCategory" value="other">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-ellipsis"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">その他・専門職</span>
+                                <span class="option-desc">企画／クリエイティブ／士業など</span>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+                <p class="error-message" id="error3"><i class="fas fa-circle-exclamation"></i> 1つ以上選択してください</p>
+            </section>
+
+            <!-- Q3: ターゲット層 -->
+            <section class="question-block" data-question="4">
+                <p class="question-index">Question 4</p>
+                <h2 class="question-title">採用したいターゲット層はどこですか</h2>
+                <p class="question-help"><i class="fas fa-check-double"></i> あてはまるものをすべて選択してください（複数選択可）</p>
+                <div class="option-grid">
+                    <label class="option">
+                        <input type="checkbox" name="targetAge" value="student">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-graduation-cap"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">学生・10代</span>
+                                <span class="option-desc">高校生／大学生／フリーター層</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="targetAge" value="20s">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-seedling"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">20代</span>
+                                <span class="option-desc">第二新卒／若手ポテンシャル</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="targetAge" value="30s">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-chart-line"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">30代</span>
+                                <span class="option-desc">経験者・即戦力層</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="targetAge" value="40s">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-user-gear"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">40代以上</span>
+                                <span class="option-desc">マネジメント／専門スキル層</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="targetAge" value="female">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-venus"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">女性を中心に採用したい</span>
+                                <span class="option-desc">両立支援・働きやすさを訴求</span>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+                <p class="error-message" id="error4"><i class="fas fa-circle-exclamation"></i> 1つ以上選択してください</p>
+            </section>
+
+            <!-- Q4: 予算帯 -->
+            <section class="question-block" data-question="5">
+                <p class="question-index">Question 5</p>
+                <h2 class="question-title">1回の募集にかけられる予算はどのくらいですか</h2>
+                <p class="question-help"><i class="fas fa-check-double"></i> 検討中の帯をすべて選択してください（複数選択可）</p>
+                <div class="option-grid">
+                    <label class="option">
+                        <input type="checkbox" name="budget" value="low">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-coins"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">〜20万円</span>
+                                <span class="option-desc">まずは小さく試したい</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="budget" value="medium">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-sack-dollar"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">20〜50万円</span>
+                                <span class="option-desc">標準的な掲載プラン</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="budget" value="high">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-gem"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">50〜100万円</span>
+                                <span class="option-desc">上位プラン・複数枠を検討</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="budget" value="premium">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-crown"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">100万円〜</span>
+                                <span class="option-desc">大型採用・年間契約も視野</span>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+                <p class="error-message" id="error5"><i class="fas fa-circle-exclamation"></i> 1つ以上選択してください</p>
+            </section>
+
+            <!-- Q5: 重視ポイント -->
+            <section class="question-block" data-question="6">
+                <p class="question-index">Question 6</p>
+                <h2 class="question-title">媒体選びで重視したいポイントはどれですか</h2>
+                <p class="question-help"><i class="fas fa-check-double"></i> あてはまるものをすべて選択してください（複数選択可）</p>
+                <div class="option-grid">
+                    <label class="option">
+                        <input type="checkbox" name="priority" value="cost">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-piggy-bank"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">コストパフォーマンス</span>
+                                <span class="option-desc">1採用あたりの費用を抑えたい</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="priority" value="volume">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-users"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">応募数の多さ</span>
+                                <span class="option-desc">まず母集団を大きく集めたい</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="priority" value="matching">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-bullseye"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">応募の質・マッチング精度</span>
+                                <span class="option-desc">条件に合う人材だけに届けたい</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="priority" value="speed">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-gauge-high"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">スピード</span>
+                                <span class="option-desc">できるだけ早く採用を決めたい</span>
+                            </span>
+                        </span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" name="priority" value="support">
+                        <span class="option-body">
+                            <span class="option-icon"><i class="fas fa-headset"></i></span>
+                            <span class="option-text">
+                                <span class="option-label">運用サポート</span>
+                                <span class="option-desc">原稿作成や改善提案を任せたい</span>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+                <p class="error-message" id="error6"><i class="fas fa-circle-exclamation"></i> 1つ以上選択してください</p>
+            </section>
+
+            <div class="question-nav">
+                <button class="btn btn-ghost" id="prevBtn" onclick="previousQuestion()">
+                    <i class="fas fa-arrow-left"></i> 戻る
+                </button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">
+                    次へ <i class="fas fa-arrow-right"></i>
+                </button>
+                <button class="btn btn-primary" id="submitBtn" onclick="submitDiagnosis()" style="display: none;">
+                    <i class="fas fa-wand-magic-sparkles"></i> 診断結果を見る
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ========================================
+         結果ページ
+         ======================================== -->
+    <main id="resultPage" class="page">
+        <div class="container result-wrap">
+            <div class="result-head">
+                <p class="result-eyebrow"><i class="fas fa-circle-check"></i> 診断完了</p>
+                <h2 class="result-title">貴社におすすめの求人媒体</h2>
+                <p class="result-lead" id="resultLead">ご回答内容をもとに、7媒体を100点満点で採点しました。</p>
+            </div>
+
+            <div class="result-summary" id="resultSummary"></div>
+
+            <div class="ranking" id="rankingList"></div>
+
+            <div class="result-actions">
+                <button class="btn btn-primary btn-lg" onclick="showContact()">
+                    <i class="fas fa-paper-plane"></i> この結果について相談する
+                </button>
+                <button class="btn btn-outline" onclick="downloadPDF()">
+                    <i class="fas fa-file-pdf"></i> 結果を保存・印刷
+                </button>
+                <button class="btn btn-ghost" onclick="restartDiagnosis()">
+                    <i class="fas fa-rotate-left"></i> もう一度診断する
+                </button>
+            </div>
+
+            <p class="result-disclaimer">
+                ※ 掲載料金は一般的な目安であり、時期・エリア・プランにより変動します。正確な費用は個別にお問い合わせください。
+            </p>
+        </div>
+    </main>
+
+    <!-- ========================================
+         公式料金表ページ
+         ======================================== -->
+    <main id="pricingPage" class="page">
+        <div class="container pricing-wrap">
+            <div class="pricing-head">
+                <p class="pricing-eyebrow"><i class="fas fa-file-invoice-yen"></i> 公式掲載料金表</p>
+                <h2 class="pricing-title">求人媒体 掲載料金表</h2>
+                <p class="pricing-lead">
+                    バイトル／バイトルNEXTはディップ株式会社の公式料金表（<strong>2026年1月13日ご掲載開始分より適用</strong>）、
+                    マイナビバイトはマイナビ料金表（No.MB202509・2025年9月時点）を、エリア別・プラン別に収録しています。
+                    金額はすべて<strong>税別</strong>です。
+                </p>
+            </div>
+
+            <div class="price-controls">
+                <div class="price-tabs" role="tablist">
+                    <button class="price-tab active" data-media="baitoru" role="tab"
+                            onclick="selectPriceMedia('baitoru')">バイトル<span>アルバイト・パート</span></button>
+                    <button class="price-tab" data-media="next" role="tab"
+                            onclick="selectPriceMedia('next')">バイトルNEXT<span>正社員・契約社員</span></button>
+                    <button class="price-tab" data-media="mynavi" role="tab"
+                            onclick="selectPriceMedia('mynavi')">マイナビバイト<span>バイト・正社員</span></button>
+                </div>
+                <label class="price-region" id="priceRegionRow">
+                    <span class="price-region-label"><i class="fas fa-map"></i> エリア</span>
+                    <select id="priceRegion"></select>
+                </label>
+            </div>
+
+            <div id="pricingBody"></div>
+
+            <div class="price-notes">
+                <h3><i class="fas fa-circle-info"></i> 注意事項（公式料金表より）</h3>
+                <ul id="pricingNotes"></ul>
+            </div>
+
+            <div class="result-actions">
+                <button class="btn btn-primary" onclick="showContact()">
+                    <i class="fas fa-paper-plane"></i> 掲載について相談する
+                </button>
+                <button class="btn btn-ghost" onclick="showPage('homePage')">
+                    <i class="fas fa-house"></i> トップへ戻る
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ========================================
+         フッター
+         ======================================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <p class="footer-brand">株式会社JJS</p>
+            <p class="footer-copy">&copy; 2026 JJS Co., Ltd. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ========================================
+         お問い合わせモーダル
+         ======================================== -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+            <button class="modal-close" onclick="closeContact()" aria-label="閉じる">
+                <i class="fas fa-xmark"></i>
+            </button>
+            <h3 class="modal-title" id="contactTitle"><i class="fas fa-comments"></i> お問い合わせ</h3>
+            <p class="modal-lead">
+                診断結果をもとにした媒体選定・原稿作成・掲載手配まで、株式会社JJSが一括でサポートいたします。
+                お気軽にご連絡ください。
+            </p>
+            <div class="contact-list">
+                <p><i class="fas fa-phone"></i> TEL: 03-XXXX-XXXX</p>
+                <p><i class="fas fa-envelope"></i> Email: info@jjs-recruitment.co.jp</p>
+                <p><i class="fas fa-clock"></i> 営業時間: 平日 9:00〜18:00</p>
+            </div>
+            <button class="btn btn-primary btn-block" onclick="closeContact()">閉じる</button>
+        </div>
+    </div>
+
+<script>
+// ===== js/pricing-data.js =====
+// ========================================
+// ディップ株式会社 掲載料金データ（2026年1月13日ご掲載開始分より適用）
+//
+// このファイルは公式料金表PDFから機械生成しています。手で編集しないでください。
+//   出典: 【バ】【2026年1月13日以降】(全国版)バイトル料金表.pdf
+//         【社】【2026年1月13日以降】バイトルNEXT掲載料金表.pdf
+//   生成: tools/build_pricing.py（PDF本文と全金額一致・単価計算の整合を検証済み）
+//
+// 構造:
+//   dipPricing[媒体].regions[].top[プラン][枠数]  = [[期間別金額…] × エリア列]
+//   dipPricing[媒体].regions[].low[プラン][枠数]  = [期間別の総額…]（null = 設定なし）
+//   「7日／1枠あたり」単価は 総額 ÷ 枠数 ÷ 週数 で算出できます（PDF記載値と一致を検証済み）。
+// ========================================
+
+var dipPricingNotes = [
+    "掲載料金には別途消費税がかかります（表示はすべて税別）。",
+    "＋プランは一律 ¥10,000／7日で、お仕事詳細に表示される大画像を掲載できます。",
+    "掲載開始日、大画像の有無、動画の有無によっても露出度は変動します。",
+    "本料金は2025年11月時点のものであり、予告なく変更となる場合があります。",
+    "2025年12月1日よりお申込み開始、2026年1月13日ご掲載開始分より適用。",
+    "「バイトル」「バイトルNEXT」はディップ株式会社の登録商標です。"
+];
+
+var dipPricing = {"baitoru":{"label":"バイトル","topPlans":["Pプラン(EX)","Pプラン","PLプラン"],"topPeriods":["7日","14日","1か月"],"topSlots":["1枠","5枠","10枠"],"lowPlans":["Dプラン","Cプラン","Bプラン","Aプラン"],"lowPeriods":["14日間","1か月","3か月","6か月","12か月"],"lowWeeks":[2,4,12,24,48],"lowSlots":["1枠","3枠","5枠","10枠","20枠"],"regions":[{"key":"shutoken","name":"首都圏版","area":"東京都・千葉県・埼玉県・神奈川県","columns":["新宿・渋谷・池袋版","東京都心6区版／横浜市西区・中区版","首都圏版"],"top":{"Pプラン(EX)":{"1枠":[[398000,750000,1412000],[300000,570000,1076000],[133000,250000,472000]],"5枠":[[1855000,3500000,6580000],[1400000,2640000,4980000],[620000,1170000,2200000]],"10枠":[[3380000,6380000,12000000],[2540000,4880000,9160000],[1130000,2120000,4000000]]},"Pプラン":{"1枠":[[200000,380000,720000],[150000,284000,540000],[80000,150000,284000]],"5枠":[[930000,1760000,3320000],[700000,1320000,2500000],[370000,700000,1320000]],"10枠":[[1690000,3260000,6120000],[1270000,2440000,4560000],[680000,1280000,2400000]]},"PLプラン":{"1枠":[[133000,252000,472000],[96000,182000,340000],[59000,112000,212000]],"5枠":[[620000,1170000,2200000],[450000,850000,1600000],[275000,520000,980000]],"10枠":[[1130000,2140000,4000000],[820000,1540000,2920000],[500000,960000,1800000]]}},"low":{"Dプラン":{"1枠":[61000,85000,237000,417000,612000],"3枠":[159000,222000,612000,1080000,1584000],"5枠":[225000,315000,870000,1530000,2280000],"10枠":[250000,350000,960000,1740000,2520000],"20枠":[340000,500000,1380000,2496000,3600000]},"Cプラン":{"1枠":[38000,53000,147000,252000,372000],"3枠":[99000,144000,387000,684000,954000],"5枠":[140000,195000,549000,963000,1422000],"10枠":[160000,220000,612000,1080000,1584000],"20枠":[210000,320000,882000,1548000,2232000]},"Bプラン":{"10枠":[null,150000,423000,720000,1080000],"20枠":[null,216000,612000,1044000,1584000]},"Aプラン":{"10枠":[null,100000,279000,486000,720000],"20枠":[null,120000,342000,612000,864000]}}},{"key":"kansai","name":"大阪・京都・兵庫版","area":"大阪府・京都府・兵庫県","columns":["梅田・難波・心斎橋版","大阪市北区・中央区版／三宮版","大阪・京都・兵庫版"],"top":{"Pプラン(EX)":{"1枠":[[252000,476000,892000],[183000,346000,648000],[106000,200000,376000]],"5枠":[[1175000,2220000,4160000],[855000,1610000,3020000],[495000,930000,1760000]],"10枠":[[2140000,4040000,7600000],[1550000,2940000,5520000],[900000,1700000,3200000]]},"Pプラン":{"1枠":[[160000,304000,576000],[120000,228000,432000],[68000,128000,240000]],"5枠":[[745000,1410000,2660000],[560000,1060000,2000000],[315000,600000,1120000]],"10枠":[[1360000,2600000,4880000],[1020000,1960000,3680000],[570000,1080000,2040000]]},"PLプラン":{"1枠":[[108000,206000,388000],[88000,168000,316000],[46000,88000,164000]],"5枠":[[505000,950000,1800000],[410000,780000,1460000],[215000,410000,760000]],"10枠":[[920000,1760000,3280000],[750000,1440000,2680000],[390000,740000,1400000]]}},"low":{"Dプラン":{"1枠":[49000,68000,192000,336000,480000],"3枠":[126000,180000,504000,864000,1296000],"5枠":[180000,252000,696000,1224000,1824000],"10枠":[200000,280000,768000,1392000,2016000],"20枠":[272000,400000,1104000,1992000,2880000]},"Cプラン":{"1枠":[30000,44000,117000,204000,300000],"3枠":[78000,114000,306000,549000,756000],"5枠":[112000,156000,435000,771000,1140000],"10枠":[128000,176000,489000,864000,1272000],"20枠":[168000,256000,708000,1236000,1776000]},"Bプラン":{"10枠":[null,120000,339000,576000,864000],"20枠":[null,172000,492000,840000,1272000]},"Aプラン":{"10枠":[null,80000,222000,390000,576000],"20枠":[null,96000,276000,492000,696000]}}},{"key":"kitakanto","name":"北関東版","area":"群馬県・栃木県・茨城県","columns":["北関東版"],"top":{"Pプラン(EX)":{"1枠":[[106000,200000,376000]],"5枠":[[495000,930000,1760000]],"10枠":[[900000,1700000,3200000]]},"Pプラン":{"1枠":[[68000,128000,240000]],"5枠":[[315000,600000,1120000]],"10枠":[[570000,1080000,2040000]]},"PLプラン":{"1枠":[[46000,88000,164000]],"5枠":[[215000,410000,760000]],"10枠":[[390000,740000,1400000]]}},"low":{"Dプラン":{"1枠":[49000,68000,192000,336000,480000],"3枠":[126000,180000,504000,864000,1296000],"5枠":[180000,252000,696000,1224000,1824000],"10枠":[200000,280000,768000,1392000,2016000],"20枠":[272000,400000,1104000,1992000,2880000]},"Cプラン":{"1枠":[30000,44000,117000,204000,300000],"3枠":[78000,114000,306000,549000,756000],"5枠":[112000,156000,435000,771000,1140000],"10枠":[128000,176000,489000,864000,1272000],"20枠":[168000,256000,708000,1236000,1776000]},"Bプラン":{"10枠":[null,120000,339000,576000,864000],"20枠":[null,172000,492000,840000,1272000]},"Aプラン":{"10枠":[null,80000,222000,390000,576000],"20枠":[null,96000,276000,492000,696000]}}},{"key":"tokai","name":"愛知・岐阜・三重版","area":"愛知県・岐阜県・三重県","columns":["名古屋市中区・中村区版","その他愛知版","岐阜・三重版"],"top":{"Pプラン(EX)":{"1枠":[[156000,296000,556000],[93000,176000,328000],[93000,176000,328000]],"5枠":[[730000,1380000,2580000],[435000,820000,1540000],[435000,820000,1540000]],"10枠":[[1330000,2500000,4720000],[790000,1480000,2800000],[790000,1480000,2800000]]},"Pプラン":{"1枠":[[105000,200000,376000],[54000,102000,192000],[54000,102000,192000]],"5枠":[[490000,930000,1740000],[255000,480000,900000],[255000,480000,900000]],"10枠":[[890000,1700000,3200000],[460000,880000,1640000],[460000,880000,1640000]]},"PLプラン":{"1枠":[[77000,146000,276000],[40000,74000,140000],[40000,74000,140000]],"5枠":[[360000,680000,1280000],[185000,350000,660000],[185000,350000,660000]],"10枠":[[650000,1260000,2360000],[340000,640000,1200000],[340000,640000,1200000]]}},"low":{"Dプラン":{"1枠":[43000,60000,165000,294000,432000],"3枠":[114000,156000,432000,756000,1116000],"5枠":[160000,220000,609000,1068000,1608000],"10枠":[176000,245000,672000,1224000,1776000],"20枠":[240000,350000,966000,1752000,2496000]},"Cプラン":{"1枠":[26000,36000,102000,177000,264000],"3枠":[69000,99000,270000,486000,666000],"5枠":[98000,135000,384000,675000,996000],"10枠":[112000,154000,429000,756000,1104000],"20枠":[148000,224000,618000,1080000,1560000]},"Bプラン":{"10枠":[null,105000,297000,504000,756000],"20枠":[null,152000,432000,732000,1104000]},"Aプラン":{"10枠":[null,70000,195000,342000,504000],"20枠":[null,84000,240000,432000,600000]}}},{"key":"shiga","name":"滋賀・奈良・和歌山版","area":"滋賀県・奈良県・和歌山県","columns":["滋賀・奈良・和歌山版"],"top":{"Pプラン(EX)":{"1枠":[[93000,176000,328000]],"5枠":[[435000,820000,1540000]],"10枠":[[790000,1480000,2800000]]},"Pプラン":{"1枠":[[54000,102000,192000]],"5枠":[[255000,480000,900000]],"10枠":[[460000,880000,1640000]]},"PLプラン":{"1枠":[[40000,74000,140000]],"5枠":[[185000,350000,660000]],"10枠":[[340000,640000,1200000]]}},"low":{"Dプラン":{"1枠":[43000,60000,165000,294000,432000],"3枠":[114000,156000,432000,756000,1116000],"5枠":[160000,220000,609000,1068000,1608000],"10枠":[176000,245000,672000,1224000,1776000],"20枠":[240000,350000,966000,1752000,2496000]},"Cプラン":{"1枠":[26000,36000,102000,177000,264000],"3枠":[69000,99000,270000,486000,666000],"5枠":[98000,135000,384000,675000,996000],"10枠":[112000,154000,429000,756000,1104000],"20枠":[148000,224000,618000,1080000,1560000]},"Bプラン":{"10枠":[null,105000,297000,504000,756000],"20枠":[null,152000,432000,732000,1104000]},"Aプラン":{"10枠":[null,70000,195000,342000,504000],"20枠":[null,84000,240000,432000,600000]}}},{"key":"shizuoka","name":"静岡版","area":"静岡県","columns":["静岡版"],"top":{"Pプラン(EX)":{"1枠":[[80000,150000,284000]],"5枠":[[370000,700000,1320000]],"10枠":[[680000,1280000,2400000]]},"Pプラン":{"1枠":[[53000,100000,188000]],"5枠":[[245000,470000,880000]],"10枠":[[450000,860000,1600000]]},"PLプラン":{"1枠":[[36000,68000,128000]],"5枠":[[165000,310000,580000]],"10枠":[[300000,560000,1080000]]}},"low":{"Dプラン":{"1枠":[36000,51000,144000,252000,372000],"3枠":[96000,132000,360000,648000,954000],"5枠":[135000,190000,522000,918000,1368000],"10枠":[150000,210000,576000,1044000,1512000],"20枠":[200000,300000,828000,1500000,2160000]},"Cプラン":{"1枠":[22000,32000,87000,150000,228000],"3枠":[60000,84000,234000,414000,576000],"5枠":[84000,117000,330000,579000,852000],"10枠":[96000,132000,366000,648000,948000],"20枠":[128000,192000,528000,936000,1344000]},"Bプラン":{"10枠":[null,90000,255000,432000,648000],"20枠":[null,130000,366000,624000,960000]},"Aプラン":{"10枠":[null,60000,168000,294000,432000],"20枠":[null,72000,204000,372000,528000]}}},{"key":"kyushu","name":"九州・沖縄版","area":"福岡県・佐賀県・長崎県・熊本県・大分県・宮崎県・鹿児島県・沖縄県","columns":["福岡市博多区・中央区版","その他福岡／九州・沖縄版"],"top":{"Pプラン(EX)":{"1枠":[[138000,260000,488000],[80000,150000,284000]],"5枠":[[645000,1210000,2280000],[370000,700000,1320000]],"10枠":[[1170000,2220000,4160000],[680000,1280000,2400000]]},"Pプラン":{"1枠":[[90000,170000,324000],[53000,100000,188000]],"5枠":[[420000,790000,1500000],[245000,470000,880000]],"10枠":[[760000,1460000,2760000],[450000,860000,1600000]]},"PLプラン":{"1枠":[[66000,124000,232000],[36000,68000,128000]],"5枠":[[310000,580000,1100000],[165000,310000,580000]],"10枠":[[560000,1060000,2000000],[300000,560000,1080000]]}},"low":{"Dプラン":{"1枠":[36000,51000,144000,252000,372000],"3枠":[96000,132000,360000,648000,954000],"5枠":[135000,190000,522000,918000,1368000],"10枠":[150000,210000,576000,1044000,1512000],"20枠":[200000,300000,828000,1500000,2160000]},"Cプラン":{"1枠":[22000,32000,87000,150000,228000],"3枠":[60000,84000,234000,414000,576000],"5枠":[84000,117000,330000,579000,852000],"10枠":[96000,132000,366000,648000,948000],"20枠":[128000,192000,528000,936000,1344000]},"Bプラン":{"10枠":[null,90000,255000,432000,648000],"20枠":[null,130000,366000,624000,960000]},"Aプラン":{"10枠":[null,60000,168000,294000,432000],"20枠":[null,72000,204000,372000,528000]}}},{"key":"hokkaido","name":"北海道・東北版","area":"北海道・青森県・岩手県・宮城県・秋田県・山形県・福島県","columns":["北海道・東北版"],"top":{"Pプラン(EX)":{"1枠":[[80000,150000,284000]],"5枠":[[370000,700000,1320000]],"10枠":[[680000,1280000,2400000]]},"Pプラン":{"1枠":[[53000,100000,188000]],"5枠":[[245000,470000,880000]],"10枠":[[450000,860000,1600000]]},"PLプラン":{"1枠":[[36000,68000,128000]],"5枠":[[165000,310000,580000]],"10枠":[[300000,560000,1080000]]}},"low":{"Dプラン":{"1枠":[36000,51000,144000,252000,372000],"3枠":[96000,132000,360000,648000,954000],"5枠":[135000,190000,522000,918000,1368000],"10枠":[150000,210000,576000,1044000,1512000],"20枠":[200000,300000,828000,1500000,2160000]},"Cプラン":{"1枠":[22000,32000,87000,150000,228000],"3枠":[60000,84000,234000,414000,576000],"5枠":[84000,117000,330000,579000,852000],"10枠":[96000,132000,366000,648000,948000],"20枠":[128000,192000,528000,936000,1344000]},"Bプラン":{"10枠":[null,90000,255000,432000,648000],"20枠":[null,130000,366000,624000,960000]},"Aプラン":{"10枠":[null,60000,168000,294000,432000],"20枠":[null,72000,204000,372000,528000]}}},{"key":"hokuriku","name":"甲信越・北陸版","area":"新潟県・富山県・石川県・福井県・山梨県・長野県","columns":["甲信越・北陸版"],"top":{"Pプラン(EX)":{"1枠":[[80000,150000,284000]],"5枠":[[370000,700000,1320000]],"10枠":[[680000,1280000,2400000]]},"Pプラン":{"1枠":[[53000,100000,188000]],"5枠":[[245000,470000,880000]],"10枠":[[450000,860000,1600000]]},"PLプラン":{"1枠":[[36000,68000,128000]],"5枠":[[165000,310000,580000]],"10枠":[[300000,560000,1080000]]}},"low":{"Dプラン":{"1枠":[36000,51000,144000,252000,372000],"3枠":[96000,132000,360000,648000,954000],"5枠":[135000,190000,522000,918000,1368000],"10枠":[150000,210000,576000,1044000,1512000],"20枠":[200000,300000,828000,1500000,2160000]},"Cプラン":{"1枠":[22000,32000,87000,150000,228000],"3枠":[60000,84000,234000,414000,576000],"5枠":[84000,117000,330000,579000,852000],"10枠":[96000,132000,366000,648000,948000],"20枠":[128000,192000,528000,936000,1344000]},"Bプラン":{"10枠":[null,90000,255000,432000,648000],"20枠":[null,130000,366000,624000,960000]},"Aプラン":{"10枠":[null,60000,168000,294000,432000],"20枠":[null,72000,204000,372000,528000]}}},{"key":"chugoku","name":"中国・四国版","area":"鳥取県・島根県・岡山県・広島県・山口県・徳島県・香川県・愛媛県・高知県","columns":["中国・四国版"],"top":{"Pプラン(EX)":{"1枠":[[80000,150000,284000]],"5枠":[[370000,700000,1320000]],"10枠":[[680000,1280000,2400000]]},"Pプラン":{"1枠":[[53000,100000,188000]],"5枠":[[245000,470000,880000]],"10枠":[[450000,860000,1600000]]},"PLプラン":{"1枠":[[36000,68000,128000]],"5枠":[[165000,310000,580000]],"10枠":[[300000,560000,1080000]]}},"low":{"Dプラン":{"1枠":[36000,51000,144000,252000,372000],"3枠":[96000,132000,360000,648000,954000],"5枠":[135000,190000,522000,918000,1368000],"10枠":[150000,210000,576000,1044000,1512000],"20枠":[200000,300000,828000,1500000,2160000]},"Cプラン":{"1枠":[22000,32000,87000,150000,228000],"3枠":[60000,84000,234000,414000,576000],"5枠":[84000,117000,330000,579000,852000],"10枠":[96000,132000,366000,648000,948000],"20枠":[128000,192000,528000,936000,1344000]},"Bプラン":{"10枠":[null,90000,255000,432000,648000],"20枠":[null,130000,366000,624000,960000]},"Aプラン":{"10枠":[null,60000,168000,294000,432000],"20枠":[null,72000,204000,372000,528000]}}}]},"next":{"label":"バイトルNEXT","topPlans":["Pプラン","PLプラン"],"topPeriods":["14日","1か月"],"topSlots":["1枠","5枠","10枠"],"lowPlans":["Dプラン","Cプラン","Bプラン","Aプラン"],"lowPeriods":["1か月","2か月","3か月","6か月","12か月"],"lowWeeks":[4,8,12,24,48],"lowSlots":["1枠","3枠","5枠","10枠","20枠"],"regions":[{"key":"shutoken","name":"首都圏版","area":"東京都・千葉県・埼玉県・神奈川県","columns":["新宿・渋谷・池袋版","東京都心6区版","横浜市西区・中区版","首都圏版"],"top":{"Pプラン":{"1枠":[[400000,756000],[300000,568000],[300000,568000],[166000,312000]],"5枠":[[1860000,3500000],[1390000,2620000],[1390000,2620000],[770000,1460000]],"10枠":[[3420000,6400000],[2560000,4840000],[2560000,4840000],[1400000,2640000]]},"PLプラン":{"1枠":[[270000,504000],[200000,376000],[200000,376000],[124000,232000]],"5枠":[[1250000,2360000],[940000,1760000],[940000,1760000],[570000,1080000]],"10枠":[[2300000,4280000],[1700000,3200000],[1700000,3200000],[1060000,2000000]]}},"low":{"Dプラン":{"1枠":[94000,180000,261000,471000,672000],"3枠":[243000,459000,675000,1188000,1746000],"5枠":[345000,665000,957000,1683000,2508000],"10枠":[385000,738000,1056000,1914000,2772000],"20枠":[550000,1068000,1518000,2748000,3960000]},"Cプラン":{"1枠":[60000,112000,162000,300000,408000],"3枠":[159000,294000,423000,756000,1044000],"5枠":[215000,414000,600000,1059000,1566000],"10枠":[242000,460000,672000,1188000,1740000],"20枠":[352000,672000,972000,1704000,2448000]},"Bプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"5枠":[null,null,null,null,null],"10枠":[170000,316000,465000,792000,1188000],"20枠":[238000,456000,672000,1152000,1752000]},"Aプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"5枠":[null,null,null,null,null],"10枠":[120000,212000,306000,540000,792000],"20枠":[132000,256000,378000,684000,1008000]}}},{"key":"kitakanto","name":"北関東版","area":"群馬県・栃木県・茨城県","columns":["北関東版"],"top":{"Pプラン":{"1枠":[[140000,264000]],"5枠":[[660000,1240000]],"10枠":[[1180000,2240000]]},"PLプラン":{"1枠":[[96000,180000]],"5枠":[[450000,840000]],"10枠":[[820000,1560000]]}},"low":{"Dプラン":{"1枠":[75000,144000,210000,378000,540000],"3枠":[195000,366000,540000,954000,1404000],"5枠":[276000,532000,765000,1470000,2004000],"10枠":[308000,590000,843000,1530000,2220000],"20枠":[440000,856000,1212000,2196000,3168000]},"Cプラン":{"1枠":[48000,90000,129000,240000,324000],"3枠":[126000,234000,342000,612000,828000],"5枠":[172000,331000,480000,846000,1254000],"10枠":[194000,368000,537000,948000,1392000],"20枠":[282000,536000,780000,1368000,1968000]},"Bプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"5枠":[null,null,null,null,null],"10枠":[136000,252000,372000,636000,948000],"20枠":[190000,364000,540000,924000,1392000]},"Aプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"10枠":[96000,170000,246000,432000,636000],"20枠":[106000,204000,300000,552000,816000]}}},{"key":"kansai","name":"大阪・京都・兵庫版","area":"大阪府・京都府・兵庫県","columns":["梅田・なんば・心斎橋版","大阪市北区・中央区版","三宮版","大阪・京都・兵庫版"],"top":{"Pプラン":{"1枠":[[320000,608000],[240000,456000],[240000,456000],[140000,264000]],"5枠":[[1490000,2800000],[1110000,2100000],[1110000,2100000],[660000,1240000]],"10枠":[[2740000,5160000],[2060000,3840000],[2060000,3840000],[1180000,2240000]]},"PLプラン":{"1枠":[[216000,404000],[176000,328000],[176000,328000],[96000,180000]],"5枠":[[1000000,1880000],[820000,1540000],[820000,1540000],[450000,840000]],"10枠":[[1840000,3400000],[1500000,2800000],[1500000,2800000],[820000,1560000]]}},"low":{"Dプラン":{"1枠":[75000,144000,210000,378000,540000],"3枠":[195000,366000,540000,954000,1404000],"5枠":[276000,532000,765000,1470000,2004000],"10枠":[308000,590000,843000,1530000,2220000],"20枠":[440000,856000,1212000,2196000,3168000]},"Cプラン":{"1枠":[48000,90000,129000,240000,324000],"3枠":[126000,234000,342000,612000,828000],"5枠":[172000,331000,480000,846000,1254000],"10枠":[194000,368000,537000,948000,1392000],"20枠":[282000,536000,780000,1368000,1968000]},"Bプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"5枠":[null,null,null,null,null],"10枠":[136000,252000,372000,636000,948000],"20枠":[190000,364000,540000,924000,1392000]},"Aプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"10枠":[96000,170000,246000,432000,636000],"20枠":[106000,204000,300000,552000,816000]}}},{"key":"tokai","name":"愛知・岐阜・三重版","area":"愛知県・岐阜県・三重県","columns":["名古屋市中区・中村区版","愛知・岐阜・三重版"],"top":{"Pプラン":{"1枠":[[210000,396000],[112000,212000]],"5枠":[[970000,1840000],[530000,1000000]],"10枠":[[1800000,3360000],[960000,1800000]]},"PLプラン":{"1枠":[[154000,288000],[82000,156000]],"5枠":[[710000,1340000],[390000,720000]],"10枠":[[1300000,2440000],[700000,1320000]]}},"low":{"Dプラン":{"1枠":[66000,126000,183000,330000,468000],"3枠":[171000,321000,477000,828000,1224000],"5枠":[242000,466000,672000,1179000,1758000],"10枠":[270000,516000,738000,1338000,1944000],"20枠":[386000,748000,1062000,1920000,2760000]},"Cプラン":{"1枠":[42000,78000,114000,210000,288000],"3枠":[111000,204000,297000,531000,738000],"5枠":[150000,290000,420000,741000,1098000],"10枠":[170000,322000,471000,834000,1224000],"20枠":[246000,472000,684000,1200000,1728000]},"Bプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"5枠":[null,null,null,null,null],"10枠":[119000,222000,324000,552000,828000],"20枠":[168000,320000,468000,804000,1224000]},"Aプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"10枠":[84000,148000,216000,378000,552000],"20枠":[92000,180000,264000,480000,720000]}}},{"key":"shiga","name":"滋賀・奈良・和歌山版","area":"滋賀県・奈良県・和歌山県","columns":["滋賀・奈良・和歌山版"],"top":{"Pプラン":{"1枠":[[112000,212000]],"5枠":[[530000,1000000]],"10枠":[[960000,1800000]]},"PLプラン":{"1枠":[[82000,156000]],"5枠":[[390000,720000]],"10枠":[[700000,1320000]]}},"low":{"Dプラン":{"1枠":[66000,126000,183000,330000,468000],"3枠":[171000,321000,477000,828000,1224000],"5枠":[242000,466000,672000,1179000,1758000],"10枠":[270000,516000,738000,1338000,1944000],"20枠":[386000,748000,1062000,1920000,2760000]},"Cプラン":{"1枠":[42000,78000,114000,210000,288000],"3枠":[111000,204000,297000,531000,738000],"5枠":[150000,290000,420000,741000,1098000],"10枠":[170000,322000,471000,834000,1224000],"20枠":[246000,472000,684000,1200000,1728000]},"Bプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"5枠":[null,null,null,null,null],"10枠":[119000,222000,324000,552000,828000],"20枠":[168000,320000,468000,804000,1224000]},"Aプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"10枠":[84000,148000,216000,378000,552000],"20枠":[92000,180000,264000,480000,720000]}}},{"key":"shizuoka","name":"静岡版","area":"静岡県","columns":["静岡版"],"top":{"Pプラン":{"1枠":[[110000,208000]],"5枠":[[520000,960000]],"10枠":[[940000,1760000]]},"PLプラン":{"1枠":[[74000,140000]],"5枠":[[340000,640000]],"10枠":[[620000,1200000]]}},"low":{"Dプラン":{"1枠":[56000,108000,156000,282000,402000],"3枠":[147000,276000,405000,711000,1044000],"5枠":[207000,399000,574500,1011000,1506000],"10枠":[231000,444000,633000,1152000,1668000],"20枠":[330000,640000,912000,1656000,2376000]},"Cプラン":{"1枠":[36000,68000,99000,180000,246000],"3枠":[96000,174000,252000,450000,630000],"5枠":[129000,249000,360000,636000,942000],"10枠":[145000,276000,402000,672000,1044000],"20枠":[212000,404000,582000,1020000,1464000]},"Bプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"5枠":[null,null,null,null,null],"10枠":[102000,190000,279000,474000,720000],"20枠":[144000,272000,402000,696000,1056000]},"Aプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"10枠":[72000,128000,183000,324000,480000],"20枠":[80000,156000,228000,408000,600000]}}},{"key":"kyushu","name":"九州・沖縄版","area":"福岡県・佐賀県・長崎県・熊本県・大分県・宮崎県・鹿児島県・沖縄県","columns":["福岡市博多区・中央区版","九州・沖縄版"],"top":{"Pプラン":{"1枠":[[180000,340000],[110000,208000]],"5枠":[[840000,1580000],[520000,960000]],"10枠":[[1540000,2880000],[940000,1760000]]},"PLプラン":{"1枠":[[132000,248000],[74000,140000]],"5枠":[[610000,1140000],[340000,640000]],"10枠":[[1120000,2080000],[620000,1200000]]}},"low":{"Dプラン":{"1枠":[56000,108000,156000,282000,402000],"3枠":[147000,276000,405000,711000,1044000],"5枠":[207000,399000,574500,1011000,1506000],"10枠":[231000,444000,633000,1152000,1668000],"20枠":[330000,640000,912000,1656000,2376000]},"Cプラン":{"1枠":[36000,68000,99000,180000,246000],"3枠":[96000,174000,252000,450000,630000],"5枠":[129000,249000,360000,636000,942000],"10枠":[145000,276000,402000,672000,1044000],"20枠":[212000,404000,582000,1020000,1464000]},"Bプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"5枠":[null,null,null,null,null],"10枠":[102000,190000,279000,474000,720000],"20枠":[144000,272000,402000,696000,1056000]},"Aプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"10枠":[72000,128000,183000,324000,480000],"20枠":[80000,156000,228000,408000,600000]}}},{"key":"hokkaido","name":"北海道・東北版","area":"北海道・青森県・岩手県・宮城県・秋田県・山形県・福島県","columns":["北海道・東北版"],"top":{"Pプラン":{"1枠":[[110000,208000]],"5枠":[[520000,960000]],"10枠":[[940000,1760000]]},"PLプラン":{"1枠":[[74000,140000]],"5枠":[[340000,640000]],"10枠":[[620000,1200000]]}},"low":{"Dプラン":{"1枠":[56000,108000,156000,282000,402000],"3枠":[147000,276000,405000,711000,1044000],"5枠":[207000,399000,574500,1011000,1506000],"10枠":[231000,444000,633000,1152000,1668000],"20枠":[330000,640000,912000,1656000,2376000]},"Cプラン":{"1枠":[36000,68000,99000,180000,246000],"3枠":[96000,174000,252000,450000,630000],"5枠":[129000,249000,360000,636000,942000],"10枠":[145000,276000,402000,672000,1044000],"20枠":[212000,404000,582000,1020000,1464000]},"Bプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"5枠":[null,null,null,null,null],"10枠":[102000,190000,279000,474000,720000],"20枠":[144000,272000,402000,696000,1056000]},"Aプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"10枠":[72000,128000,183000,324000,480000],"20枠":[80000,156000,228000,408000,600000]}}},{"key":"hokuriku","name":"甲信越・北陸版","area":"新潟県・富山県・石川県・福井県・山梨県・長野県","columns":["甲信越・北陸版"],"top":{"Pプラン":{"1枠":[[110000,208000]],"5枠":[[520000,960000]],"10枠":[[940000,1760000]]},"PLプラン":{"1枠":[[74000,140000]],"5枠":[[340000,640000]],"10枠":[[620000,1200000]]}},"low":{"Dプラン":{"1枠":[56000,108000,156000,282000,402000],"3枠":[147000,276000,405000,711000,1044000],"5枠":[207000,399000,574500,1011000,1506000],"10枠":[231000,444000,633000,1152000,1668000],"20枠":[330000,640000,912000,1656000,2376000]},"Cプラン":{"1枠":[36000,68000,99000,180000,246000],"3枠":[96000,174000,252000,450000,630000],"5枠":[129000,249000,360000,636000,942000],"10枠":[145000,276000,402000,672000,1044000],"20枠":[212000,404000,582000,1020000,1464000]},"Bプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"5枠":[null,null,null,null,null],"10枠":[102000,190000,279000,474000,720000],"20枠":[144000,272000,402000,696000,1056000]},"Aプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"10枠":[72000,128000,183000,324000,480000],"20枠":[80000,156000,228000,408000,600000]}}},{"key":"chugoku","name":"中国・四国版","area":"鳥取県・島根県・岡山県・広島県・山口県・徳島県・香川県・愛媛県・高知県","columns":["中国・四国版"],"top":{"Pプラン":{"1枠":[[110000,208000]],"5枠":[[520000,960000]],"10枠":[[940000,1760000]]},"PLプラン":{"1枠":[[74000,140000]],"5枠":[[340000,640000]],"10枠":[[620000,1200000]]}},"low":{"Dプラン":{"1枠":[56000,108000,156000,282000,402000],"3枠":[147000,276000,405000,711000,1044000],"5枠":[207000,399000,574500,1011000,1506000],"10枠":[231000,444000,633000,1152000,1668000],"20枠":[330000,640000,912000,1656000,2376000]},"Cプラン":{"1枠":[36000,68000,99000,180000,246000],"3枠":[96000,174000,252000,450000,630000],"5枠":[129000,249000,360000,636000,942000],"10枠":[145000,276000,402000,672000,1044000],"20枠":[212000,404000,582000,1020000,1464000]},"Bプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"5枠":[null,null,null,null,null],"10枠":[102000,190000,279000,474000,720000],"20枠":[144000,272000,402000,696000,1056000]},"Aプラン":{"1枠":[null,null,null,null,null],"3枠":[null,null,null,null,null],"10枠":[72000,128000,183000,324000,480000],"20枠":[80000,156000,228000,408000,600000]}}}]}};
+
+// ===== js/pricing-mynavi.js =====
+// ========================================
+// マイナビバイト 掲載料金データ
+//
+//   出典: マイナビバイト 料金表 No.MB202509（2025年9月時点の情報・記載料金は税抜）
+//   検証: tools/verify_mynavi.py（PDF本文の全金額と多重集合で突合／
+//         エリア間の価格比の法則チェック／表領域に画像が無いことの確認）
+//
+// エリアの法則
+//   4区分: 関東（東京・神奈川・埼玉・千葉・栃木・群馬・茨城）
+//          関西（大阪・兵庫・京都・滋賀・奈良・和歌山）
+//          東海（愛知・静岡・岐阜・三重）
+//          その他（上記以外）
+//   価格比は 関東 1 : 関西 0.9 : 東海 0.8 : その他 0.7 が基本（端数丸めあり）。
+//   例外は「アルバイトの基本プラン ADスタンダードプラス」のみで、7区分の独自価格。
+//
+// 商品の序列（露出度 高 → 低）
+//   ADプレミアム ＞ ADスーパー ＞ ADスタンダードプラス ＞ ADスタンダード ＞ ADライト ＞ ADテキスト
+//   （回数券は同名の PP シリーズ）
+// ========================================
+
+var mynaviPricing = {
+    label: 'マイナビバイト',
+    source: 'マイナビバイト 料金表 No.MB202509（2025年9月時点・税抜）',
+    note: '記載料金は税抜です。オプションは基本プラン・フリープラン・回数券・年間プランのいずれかに参画のうえ申込みが必要です。',
+
+    // 4エリア区分と該当都道府県
+    areas: ['関東', '関西', '東海', 'その他'],
+    areaDef: {
+        '関東': '東京・神奈川・埼玉・千葉・栃木・群馬・茨城',
+        '関西': '大阪・兵庫・京都・滋賀・奈良・和歌山',
+        '東海': '愛知・静岡・岐阜・三重',
+        'その他': '上記以外'
+    },
+
+    // 診断Q1（ディップ基準の10エリア）→ マイナビ4エリア
+    areaMap: {
+        shutoken: '関東',   // 東京・千葉・埼玉・神奈川
+        kitakanto: '関東',  // 群馬・栃木・茨城
+        kansai: '関西',     // 大阪・京都・兵庫
+        shiga: '関西',      // 滋賀・奈良・和歌山
+        tokai: '東海',      // 愛知・岐阜・三重
+        shizuoka: '東海',   // 静岡
+        hokkaido: 'その他',
+        hokuriku: 'その他',
+        chugoku: 'その他',
+        kyushu: 'その他'
+    },
+
+    // ADスタンダードプラス（アルバイト基本プラン）だけの7区分
+    spAreas: ['東京23区', '東京23区外', '神奈川・千葉・埼玉', '大阪・京都・兵庫',
+        '奈良・和歌山・滋賀', '東海', '北海道・東北・北関東・甲信越・北陸・中四国・九州'],
+    // 診断エリア → 7区分（首都圏は3つに分かれるため複数を返す）
+    spAreaMap: {
+        shutoken: ['東京23区', '東京23区外', '神奈川・千葉・埼玉'],
+        kitakanto: ['北海道・東北・北関東・甲信越・北陸・中四国・九州'],
+        kansai: ['大阪・京都・兵庫'],
+        shiga: ['奈良・和歌山・滋賀'],
+        tokai: ['東海'],
+        shizuoka: ['東海'],
+        hokkaido: ['北海道・東北・北関東・甲信越・北陸・中四国・九州'],
+        hokuriku: ['北海道・東北・北関東・甲信越・北陸・中四国・九州'],
+        chugoku: ['北海道・東北・北関東・甲信越・北陸・中四国・九州'],
+        kyushu: ['北海道・東北・北関東・甲信越・北陸・中四国・九州']
+    },
+
+    // 露出度の高い順
+    productOrder: ['ADプレミアム', 'ADスーパー', 'ADスタンダードプラス',
+        'ADスタンダード', 'ADライト', 'ADテキスト'],
+
+    // ========== マイナビバイトプラン（アルバイト・パート）==========
+    parttime: {
+        label: 'マイナビバイトプラン（アルバイト・パート）',
+        // 基本プラン：4エリア（値は 関東/関西/東海/その他 の順）
+        basic: [
+            { product: 'ADプレミアム', sites: 3, period: '1週間', area4: [200000, 180000, 160000, 140000] },
+            { product: 'ADプレミアム', sites: 3, period: '2週間', area4: [400000, 360000, 320000, 280000] },
+            { product: 'ADプレミアム', sites: 3, period: '4週間', area4: [800000, 720000, 640000, 560000] },
+            { product: 'ADスーパー', sites: 2, period: '1週間', area4: [80000, 72000, 64000, 56000] },
+            { product: 'ADスーパー', sites: 2, period: '2週間', area4: [140000, 126000, 112000, 98000] },
+            { product: 'ADスーパー', sites: 2, period: '4週間', area4: [240000, 216000, 192000, 168000] },
+            // ADスタンダードプラスのみ7区分（spAreas の順）
+            { product: 'ADスタンダードプラス', sites: 1, period: '1週間',
+                area7: [50000, 40000, 45000, 45000, 40000, 40000, 35000] },
+            { product: 'ADスタンダードプラス', sites: 1, period: '2週間',
+                area7: [80000, 64000, 72000, 72000, 64000, 64000, 56000] },
+            { product: 'ADスタンダードプラス', sites: 1, period: '4週間',
+                area7: [140000, 112000, 126000, 126000, 112000, 112000, 98000] },
+            { product: 'ADスタンダード', sites: 1, period: '1週間', flat: 30000 },
+            { product: 'ADスタンダード', sites: 1, period: '2週間', flat: 50000 },
+            { product: 'ADスタンダード', sites: 1, period: '4週間', flat: 80000 },
+            { product: 'ADライト', sites: 1, period: '1週間', flat: 20000 },
+            { product: 'ADライト', sites: 1, period: '2週間', flat: 40000 },
+            { product: 'ADライト', sites: 1, period: '4週間', flat: 70000 }
+        ],
+        // 応募課金型（掲載料ではないため価格比較の対象外）
+        entry: [
+            { product: 'エントリープラス', sites: 1, period: '12週間', perApply: 15000,
+                note: '医療・介護・保育の職種はご掲載いただけません。1原稿あたり500円の参画料。' },
+            { product: 'エントリー', sites: 1, period: '12週間', perApply: 8000,
+                note: '医療・介護・保育は15,000円。1原稿あたり500円の参画料。' }
+        ],
+        free: [
+            { product: 'ADプレミアム', sites: null, period: null, flat: null },
+            { product: 'ADスーパー', sites: 2, period: '4週間', flat: 280000 },
+            { product: 'ADスタンダードプラス', sites: 1, period: '4週間', flat: 180000 },
+            { product: 'ADスタンダード', sites: 1, period: '4週間', flat: 100000 },
+            { product: 'ADライト', sites: 1, period: '4週間', flat: 75000 },
+            { product: 'ADテキスト', sites: 1, period: '4週間', flat: 10000 }
+        ],
+        coupon: [
+            { product: 'PPプレミアム', sites: 3, period: '1週間', area4: [2000000, 1800000, 1600000, 1400000] },
+            { product: 'PPスーパー', sites: 2, period: '1週間', area4: [800000, 720000, 640000, 560000] },
+            { product: 'PPスーパー', sites: 2, period: '2週間', area4: [1400000, 1260000, 1120000, 980000] },
+            { product: 'PPスーパー', sites: 2, period: '4週間', area4: [2400000, 2160000, 1920000, 1680000] },
+            { product: 'PPスタンダードプラス', sites: 1, period: '1週間', area4: [500000, 450000, 400000, 350000] },
+            { product: 'PPスタンダードプラス', sites: 1, period: '2週間', area4: [800000, 720000, 640000, 560000] },
+            { product: 'PPスタンダードプラス', sites: 1, period: '4週間', area4: [1400000, 1260000, 1120000, 980000] },
+            { product: 'PPスタンダード', sites: 1, period: '1週間', flat: 285000 },
+            { product: 'PPスタンダード', sites: 1, period: '2週間', flat: 450000 },
+            { product: 'PPスタンダード', sites: 1, period: '4週間', flat: 720000 },
+            { product: 'PPライト', sites: 1, period: '1週間', flat: 200000 },
+            { product: 'PPライト', sites: 1, period: '2週間', flat: 380000 },
+            { product: 'PPライト', sites: 1, period: '4週間', flat: 630000 }
+        ],
+        yearly: [
+            { product: '年間プラン スタンダード', sites: 1, period: '1年間', flat: 936000 },
+            { product: '年間プラン ライト', sites: 1, period: '1年間', flat: 819000 }
+        ]
+    },
+
+    // ========== 正社員プラン ==========
+    fulltime: {
+        label: '正社員プラン',
+        basic: [
+            { product: 'ADプレミアム', sites: 3, period: '4週間', area4: [700000, 630000, 560000, 490000] },
+            { product: 'ADスーパー', sites: 3, period: '4週間', area4: [525000, 473000, 420000, 368000] },
+            { product: 'ADスタンダードプラス', sites: 3, period: '4週間', area4: [367000, 331000, 294000, 257000] },
+            { product: 'ADスタンダード', sites: 3, period: '4週間', area4: [240000, 216000, 192000, 168000] },
+            { product: 'ADライト', sites: 1, period: '4週間', area4: [140000, 126000, 112000, 98000] }
+        ],
+        entry: [
+            { product: 'エントリー', sites: 1, period: '12週間', perApply: 29000,
+                note: '1原稿あたり500円の参画料。' }
+        ],
+        free: [
+            { product: 'ADプレミアム', sites: 3, period: '4週間', flat: 740000 },
+            { product: 'ADスーパー', sites: 3, period: '4週間', flat: 552000 },
+            { product: 'ADスタンダードプラス', sites: 3, period: '4週間', flat: 386000 },
+            { product: 'ADスタンダード', sites: 3, period: '4週間', flat: 280000 },
+            { product: 'ADライト', sites: 1, period: '4週間', flat: 180000 },
+            { product: 'ADテキスト', sites: 1, period: '4週間', flat: 24000 }
+        ],
+        coupon: [
+            { product: 'PPプレミアム', sites: 3, period: '4週間', area4: [7000000, 6300000, 5600000, 4900000] },
+            { product: 'PPスーパー', sites: 3, period: '4週間', area4: [5250000, 4730000, 4200000, 3680000] },
+            { product: 'PPスタンダードプラス', sites: 3, period: '4週間', area4: [3670000, 3310000, 2940000, 2570000] },
+            { product: 'PPスタンダード', sites: 3, period: '4週間', area4: [2160000, 1944000, 1728000, 1512000] },
+            { product: 'PPライト', sites: 1, period: '4週間', area4: [1260000, 1134000, 1008000, 882000] }
+        ],
+        yearly: [
+            { product: '年間プラン スタンダード', sites: 3, period: '1年間', area4: [2808000, 2527200, 2246400, 1965600] },
+            { product: '年間プラン ライト', sites: 1, period: '1年間', area4: [1638000, 1474200, 1310400, 1146600] }
+        ]
+    },
+
+    // ========== オプション ==========
+    options: [
+        { no: 1, name: 'Extraバナー', fulltimeOk: true, period: '1週間', area4: [150000, 135000, 120000, 105000] },
+        { no: 2, name: 'サジェストピックアップ', fulltimeOk: false, period: '1週間', area4: [80000, 72000, 64000, 56000] },
+        { no: 3, name: '検索画面PRバナー', fulltimeOk: false, period: '1週間', area4: [80000, 72000, 64000, 56000] },
+        { no: 4, name: 'クロスローテーション', fulltimeOk: true, period: '1週間', area4: [80000, 72000, 64000, 56000] },
+        { no: 5, name: 'リザーブシート（スペシャル）', fulltimeOk: true, period: '1週間', area4: [70000, 63000, 56000, 49000] },
+        { no: 6, name: 'リザーブシート（ベーシック）', fulltimeOk: true, period: '1週間', area4: [50000, 45000, 40000, 35000] },
+        { no: 7, name: 'リザーブシート（こだわり）', fulltimeOk: true, period: '1週間', flat: 50000 },
+        { no: 8, name: '新着上位', fulltimeOk: false, period: '2日or3日', flat: 20000 },
+        { no: 9, name: '特集上位', fulltimeOk: true, period: '1週間', flat: 10000 },
+        { no: 10, name: '面接確約フラグ', fulltimeOk: true, period: '1週間', flat: 5000 },
+        { no: 11, name: '急募フラグ', fulltimeOk: true, period: '1週間', flat: 2000 },
+        { no: 12, name: '検索連動バナー', fulltimeOk: true, period: '1週間', flat: 2000 },
+        { no: 13, name: 'ランディングページバナー', fulltimeOk: false, period: '4週間', flat: 100000 },
+        { no: 14, name: 'ラージピクチャー', fulltimeOk: true, period: '1週間', flat: 50000 },
+        { no: 15, name: 'スペシャルコンテンツバナー', fulltimeOk: false, period: '4週間', flat: 100000 }
+    ],
+
+    // 掲載料ではないもの（価格比較に含めない）
+    point: { name: 'マイナビバイトポイント', price: '1万pt〜', note: '1point＝1円換算。有効期限は有効期間開始日から1年間。' }
+};
+
+// ===== js/script.js =====
+// ========================================
+// グローバル変数
+// ========================================
+const TOTAL_QUESTIONS = 6;
+let currentQuestion = 1;
+let diagnosisData = {};
+
+// Q1のエリア選択肢の表示順（公式料金データのキー。北から南の並び）
+const AREA_ORDER = ['hokkaido', 'kitakanto', 'shutoken', 'hokuriku', 'shizuoka',
+    'tokai', 'shiga', 'kansai', 'chugoku', 'kyushu'];
+
+// 予算帯 → 上限金額（税別）。premium は上限なし
+const BUDGET_CEILING = {
+    low: 200000,
+    medium: 500000,
+    high: 1000000,
+    premium: null
+};
+
+// 配点（合計100点）
+const WEIGHTS = {
+    employmentType: 30, // 雇用形態マッチング
+    jobCategory: 25,    // 職種カテゴリマッチング
+    targetAge: 20,      // ターゲット層マッチング
+    budget: 15,         // 予算マッチング
+    priority: 10        // 重視ポイントマッチング
+};
+
+// ========================================
+// 求人媒体データベース（6媒体）
+// ========================================
+const mediaDatabase = {
+    'e-career': {
+        name: 'イーキャリア',
+        catch: 'SBグループ運営。テクノロジー活用のマッチング型求人サイト',
+        features: [
+            'ソフトバンクグループが運営する総合転職サイト',
+            'スカウト機能が充実し、待ちだけでなく攻めの採用が可能',
+            '応募課金型プランがあり初期費用を抑えやすい',
+            'IT・営業・事務系の20〜30代が中心ボリューム',
+            '求人原稿の自動最適化などデジタル施策に強み'
+        ],
+        pricing: '掲載料: 20万円〜 / 応募課金型もあり',
+        pricingVerified: false,
+        targetEmployment: ['fulltime', 'contract'],
+        targetJobs: ['it', 'sales', 'office', 'other'],
+        targetAge: ['20s', '30s'],
+        budgetRange: ['low', 'medium'],
+        strengths: ['cost', 'matching']
+    },
+    'mynavi-baito': {
+        name: 'マイナビバイト',
+        catch: '掲載課金と応募課金を選べる、学生・フリーター層に強い大手求人サイト',
+        features: [
+            'アルバイト・パート採用の大手求人サイト（正社員プランもあり）',
+            '学生・10代〜20代前半の利用者比率が非常に高い',
+            '飲食・小売・サービス業の掲載実績が豊富',
+            '掲載課金・応募課金（1応募8,000円〜）・回数券・年間プランから選べる',
+            'エリアは関東／関西／東海／その他の4区分で価格が変わる'
+        ],
+        pricing: '公式料金表を参照（下記「料金の目安」）',
+        pricingVerified: true,
+        priceKey: 'mynavi',
+        // 公式料金表に「正社員プラン」があるため正社員採用にも対応する
+        targetEmployment: ['parttime', 'contract', 'fulltime'],
+        targetJobs: ['service', 'sales', 'office', 'manufacturing'],
+        targetAge: ['student', '20s', 'female'],
+        budgetRange: ['low', 'medium', 'high', 'premium'], // 起動時に実データから再計算
+        strengths: ['cost', 'volume', 'speed']
+    },
+    'mynavi-tenshoku': {
+        name: 'マイナビ転職',
+        catch: '20〜30代の正社員採用における定番の総合転職サイト',
+        features: [
+            '若手〜中堅層の正社員採用でトップクラスの知名度',
+            '全国・全職種をカバーする総合型の転職サイト',
+            '転職フェアなどオフラインイベントとの連動が可能',
+            '専任担当による原稿作成・改善提案のサポートが手厚い',
+            '第二新卒・未経験歓迎の募集と相性が良い'
+        ],
+        pricing: '掲載料: 20万円〜80万円（4週間・枠サイズによる）',
+        pricingVerified: false,
+        targetEmployment: ['fulltime', 'contract'],
+        targetJobs: ['sales', 'office', 'it', 'service', 'manufacturing', 'other'],
+        targetAge: ['20s', '30s'],
+        budgetRange: ['medium', 'high'],
+        strengths: ['volume', 'support', 'matching']
+    },
+    'baitoru': {
+        name: 'バイトル',
+        catch: '動画・画像で職場を見せられる、ディップ運営のアルバイト・パート求人サイト',
+        features: [
+            'ディップ株式会社が運営するアルバイト・パート向け大手求人サイト',
+            '動画・職場写真で「働くイメージ」を直接伝えられる',
+            '10代〜20代の学生・フリーター層の利用比率が高い',
+            '飲食・小売・物流・介護など現場職の掲載が豊富',
+            'エリア×プラン×枠数×期間の組み合わせで掲載費を細かく調整できる'
+        ],
+        pricing: '公式料金表を参照（下記「料金の目安」）',
+        pricingVerified: true,
+        priceKey: 'baitoru',
+        targetEmployment: ['parttime', 'contract'],
+        targetJobs: ['service', 'sales', 'manufacturing', 'medical', 'office'],
+        targetAge: ['student', '20s', '30s', 'female'],
+        budgetRange: ['low', 'medium', 'high', 'premium'], // 起動時に実データから再計算
+        strengths: ['volume', 'speed', 'cost']
+    },
+    'baitoru-next': {
+        name: 'バイトルNEXT',
+        catch: 'バイトルの会員基盤を活かした、正社員・契約社員向けのディップ運営媒体',
+        features: [
+            'ディップ株式会社が運営する社員（正社員・契約社員）採用向け媒体',
+            'バイトルブランドの認知度を活かして幅広い層にリーチできる',
+            '動画や職場写真での訴求ができ、職場の雰囲気を伝えやすい',
+            'サービス・製造・物流・介護など現場職の中途採用と相性が良い',
+            'アルバイトからの正社員登用・キャリアアップ訴求にも使える'
+        ],
+        pricing: '公式料金表を参照（下記「料金の目安」）',
+        pricingVerified: true,
+        priceKey: 'next',
+        targetEmployment: ['fulltime', 'contract'],
+        targetJobs: ['service', 'manufacturing', 'medical', 'sales'],
+        targetAge: ['20s', '30s', '40s'],
+        budgetRange: ['low', 'medium', 'high', 'premium'], // 起動時に実データから再計算
+        strengths: ['cost', 'volume', 'speed']
+    },
+    'doda': {
+        name: 'doda',
+        catch: '国内最大級の会員数。経験者・即戦力採用に強い総合転職サービス',
+        features: [
+            '国内最大級の会員データベースを保有する総合転職サービス',
+            '20代後半〜40代の経験者・即戦力層に強い',
+            '求人広告とエージェントサービスを併用できる',
+            'IT・エンジニア、営業、管理部門の登録者が特に多い',
+            'スカウト機能でターゲットに直接アプローチ可能'
+        ],
+        pricing: '掲載料: 50万円〜180万円 / 人材紹介は成功報酬型（理論年収の約35%）',
+        pricingVerified: false,
+        targetEmployment: ['fulltime', 'contract'],
+        targetJobs: ['it', 'sales', 'office', 'other', 'manufacturing'],
+        targetAge: ['20s', '30s', '40s'],
+        budgetRange: ['high', 'premium'],
+        strengths: ['matching', 'volume', 'support']
+    },
+    'woman-type': {
+        name: '女の転職type',
+        catch: '正社員で働きたい女性に特化した転職サイト',
+        features: [
+            '正社員希望の女性に特化したターゲット型媒体',
+            '20代後半〜30代の女性会員が中心',
+            '事務・営業・販売・企画系など幅広い職種をカバー',
+            '「産休・育休実績あり」など働きやすさ条件で検索される',
+            'ターゲットが絞られているためミスマッチが起きにくい'
+        ],
+        pricing: '掲載料: 25万円〜80万円（4週間・枠サイズによる）',
+        pricingVerified: false,
+        targetEmployment: ['fulltime', 'contract'],
+        targetJobs: ['office', 'sales', 'service', 'other'],
+        targetAge: ['20s', '30s', 'female'],
+        budgetRange: ['medium', 'high'],
+        strengths: ['matching', 'support']
+    }
+};
+
+// ========================================
+// 表示用ラベル
+// ========================================
+const LABELS = {
+    area: {},
+    employmentType: {
+        fulltime: '正社員',
+        contract: '契約社員',
+        parttime: 'アルバイト・パート',
+        dispatch: '派遣社員'
+    },
+    jobCategory: {
+        sales: '営業',
+        office: '事務・管理',
+        it: 'IT・エンジニア',
+        service: 'サービス・接客',
+        manufacturing: '製造・物流・建設',
+        medical: '医療・介護・保育',
+        other: 'その他・専門職'
+    },
+    targetAge: {
+        student: '学生・10代',
+        '20s': '20代',
+        '30s': '30代',
+        '40s': '40代以上',
+        female: '女性中心'
+    },
+    budget: {
+        low: '〜20万円',
+        medium: '20〜50万円',
+        high: '50〜100万円',
+        premium: '100万円〜'
+    },
+    priority: {
+        cost: 'コストパフォーマンス',
+        volume: '応募数の多さ',
+        matching: '応募の質・マッチング精度',
+        speed: 'スピード',
+        support: '運用サポート'
+    }
+};
+
+const SUMMARY_TITLES = {
+    employmentType: '雇用形態',
+    jobCategory: '職種カテゴリ',
+    targetAge: 'ターゲット層',
+    budget: '予算帯',
+    priority: '重視ポイント'
+};
+
+// 媒体の属性 → 診断項目のキー対応（タグ表示用）
+const MEDIA_FIELD_MAP = {
+    employmentType: 'targetEmployment',
+    jobCategory: 'targetJobs',
+    targetAge: 'targetAge',
+    budget: 'budgetRange',
+    priority: 'strengths'
+};
+
+// ========================================
+// ディップ公式料金データ（js/pricing-data.js）ユーティリティ
+// ========================================
+function hasDipPricing() {
+    return typeof dipPricing !== 'undefined' && dipPricing !== null;
+}
+
+function yen(value) {
+    return '¥' + Number(value).toLocaleString('ja-JP');
+}
+
+// 総額 ÷ 枠数 ÷ 週数 = 7日／1枠あたり単価（PDF記載値と一致することを検証済み）
+function unitPrice(total, slotLabel, weeks) {
+    return total / (parseInt(slotLabel, 10) * weeks);
+}
+
+// 公式料金データのエリア一覧（Q1の選択肢・料金表のセレクトで共用）
+function areaRegions() {
+    if (!hasDipPricing()) {
+        return [];
+    }
+    const regions = dipPricing.baitoru.regions;
+    const ordered = [];
+    AREA_ORDER.forEach(function (key) {
+        regions.forEach(function (r) {
+            if (r.key === key) {
+                ordered.push(r);
+            }
+        });
+    });
+    // AREA_ORDER に無いエリアがあっても取りこぼさない
+    regions.forEach(function (r) {
+        if (AREA_ORDER.indexOf(r.key) === -1) {
+            ordered.push(r);
+        }
+    });
+    return ordered;
+}
+
+// Q1「募集エリア」の選択肢を料金データから生成する
+function renderAreaOptions() {
+    const host = document.getElementById('areaOptions');
+    if (!host) {
+        return;
+    }
+    const regions = areaRegions();
+    if (!regions.length) {
+        host.innerHTML = '<p class="pricing-empty">エリアデータを読み込めませんでした。</p>';
+        return;
+    }
+    host.innerHTML = regions.map(function (r) {
+        LABELS.area[r.key] = r.name;
+        return '<label class="option">' +
+            '<input type="radio" name="area" value="' + r.key + '">' +
+            '<span class="option-body">' +
+                '<span class="option-icon"><i class="fas fa-location-dot"></i></span>' +
+                '<span class="option-text">' +
+                    '<span class="option-label">' + r.name.replace('版', '') + '</span>' +
+                    '<span class="option-desc">' + r.area + '</span>' +
+                '</span>' +
+            '</span>' +
+        '</label>';
+    }).join('');
+}
+
+function findRegion(priceKey, regionKey) {
+    if (!hasDipPricing() || !dipPricing[priceKey]) {
+        return null;
+    }
+    const regions = dipPricing[priceKey].regions;
+    for (let i = 0; i < regions.length; i++) {
+        if (regions[i].key === regionKey) {
+            return regions[i];
+        }
+    }
+    return null;
+}
+
+// 選択された予算帯の上限（複数選択時はもっとも高い帯を採用）。上限なしは null
+function budgetCeiling(budgets) {
+    let ceiling = 0;
+    for (let i = 0; i < (budgets || []).length; i++) {
+        const v = BUDGET_CEILING[budgets[i]];
+        if (v === null) {
+            return null;
+        }
+        if (v > ceiling) {
+            ceiling = v;
+        }
+    }
+    return ceiling || null;
+}
+
+// ========================================
+// マイナビバイト料金データ（js/pricing-mynavi.js）ユーティリティ
+// ========================================
+function hasMynaviPricing() {
+    return typeof mynaviPricing !== 'undefined' && mynaviPricing !== null;
+}
+
+/**
+ * 雇用形態の回答から、マイナビバイトのどの料金表を使うかを決める。
+ * 正社員のみの募集なら「正社員プラン」、それ以外は「マイナビバイトプラン」。
+ */
+function mynaviSectionKey(employmentTypes) {
+    const et = employmentTypes || [];
+    return (et.indexOf('fulltime') !== -1 && et.indexOf('parttime') === -1)
+        ? 'fulltime' : 'parttime';
+}
+
+/**
+ * マイナビバイトの、指定エリアで購入できる掲載プランを列挙する。
+ * 対象は「基本プラン」と「フリープラン」のみ（回数券・年間プランは
+ * 1回の掲載ではないため、金額の比較からは外して注記で案内する）。
+ */
+function mynaviRegionOffers(dipArea, sectionKey) {
+    if (!hasMynaviPricing()) {
+        return null;
+    }
+    const m = mynaviPricing;
+    const area4 = m.areaMap[dipArea];
+    const ai = m.areas.indexOf(area4);
+    const section = m[sectionKey];
+    if (ai < 0 || !section) {
+        return null;
+    }
+
+    function rankOf(product) {
+        const i = m.productOrder.indexOf(product.replace(/^PP/, 'AD'));
+        return i < 0 ? 99 : i;
+    }
+
+    const offers = [];
+    function add(row, suffix, value, column) {
+        if (value === null || value === undefined) {
+            return;
+        }
+        offers.push({
+            yen: value,
+            plan: row.product + suffix,
+            slot: row.sites ? row.sites + '勤務地' : '',
+            period: row.period,
+            column: column,
+            rank: rankOf(row.product)
+        });
+    }
+
+    section.basic.forEach(function (row) {
+        if (row.area4) {
+            add(row, '（基本プラン）', row.area4[ai], area4);
+        } else if (row.area7) {
+            // ADスタンダードプラスだけ7区分。首都圏は3区分に分かれる
+            (m.spAreaMap[dipArea] || []).forEach(function (sa) {
+                add(row, '（基本プラン）', row.area7[m.spAreas.indexOf(sa)], sa);
+            });
+        } else if (row.flat) {
+            add(row, '（基本プラン）', row.flat, '全国共通');
+        }
+    });
+    section.free.forEach(function (row) {
+        if (row.flat) {
+            add(row, '（フリープラン）', row.flat, '全国共通');
+        }
+    });
+
+    return {
+        label: m.label,
+        sectionKey: sectionKey,
+        sectionLabel: section.label,
+        area: area4,
+        areaDef: m.areaDef[area4],
+        standard: offers,
+        all: offers
+    };
+}
+
+/**
+ * 指定エリアで購入できるプランを1件ずつ列挙する。
+ * 上位プラン（PL/P系）はエリア内に市区版の列があるため、
+ * 基準となる最終列（例: 首都圏版）を「そのエリアの標準料金」として扱い、
+ * 市区版は最高額の算出のみに使う。
+ */
+function dipRegionOffers(priceKey, regionKey) {
+    const media = dipPricing[priceKey];
+    const region = findRegion(priceKey, regionKey);
+    if (!media || !region) {
+        return null;
+    }
+    const rank = media.topPlans.concat(media.lowPlans);
+    const base = region.columns.length - 1;
+    const standard = [];   // そのエリアの標準料金（基準列＋下位プラン）
+    const all = [];        // 市区版を含む全て
+
+    media.topPlans.forEach(function (plan) {
+        const slots = region.top[plan] || {};
+        Object.keys(slots).forEach(function (slot) {
+            slots[slot].forEach(function (col, ci) {
+                col.forEach(function (value, pi) {
+                    if (value === null || value === undefined) {
+                        return;
+                    }
+                    const offer = {
+                        yen: value, plan: plan, slot: slot,
+                        period: media.topPeriods[pi],
+                        column: region.columns[ci],
+                        rank: rank.indexOf(plan)
+                    };
+                    all.push(offer);
+                    if (ci === base) {
+                        standard.push(offer);
+                    }
+                });
+            });
+        });
+    });
+
+    media.lowPlans.forEach(function (plan) {
+        const slots = region.low[plan] || {};
+        Object.keys(slots).forEach(function (slot) {
+            slots[slot].forEach(function (total, pi) {
+                if (total === null || total === undefined) {
+                    return;
+                }
+                const offer = {
+                    yen: total, plan: plan, slot: slot,
+                    period: media.lowPeriods[pi],
+                    column: region.name,
+                    rank: rank.indexOf(plan)
+                };
+                all.push(offer);
+                standard.push(offer);
+            });
+        });
+    });
+
+    return { media: media, region: region, standard: standard, all: all };
+}
+
+/**
+ * エリアと予算をふまえた料金要約。
+ * - cheapest : そのエリアで最も安い掲載
+ * - best     : 予算内に収まるもののうち、もっとも露出度の高いプラン
+ * - max      : そのエリアの最高額（市区版を含む）
+ */
+function dipRegionSummary(priceKey, regionKey, budgets) {
+    const offers = dipRegionOffers(priceKey, regionKey);
+    if (!offers || !offers.standard.length) {
+        return null;
+    }
+    const ceiling = budgetCeiling(budgets);
+
+    let cheapest = offers.standard[0];
+    offers.standard.forEach(function (o) {
+        if (o.yen < cheapest.yen) {
+            cheapest = o;
+        }
+    });
+
+    let max = offers.all[0];
+    offers.all.forEach(function (o) {
+        if (o.yen > max.yen) {
+            max = o;
+        }
+    });
+
+    // 予算内で使える「もっとも露出度の高いプラン」を探し、
+    // 同じプランの中では最小構成（＝そのプランを使い始められる価格）を提示する。
+    let best = null;
+    if (ceiling !== null) {
+        offers.standard.forEach(function (o) {
+            if (o.yen > ceiling) {
+                return;
+            }
+            if (!best || o.rank < best.rank || (o.rank === best.rank && o.yen < best.yen)) {
+                best = o;
+            }
+        });
+    }
+
+    return {
+        label: offers.media.label,
+        region: offers.region,
+        ceiling: ceiling,
+        cheapest: cheapest,
+        best: best,
+        max: max,
+        hasSubAreas: offers.region.columns.length > 1
+    };
+}
+
+/**
+ * 全国レンジの要約（エリア未選択時のフォールバック）
+ */
+function dipSummary(priceKey) {
+    if (!hasDipPricing() || !dipPricing[priceKey]) {
+        return null;
+    }
+    const media = dipPricing[priceKey];
+    let cheapest = null;
+    let cheapestRegions = [];
+    let shutoken = null;
+    let max = null;
+
+    media.regions.forEach(function (region) {
+        // 下段プラン（A〜D）から1枠の最安を探す
+        Object.keys(region.low).forEach(function (plan) {
+            const totals = region.low[plan]['1枠'];
+            if (!totals) {
+                return;
+            }
+            totals.forEach(function (total, pi) {
+                if (total === null) {
+                    return;
+                }
+                const rec = { yen: total, plan: plan, slot: '1枠', period: media.lowPeriods[pi] };
+                if (!cheapest || total < cheapest.yen) {
+                    cheapest = rec;
+                    cheapestRegions = [region.name];
+                } else if (total === cheapest.yen &&
+                           plan === cheapest.plan &&
+                           media.lowPeriods[pi] === cheapest.period &&
+                           cheapestRegions.indexOf(region.name) === -1) {
+                    cheapestRegions.push(region.name);
+                }
+                if (region.key === 'shutoken' && (!shutoken || total < shutoken.yen)) {
+                    shutoken = rec;
+                }
+            });
+        });
+
+        // 上段プラン（PL / P(EX) / P）から最高額を探す
+        Object.keys(region.top).forEach(function (plan) {
+            Object.keys(region.top[plan]).forEach(function (slot) {
+                region.top[plan][slot].forEach(function (col, ci) {
+                    col.forEach(function (value, pi) {
+                        if (value === null || value === undefined) {
+                            return;
+                        }
+                        if (!max || value > max.yen) {
+                            max = {
+                                yen: value,
+                                plan: plan,
+                                slot: slot,
+                                period: media.topPeriods[pi],
+                                column: region.columns[ci]
+                            };
+                        }
+                    });
+                });
+            });
+        });
+    });
+
+    if (!cheapest || !max) {
+        return null;
+    }
+    return {
+        label: media.label,
+        cheapest: cheapest,
+        cheapestRegions: cheapestRegions,
+        shutoken: shutoken,
+        max: max
+    };
+}
+
+function regionsLabel(names) {
+    if (names.length === 1) {
+        return names[0];
+    }
+    return names[0] + 'ほか' + (names.length - 1) + 'エリア';
+}
+
+function offerText(o) {
+    return [o.plan, o.slot, o.period].filter(function (v) { return v; }).join(' ');
+}
+
+/**
+ * 掲載プランの一覧から「最安」「予算内で使える最上位プラン（最小構成）」「最高」を求める。
+ * 媒体をまたいで同じ計算を使うための共通処理。
+ */
+function summarizeOffers(standard, all, ceiling) {
+    if (!standard || !standard.length) {
+        return null;
+    }
+    let cheapest = standard[0];
+    standard.forEach(function (o) {
+        if (o.yen < cheapest.yen) {
+            cheapest = o;
+        }
+    });
+    let max = all[0];
+    all.forEach(function (o) {
+        if (o.yen > max.yen) {
+            max = o;
+        }
+    });
+    let best = null;
+    if (ceiling !== null) {
+        standard.forEach(function (o) {
+            if (o.yen > ceiling) {
+                return;
+            }
+            if (!best || o.rank < best.rank || (o.rank === best.rank && o.yen < best.yen)) {
+                best = o;
+            }
+        });
+    }
+    return { cheapest: cheapest, best: best, max: max, ceiling: ceiling };
+}
+
+// マイナビバイトのエリア別要約
+function mynaviRegionSummary(regionKey, budgets, employmentTypes) {
+    const offers = mynaviRegionOffers(regionKey, mynaviSectionKey(employmentTypes));
+    if (!offers) {
+        return null;
+    }
+    const s = summarizeOffers(offers.standard, offers.all, budgetCeiling(budgets));
+    if (!s) {
+        return null;
+    }
+    s.label = offers.label;
+    s.areaName = offers.area;
+    s.areaDef = offers.areaDef;
+    s.sectionLabel = offers.sectionLabel;
+    return s;
+}
+
+// 金額 → 予算帯キー
+function budgetBandOf(value) {
+    if (value <= BUDGET_CEILING.low) {
+        return 'low';
+    }
+    if (value <= BUDGET_CEILING.medium) {
+        return 'medium';
+    }
+    if (value <= BUDGET_CEILING.high) {
+        return 'high';
+    }
+    return 'premium';
+}
+
+/**
+ * 公式料金データを持つ媒体の budgetRange を、実際の料金から導出して上書きする。
+ * 手で書いた予算帯が実データとズレるのを防ぐため、起動時に必ず同期する。
+ */
+function syncDipBudgetRanges() {
+    if (!hasDipPricing()) {
+        return;
+    }
+    Object.keys(mediaDatabase).forEach(function (id) {
+        const media = mediaDatabase[id];
+        if (!media.priceKey) {
+            return;
+        }
+        if (media.priceKey === 'mynavi' ? !hasMynaviPricing() : !dipPricing[media.priceKey]) {
+            return;
+        }
+        const bands = {};
+        if (media.priceKey === 'mynavi') {
+            Object.keys(mynaviPricing.areaMap).forEach(function (areaKey) {
+                ['parttime', 'fulltime'].forEach(function (kind) {
+                    const offers = mynaviRegionOffers(areaKey, kind);
+                    if (offers) {
+                        offers.all.forEach(function (o) { bands[budgetBandOf(o.yen)] = true; });
+                    }
+                });
+            });
+        } else {
+            dipPricing[media.priceKey].regions.forEach(function (region) {
+                const offers = dipRegionOffers(media.priceKey, region.key);
+                if (offers) {
+                    offers.all.forEach(function (o) { bands[budgetBandOf(o.yen)] = true; });
+                }
+            });
+        }
+        media.budgetRange = ['low', 'medium', 'high', 'premium'].filter(function (b) {
+            return bands[b];
+        });
+    });
+}
+
+// 結果カードに表示する料金ボックスのHTML（選択エリアの料金で算出）
+function pricingBoxHtml(media, data) {
+    // マイナビバイト（公式料金表と照合済み・エリア4区分）
+    if (media.priceKey === 'mynavi') {
+        const regionKey = data && data.area;
+        const s = regionKey
+            ? mynaviRegionSummary(regionKey, data.budget, data.employmentType) : null;
+        if (!s) {
+            return '<p class="pricing-box">' + media.pricing + '</p>';
+        }
+        let rows = '';
+        if (s.best) {
+            rows += pricingRow('ご予算内で使える最上位プラン', s.best.yen,
+                offerText(s.best) + '（この構成から利用可）', 'is-best');
+        } else if (s.ceiling !== null) {
+            rows += '<div class="pricing-row"><span class="pricing-row-label">ご予算内の選択肢</span>' +
+                '<span class="pricing-row-yen">—</span>' +
+                '<span class="pricing-row-note">' + yen(s.ceiling) + ' 以内に収まるプランがありません</span></div>';
+        }
+        rows += pricingRow('このエリアの最安', s.cheapest.yen,
+            offerText(s.cheapest) + '（' + s.cheapest.column + '）');
+        rows += pricingRow('このエリアの最高', s.max.yen,
+            offerText(s.max) + '（' + s.max.column + '）');
+        return '<div class="pricing-box pricing-box-detail">' +
+            '<p class="pricing-verified-badge"><i class="fas fa-circle-check"></i> 公式料金表と照合済み</p>' +
+            '<p class="pricing-box-area"><i class="fas fa-location-dot"></i> ' +
+                s.areaName + '（' + s.areaDef + '）／' + s.sectionLabel + '</p>' +
+            rows +
+            '<p class="pricing-box-foot">※上記は1回の掲載料です。ほかに応募課金型（エントリー）・回数券（10回分）・年間プラン・オプションがあります。</p>' +
+            '<p class="pricing-box-foot">マイナビバイト料金表 No.MB202509（2025年9月時点・税抜）より算出</p>' +
+            '<button class="btn btn-outline btn-sm" onclick="showPricing(\'mynavi\')">' +
+            '<i class="fas fa-table"></i> マイナビバイトの料金表を見る</button>' +
+            '</div>';
+    }
+    if (!media.priceKey) {
+        return '<div class="pricing-box pricing-box-ref">' +
+            '<p class="pricing-ref-badge"><i class="fas fa-triangle-exclamation"></i> 参考値（公式料金表と未照合）</p>' +
+            '<p class="pricing-ref-value">' + media.pricing + '</p>' +
+            '<p class="pricing-box-foot">正確な金額は媒体社の最新料金表をご確認ください。</p>' +
+            '</div>';
+    }
+    const regionKey = data && data.area;
+    const s = regionKey ? dipRegionSummary(media.priceKey, regionKey, data.budget) : null;
+    if (!s) {
+        // エリア未選択時は全国レンジで表示
+        const g = dipSummary(media.priceKey);
+        if (!g) {
+            return '<p class="pricing-box">' + media.pricing + '</p>';
+        }
+        return '<div class="pricing-box pricing-box-detail">' +
+            pricingRow('全国の最安', g.cheapest.yen,
+                offerText(g.cheapest) + '（' + regionsLabel(g.cheapestRegions) + '）') +
+            pricingRow('全国の最高', g.max.yen, offerText(g.max) + '（' + g.max.column + '）') +
+            '<p class="pricing-box-foot">エリアを選ぶと、そのエリアの料金で算出します</p>' +
+            '<button class="btn btn-outline btn-sm" onclick="showPricing(\'' + media.priceKey + '\')">' +
+            '<i class="fas fa-table"></i> 公式料金表を見る</button>' +
+            '</div>';
+    }
+
+    let rows = '';
+    if (s.best) {
+        rows += pricingRow('ご予算内で使える最上位プラン', s.best.yen,
+            offerText(s.best) + '（この構成から利用可）', 'is-best');
+    } else if (s.ceiling !== null) {
+        rows += '<div class="pricing-row"><span class="pricing-row-label">ご予算内の選択肢</span>' +
+            '<span class="pricing-row-yen">—</span>' +
+            '<span class="pricing-row-note">' + yen(s.ceiling) + ' 以内に収まるプランがありません</span></div>';
+    }
+    rows += pricingRow('このエリアの最安', s.cheapest.yen, offerText(s.cheapest));
+    rows += pricingRow('このエリアの最高', s.max.yen,
+        offerText(s.max) + (s.hasSubAreas ? '（' + s.max.column + '）' : ''));
+
+    const note = s.hasSubAreas
+        ? '※上位プランは駅・市区の指定版（' + s.region.columns[0] + 'など）で料金が変わります'
+        : '';
+
+    return '<div class="pricing-box pricing-box-detail">' +
+        '<p class="pricing-verified-badge"><i class="fas fa-circle-check"></i> 公式料金表と照合済み</p>' +
+        '<p class="pricing-box-area"><i class="fas fa-location-dot"></i> ' +
+            s.region.name + '（' + s.region.area + '）</p>' +
+        rows +
+        (note ? '<p class="pricing-box-foot">' + note + '</p>' : '') +
+        '<p class="pricing-box-foot">公式料金表（2026年1月13日ご掲載開始分〜・税別）より算出</p>' +
+        '<button class="btn btn-outline btn-sm" ' +
+            'onclick="showPricing(\'' + media.priceKey + '\', \'' + s.region.key + '\')">' +
+        '<i class="fas fa-table"></i> ' + s.region.name + 'の料金表を見る</button>' +
+        '</div>';
+}
+
+function pricingRow(label, value, note, extraClass) {
+    return '<div class="pricing-row ' + (extraClass || '') + '">' +
+        '<span class="pricing-row-label">' + label + '</span>' +
+        '<span class="pricing-row-yen">' + yen(value) + '</span>' +
+        '<span class="pricing-row-note">' + note + '</span>' +
+        '</div>';
+}
+
+// ========================================
+// 公式料金表ページ
+// ========================================
+let currentPriceMedia = 'baitoru';
+let currentPriceRegion = 'shutoken';
+
+function showPricing(priceKey, regionKey) {
+    if (priceKey) {
+        currentPriceMedia = priceKey;
+    }
+    if (regionKey) {
+        currentPriceRegion = regionKey;
+    } else if (diagnosisData.area) {
+        currentPriceRegion = diagnosisData.area;
+    }
+    renderPricing();
+    showPage('pricingPage');
+}
+
+function selectPriceMedia(priceKey) {
+    currentPriceMedia = priceKey;
+    renderPricing();
+}
+
+function selectPriceRegion(regionKey) {
+    currentPriceRegion = regionKey;
+    renderPricing();
+}
+
+function renderPricing() {
+    const host = document.getElementById('pricingBody');
+    if (!host) {
+        return;
+    }
+    document.querySelectorAll('.price-tab').forEach(function (tab) {
+        tab.classList.toggle('active', tab.dataset.media === currentPriceMedia);
+    });
+    const regionRow = document.getElementById('priceRegionRow');
+
+    // マイナビバイトはエリア区分が異なるため専用の描画にする
+    if (currentPriceMedia === 'mynavi') {
+        if (regionRow) {
+            regionRow.style.display = 'none';
+        }
+        host.innerHTML = hasMynaviPricing() ? mynaviTablesHtml()
+            : '<p class="pricing-empty">料金データ（js/pricing-mynavi.js）を読み込めませんでした。</p>';
+        return;
+    }
+    if (regionRow) {
+        regionRow.style.display = '';
+    }
+    if (!hasDipPricing()) {
+        host.innerHTML = '<p class="pricing-empty">料金データ（js/pricing-data.js）を読み込めませんでした。</p>';
+        return;
+    }
+    const media = dipPricing[currentPriceMedia];
+    let region = null;
+    media.regions.forEach(function (r) {
+        if (r.key === currentPriceRegion) {
+            region = r;
+        }
+    });
+    if (!region) {
+        region = media.regions[0];
+        currentPriceRegion = region.key;
+    }
+
+    // エリアセレクト
+    const select = document.getElementById('priceRegion');
+    select.innerHTML = media.regions.map(function (r) {
+        return '<option value="' + r.key + '"' +
+            (r.key === region.key ? ' selected' : '') + '>' + r.name + '</option>';
+    }).join('');
+
+    host.innerHTML =
+        '<p class="price-area-note"><i class="fas fa-location-dot"></i> 該当エリア：' + region.area + '</p>' +
+        topTableHtml(media, region) +
+        lowTableHtml(media, region);
+}
+
+// 上段表（PLプラン／Pプラン(EX)／Pプラン）
+function topTableHtml(media, region) {
+    const periods = media.topPeriods;
+    let head1 = '<tr><th rowspan="2" class="sticky-col">プラン</th><th rowspan="2">枠数</th>';
+    region.columns.forEach(function (col) {
+        head1 += '<th colspan="' + periods.length + '">' + col + '</th>';
+    });
+    head1 += '</tr>';
+
+    let head2 = '<tr>';
+    region.columns.forEach(function () {
+        periods.forEach(function (p) {
+            head2 += '<th>' + p + '</th>';
+        });
+    });
+    head2 += '</tr>';
+
+    let body = '';
+    media.topPlans.forEach(function (plan) {
+        const slots = region.top[plan];
+        if (!slots) {
+            return;
+        }
+        media.topSlots.forEach(function (slot, si) {
+            body += '<tr>';
+            if (si === 0) {
+                body += '<th class="sticky-col plan-cell" rowspan="' + media.topSlots.length + '">' + plan + '</th>';
+            }
+            body += '<th class="slot-cell">' + slot + '</th>';
+            (slots[slot] || []).forEach(function (col) {
+                col.forEach(function (value) {
+                    body += '<td>' + (value === null || value === undefined ? '—' : yen(value)) + '</td>';
+                });
+            });
+            body += '</tr>';
+        });
+    });
+
+    return '<h3 class="price-table-title"><i class="fas fa-arrow-up-wide-short"></i> 上位プラン（露出度：高）</h3>' +
+        '<div class="table-scroll"><table class="price-table">' +
+        '<thead>' + head1 + head2 + '</thead><tbody>' + body + '</tbody></table></div>';
+}
+
+// 下段表（Aプラン〜Dプラン）
+function lowTableHtml(media, region) {
+    let head1 = '<tr><th rowspan="2" class="sticky-col">プラン</th><th rowspan="2">枠数</th>';
+    media.lowPeriods.forEach(function (p) {
+        head1 += '<th colspan="2">' + p + '</th>';
+    });
+    head1 += '</tr>';
+
+    let head2 = '<tr>';
+    media.lowPeriods.forEach(function () {
+        head2 += '<th>総額</th><th>7日／1枠</th>';
+    });
+    head2 += '</tr>';
+
+    let body = '';
+    media.lowPlans.forEach(function (plan) {
+        const slots = region.low[plan];
+        if (!slots) {
+            return;
+        }
+        const slotKeys = media.lowSlots.filter(function (s) {
+            return Object.prototype.hasOwnProperty.call(slots, s);
+        });
+        slotKeys.forEach(function (slot, si) {
+            body += '<tr>';
+            if (si === 0) {
+                body += '<th class="sticky-col plan-cell" rowspan="' + slotKeys.length + '">' + plan + '</th>';
+            }
+            body += '<th class="slot-cell">' + slot + '</th>';
+            slots[slot].forEach(function (total, pi) {
+                if (total === null || total === undefined) {
+                    body += '<td class="cell-empty">—</td><td class="cell-empty">—</td>';
+                    return;
+                }
+                body += '<td>' + yen(total) + '</td>' +
+                    '<td class="cell-unit">' + yen(unitPrice(total, slot, media.lowWeeks[pi])) + '</td>';
+            });
+            body += '</tr>';
+        });
+    });
+
+    return '<h3 class="price-table-title"><i class="fas fa-arrow-down-wide-short"></i> Dプラン〜Aプラン（露出度：中〜低）</h3>' +
+        '<div class="table-scroll"><table class="price-table">' +
+        '<thead>' + head1 + head2 + '</thead><tbody>' + body + '</tbody></table></div>' +
+        '<p class="price-unit-note">※「7日／1枠」は 総額 ÷ 枠数 ÷ 週数 で算出した単価です（公式料金表の記載値と一致）。</p>';
+}
+
+// ---------- マイナビバイトの料金表 ----------
+function mynaviCell(v) {
+    return v === null || v === undefined ? '—' : yen(v);
+}
+
+function mynaviTable(title, cols, rows) {
+    let head = '<tr><th class="sticky-col">商品名</th><th>勤務地数</th><th>掲載期間</th>';
+    cols.forEach(function (c) {
+        head += '<th>' + c + '</th>';
+    });
+    head += '</tr>';
+    const body = rows.map(function (r) {
+        let tr = '<tr><th class="sticky-col plan-cell">' + r.product + '</th>' +
+            '<td class="cell-unit">' + (r.sites ? r.sites : '—') + '</td>' +
+            '<th class="slot-cell">' + (r.period || '—') + '</th>';
+        r.values.forEach(function (v) {
+            tr += '<td>' + mynaviCell(v) + '</td>';
+        });
+        return tr + '</tr>';
+    }).join('');
+    return '<h3 class="price-table-title"><i class="fas fa-yen-sign"></i> ' + title + '</h3>' +
+        '<div class="table-scroll"><table class="price-table"><thead>' + head +
+        '</thead><tbody>' + body + '</tbody></table></div>';
+}
+
+function mynaviRowsOf(list, areas) {
+    return list.map(function (r) {
+        return {
+            product: r.product,
+            sites: r.sites,
+            period: r.period,
+            values: r.area4 ? r.area4 : areas.map(function () {
+                return r.flat === undefined ? null : r.flat;
+            })
+        };
+    });
+}
+
+function mynaviSectionHtml(sectionKey) {
+    const m = mynaviPricing;
+    const sec = m[sectionKey];
+    let html = '<h2 class="price-section-title">' + sec.label + '</h2>';
+
+    const basic4 = sec.basic.filter(function (r) {
+        return r.area4 || r.flat;
+    });
+    html += mynaviTable('基本プラン', m.areas, mynaviRowsOf(basic4, m.areas));
+
+    const basic7 = sec.basic.filter(function (r) {
+        return r.area7;
+    }).map(function (r) {
+        return { product: r.product, sites: r.sites, period: r.period, values: r.area7 };
+    });
+    if (basic7.length) {
+        html += mynaviTable('基本プラン／ADスタンダードプラス（7エリア区分）', m.spAreas, basic7);
+    }
+
+    if (sec.entry && sec.entry.length) {
+        html += '<h3 class="price-table-title"><i class="fas fa-user-check"></i> 応募課金型</h3>' +
+            '<div class="table-scroll"><table class="price-table"><thead><tr>' +
+            '<th class="sticky-col">商品名</th><th>勤務地数</th><th>掲載期間</th>' +
+            '<th>1応募あたり</th><th>備考</th></tr></thead><tbody>' +
+            sec.entry.map(function (e) {
+                return '<tr><th class="sticky-col plan-cell">' + e.product + '</th>' +
+                    '<td class="cell-unit">' + e.sites + '</td>' +
+                    '<th class="slot-cell">' + e.period + '</th>' +
+                    '<td>' + yen(e.perApply) + '</td>' +
+                    '<td class="cell-note">' + e.note + '</td></tr>';
+            }).join('') + '</tbody></table></div>';
+    }
+
+    html += mynaviTable('フリープラン（全国共通価格）', ['全国共通価格'],
+        sec.free.map(function (r) {
+            return {
+                product: r.product, sites: r.sites, period: r.period,
+                values: [r.flat === undefined ? null : r.flat]
+            };
+        }));
+    html += mynaviTable('回数券（10回分）', m.areas, mynaviRowsOf(sec.coupon, m.areas));
+    html += mynaviTable('年間プラン', m.areas, mynaviRowsOf(sec.yearly, m.areas));
+    return html;
+}
+
+function mynaviTablesHtml() {
+    const m = mynaviPricing;
+    let html = '<p class="price-area-note"><i class="fas fa-map"></i> エリア区分：' +
+        m.areas.map(function (a) {
+            return a + '（' + m.areaDef[a] + '）';
+        }).join(' ／ ') + '</p>';
+    html += '<p class="price-area-note"><i class="fas fa-arrow-down-wide-short"></i> 露出度の高い順：' +
+        m.productOrder.join(' ＞ ') + '</p>';
+    html += mynaviSectionHtml('parttime');
+    html += mynaviSectionHtml('fulltime');
+
+    html += '<h2 class="price-section-title">オプション</h2>' +
+        '<div class="table-scroll"><table class="price-table"><thead><tr>' +
+        '<th class="sticky-col">オプション名</th><th>正社員プラン</th><th>掲載期間</th>' +
+        m.areas.map(function (a) {
+            return '<th>' + a + '</th>';
+        }).join('') + '</tr></thead><tbody>' +
+        m.options.map(function (o) {
+            const vals = o.area4 ? o.area4 : m.areas.map(function () {
+                return o.flat;
+            });
+            return '<tr><th class="sticky-col plan-cell">' + o.no + '. ' + o.name + '</th>' +
+                '<td class="cell-unit">' + (o.fulltimeOk ? '●' : '—') + '</td>' +
+                '<th class="slot-cell">' + o.period + '</th>' +
+                vals.map(function (v) {
+                    return '<td>' + mynaviCell(v) + '</td>';
+                }).join('') + '</tr>';
+        }).join('') + '</tbody></table></div>';
+
+    html += '<p class="price-unit-note">※ ' + m.point.name + '：' + m.point.price +
+        '（' + m.point.note + '）</p>';
+    html += '<p class="price-unit-note">※ ' + m.note + '</p>';
+    html += '<p class="price-unit-note">出典：' + m.source + '</p>';
+    return html;
+}
+
+function renderPricingNotes() {
+    const host = document.getElementById('pricingNotes');
+    if (!host || typeof dipPricingNotes === 'undefined') {
+        return;
+    }
+    host.innerHTML = dipPricingNotes.map(function (note) {
+        return '<li>' + note + '</li>';
+    }).join('');
+}
+
+// ========================================
+// ページ切り替え
+// ========================================
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(function (page) {
+        page.classList.remove('active');
+    });
+    const target = document.getElementById(pageId);
+    if (target) {
+        target.classList.add('active');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ========================================
+// 診断開始 / 再開
+// ========================================
+function startDiagnosis() {
+    currentQuestion = 1;
+    showQuestion(currentQuestion);
+    showPage('diagnosisPage');
+}
+
+function restartDiagnosis() {
+    // 全チェックボックスを解除
+    document.querySelectorAll('.question-block input').forEach(function (input) {
+        input.checked = false;
+    });
+    // エラーメッセージを非表示に
+    document.querySelectorAll('.error-message').forEach(function (msg) {
+        msg.classList.remove('show');
+    });
+
+    diagnosisData = {};
+    currentQuestion = 1;
+    showQuestion(currentQuestion);
+    showPage('diagnosisPage');
+}
+
+// ========================================
+// 質問表示 / プログレス更新
+// ========================================
+function showQuestion(num) {
+    document.querySelectorAll('.question-block').forEach(function (block) {
+        block.classList.toggle('active', Number(block.dataset.question) === num);
+    });
+
+    // ナビゲーションボタンの状態
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+
+    prevBtn.style.visibility = num === 1 ? 'hidden' : 'visible';
+    nextBtn.style.display = num === TOTAL_QUESTIONS ? 'none' : 'inline-flex';
+    submitBtn.style.display = num === TOTAL_QUESTIONS ? 'inline-flex' : 'none';
+
+    updateProgress();
+}
+
+function updateProgress() {
+    const percent = Math.round((currentQuestion / TOTAL_QUESTIONS) * 100);
+    document.getElementById('progressFill').style.width = percent + '%';
+    document.getElementById('progressPercent').textContent = percent + '%';
+    document.getElementById('currentQuestionNum').textContent = currentQuestion;
+}
+
+// ========================================
+// 質問の前後移動
+// ========================================
+function nextQuestion() {
+    if (!validateCurrentQuestion()) {
+        return;
+    }
+    if (currentQuestion < TOTAL_QUESTIONS) {
+        currentQuestion++;
+        showQuestion(currentQuestion);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function previousQuestion() {
+    if (currentQuestion > 1) {
+        currentQuestion--;
+        showQuestion(currentQuestion);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+// ========================================
+// バリデーション
+// ========================================
+function validateCurrentQuestion() {
+    const block = document.querySelector('.question-block[data-question="' + currentQuestion + '"]');
+    // Q1のエリアはラジオ、Q2以降はチェックボックス
+    const checked = block.querySelectorAll('input:checked');
+    const error = document.getElementById('error' + currentQuestion);
+
+    if (checked.length === 0) {
+        error.classList.add('show');
+        return false;
+    }
+    error.classList.remove('show');
+    return true;
+}
+
+// ========================================
+// 回答データ収集
+// ========================================
+function collectDiagnosisData() {
+    const data = {};
+    Object.keys(WEIGHTS).forEach(function (key) {
+        const selected = document.querySelectorAll('input[name="' + key + '"]:checked');
+        data[key] = Array.prototype.map.call(selected, function (input) {
+            return input.value;
+        });
+    });
+    // エリアは単一選択（採点には使わず、掲載料金の算出に使う）
+    const area = document.querySelector('input[name="area"]:checked');
+    data.area = area ? area.value : null;
+    return data;
+}
+
+// ========================================
+// スコア計算（100点満点）
+// ========================================
+function calculateMediaScores(data) {
+    const results = [];
+
+    Object.keys(mediaDatabase).forEach(function (id) {
+        const media = mediaDatabase[id];
+        let total = 0;
+        const breakdown = {};
+        const matchedTags = [];
+
+        Object.keys(WEIGHTS).forEach(function (key) {
+            const selected = data[key] || [];
+            const mediaValues = media[MEDIA_FIELD_MAP[key]] || [];
+
+            const matched = selected.filter(function (value) {
+                return mediaValues.indexOf(value) !== -1;
+            });
+
+            // 選択項目のうち、この媒体がカバーしている割合 × 配点
+            const ratio = selected.length > 0 ? matched.length / selected.length : 0;
+            const score = Math.round(WEIGHTS[key] * ratio);
+
+            breakdown[key] = score;
+            total += score;
+
+            matched.forEach(function (value) {
+                matchedTags.push(LABELS[key][value]);
+            });
+        });
+
+        results.push({
+            id: id,
+            media: media,
+            score: Math.min(total, 100),
+            breakdown: breakdown,
+            matchedTags: matchedTags
+        });
+    });
+
+    // スコア降順（同点は媒体名で安定化）
+    results.sort(function (a, b) {
+        if (b.score !== a.score) {
+            return b.score - a.score;
+        }
+        return a.media.name.localeCompare(b.media.name, 'ja');
+    });
+
+    return results;
+}
+
+// ========================================
+// 結果表示
+// ========================================
+function displayResults(data, results) {
+    // 診断条件サマリー（先頭に募集エリア）
+    const summary = document.getElementById('resultSummary');
+    let html = '<dl class="summary-item summary-item-area">' +
+        '<dt>募集エリア</dt>' +
+        '<dd>' + (data.area && LABELS.area[data.area] ? LABELS.area[data.area] : '—') + '</dd>' +
+        '</dl>';
+    html += Object.keys(SUMMARY_TITLES).map(function (key) {
+        const values = (data[key] || []).map(function (value) {
+            return LABELS[key][value];
+        });
+        return '<dl class="summary-item">' +
+            '<dt>' + SUMMARY_TITLES[key] + '</dt>' +
+            '<dd>' + (values.join('／') || '—') + '</dd>' +
+            '</dl>';
+    }).join('');
+    summary.innerHTML = html;
+
+    const lead = document.getElementById('resultLead');
+    if (lead) {
+        lead.innerHTML = data.area && LABELS.area[data.area]
+            ? 'ご回答内容をもとに7媒体を100点満点で採点し、掲載料金は<strong>' +
+              LABELS.area[data.area] + '</strong>の公式料金で算出しました。'
+            : 'ご回答内容をもとに、7媒体を100点満点で採点しました。';
+    }
+
+    // ランキング
+    const list = document.getElementById('rankingList');
+    list.innerHTML = results.map(function (item, index) {
+        const rank = index + 1;
+        const media = item.media;
+
+        const features = media.features.map(function (text) {
+            return '<li>' + text + '</li>';
+        }).join('');
+
+        const tags = item.matchedTags.length > 0
+            ? item.matchedTags.map(function (text) {
+                return '<span class="tag tag-match">' + text + '</span>';
+            }).join('')
+            : '<span class="tag">合致条件なし</span>';
+
+        return '' +
+            '<article class="rank-card rank-' + rank + '" style="animation-delay: ' + (index * 0.08) + 's;">' +
+                '<div class="rank-head">' +
+                    '<span class="rank-badge">' + rank + '</span>' +
+                    '<div class="rank-name-area">' +
+                        '<h3 class="rank-name">' + media.name + '</h3>' +
+                        '<p class="rank-catch">' + media.catch + '</p>' +
+                    '</div>' +
+                    '<div class="rank-score">' +
+                        '<span class="rank-score-value">' + item.score + '</span>' +
+                        '<span class="rank-score-unit">点</span>' +
+                        '<span class="rank-score-label">マッチ度 / 100点</span>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="score-bar"><div class="score-bar-fill" data-score="' + item.score + '"></div></div>' +
+                '<div class="rank-body">' +
+                    '<div class="rank-section">' +
+                        '<h4><i class="fas fa-star"></i> 媒体の特徴</h4>' +
+                        '<ul class="feature-list">' + features + '</ul>' +
+                    '</div>' +
+                    '<div class="rank-section">' +
+                        '<h4><i class="fas fa-yen-sign"></i> 費用の目安</h4>' +
+                        pricingBoxHtml(media, data) +
+                        '<h4 style="margin-top:16px;"><i class="fas fa-circle-check"></i> 合致した条件</h4>' +
+                        '<div class="tag-list">' + tags + '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</article>';
+    }).join('');
+
+    // スコアバーをアニメーションさせる
+    requestAnimationFrame(function () {
+        document.querySelectorAll('.score-bar-fill').forEach(function (bar) {
+            bar.style.width = bar.dataset.score + '%';
+        });
+    });
+}
+
+// ========================================
+// 診断送信
+// ========================================
+function submitDiagnosis() {
+    if (!validateCurrentQuestion()) {
+        return;
+    }
+
+    diagnosisData = collectDiagnosisData();
+    const results = calculateMediaScores(diagnosisData);
+    displayResults(diagnosisData, results);
+    showPage('resultPage');
+}
+
+// ========================================
+// PDF保存（印刷ダイアログ経由）
+// ========================================
+function downloadPDF() {
+    window.print();
+}
+
+// ========================================
+// お問い合わせモーダル
+// ========================================
+function showContact() {
+    document.getElementById('contactModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeContact() {
+    document.getElementById('contactModal').classList.remove('show');
+    document.body.style.overflow = '';
+}
+
+// ========================================
+// 初期化
+// ========================================
+document.addEventListener('DOMContentLoaded', function () {
+    // チェック時にエラーメッセージを消す
+    document.querySelectorAll('.question-block input').forEach(function (input) {
+        input.addEventListener('change', function () {
+            const block = input.closest('.question-block');
+            const error = document.getElementById('error' + block.dataset.question);
+            if (error) {
+                error.classList.remove('show');
+            }
+        });
+    });
+
+    // モーダルの外側クリックで閉じる
+    document.getElementById('contactModal').addEventListener('click', function (event) {
+        if (event.target === this) {
+            closeContact();
+        }
+    });
+
+    // Escキーでモーダルを閉じる
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            closeContact();
+        }
+    });
+
+    // 初期状態のリセット（ブラウザのフォーム復元対策）
+    document.querySelectorAll('.question-block input').forEach(function (input) {
+        input.checked = false;
+    });
+    document.querySelectorAll('.error-message').forEach(function (msg) {
+        msg.classList.remove('show');
+    });
+
+    // 公式料金データを持つ媒体の予算帯を実データから同期
+    syncDipBudgetRanges();
+
+    // Q1のエリア選択肢を生成
+    renderAreaOptions();
+
+    // 料金表ページの初期化
+    renderPricingNotes();
+    const regionSelect = document.getElementById('priceRegion');
+    if (regionSelect) {
+        regionSelect.addEventListener('change', function () {
+            selectPriceRegion(this.value);
+        });
+    }
+
+    showQuestion(1);
+});
+
+</script>
